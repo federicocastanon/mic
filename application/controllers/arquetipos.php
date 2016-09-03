@@ -1,0 +1,469 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Arquetipos extends MY_Controller {
+	function __construct(){
+		parent::__construct();
+		// Load the Library
+        $this->load->helper('url');
+		$this->load->model('Arquetipos_model');
+	}
+
+	public function enviar_devolucion() { 
+		if (!$this->user->has_permission('arquetipos')) redirect('/');
+		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_alumno_id($this->input->post('alumno_id'));
+		$alumno = $this->Arquetipos_model->get_alumno_by_id($this->input->post('alumno_id'));
+		if (!$this->is_mine($ejercicio->id)) die('Operacion no permitida');
+		$this->load->model('Email_model');
+		$vars['profesor_nombre'] = $this->user->user_data->name;
+		$vars['alumno_nombre'] = $alumno->primer_nombre . ' ' . $alumno->ultimo_nombre;
+		$vars['texto'] = $this->input->post('texto');
+		$email = ['from' => '<no_reply@citep.mailgun.com> CITEP MIC', 
+				  'to' => $alumno->email,
+				  'subject' => "Focos en juego: Devolución del profesor",
+				  'message' => $this->load->view('/emails/prismas_devolucion',$vars,true) 
+				  ];
+		$this->Email_model->batch($email);
+		$this->session->set_flashdata('success_message', 'Mensaje enviado');
+		redirect('/arquetipos/ver_respuestas/' . $ejercicio->id);
+	}
+
+	public function ajax_respuesta($hash) { 
+		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
+		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
+		$alumno_id = $this->Arquetipos_model->get_alumno_id_by_hash($hash);
+		if (!$arquetipo_id) die('Link no valido');
+		$imagen_id = $this->input->post('img_id');
+		$tmp = $this->input->post('respuesta');
+		$respuestas = $tmp[$imagen_id];
+		$output = array('ok' => true);
+		if (!is_array($respuestas)) {
+			$output = array('ok' => false);
+		} else { 
+			foreach ($respuestas as $pregunta_id => $r) {
+				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $alumno_id, $imagen_id, $r);
+			}
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($output));
+	}
+	
+	public function alumno($hash) {
+		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
+		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
+		if (!$arquetipo_id) die('Link no valido');
+		$this->template_type ='arquetipo'; 
+		$vars = array();
+		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+		$vars['hash'] = $hash;
+		$this->template('arquetipos/alumno_entrar', $vars);
+	}
+
+	
+
+	public function alumno_ejercicio($hash) {
+		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
+		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
+		$alumno_id = $this->Arquetipos_model->get_alumno_id_by_hash($hash);
+		if (!$arquetipo_id) die('Link no valido');
+		if ($this->input->post()) { 
+			foreach ($this->input->post('respuesta') as $pregunta_id=>$texto) { 
+				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $alumno_id, $this->input->post('img_id'), $texto);
+			} 
+		}
+		$this->template_type ='arquetipo'; 
+		$vars = array();
+		$vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
+		$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
+		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+		$tmp = $this->Arquetipos_model->detalle_respuestas($arquetipo_id, $alumno_id);
+		$vars['respuestas'] = array();
+		foreach ($tmp as $r) { 
+			$vars['respuestas'][$r->imagen_id][$r->pregunta_id] = $r->respuesta;
+		}
+		$vars['hash'] = $hash;
+		$this->load->library('user_agent');
+		#echo '<pre>';print_r($vars);die();
+		if ($this->agent->is_mobile()) { 
+			$this->template('arquetipos/alumno_ejercicio_mobile', $vars);
+		} else {
+			$this->template('arquetipos/alumno_ejercicio', $vars);
+		}
+	}
+
+	public function alumno_consigna($hash) { 
+		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
+		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
+		if (!$arquetipo_id) die('Link no valido');
+		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+		$vars['hash'] = $hash;
+		$this->template_type ='arquetipo'; 
+		$this->template('arquetipos/alumno_consigna', $vars);
+	}
+
+	public function ejercicio_get_description($hash) { 
+		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
+		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
+		if (!$arquetipo_id) die('Link no valido');
+		$ejercicio = $this->Arquetipos_model->get($arquetipo_id);
+		$this->output->set_output($ejercicio->desarrollo);
+	}
+
+
+	public function publicar($id, $status) { 
+		if (!$this->is_mine($id)) die('Operacion no permitida');
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$this->Arquetipos_model->update($id, ['public_id_enabled'=> $status]);
+		if ($status) { 
+			$msg = "El link publico ha sido activado";
+		} else { 
+			$msg = "El link publico ha sido desactivado";
+		}
+		$this->session->set_flashdata('success_message', $msg);
+		redirect('/arquetipos/');
+	}
+
+	public function preview($id) { 
+		if (!$this->is_mine($id)) die('Operacion no permitida');
+		if (!$this->user->has_permission('arquetipos')) redirect('/');
+		$tmp = $this->Arquetipos_model->get_alumno_by_email($id, $this->user->get_email());
+
+		if ($tmp) { 
+			$e = (array) $tmp;
+		} else { 
+			$e = ['primer_nombre' => $this->user->get_name(),
+                    'ultimo_nombre' => '',
+                    'email' => $this->user->get_email(),
+                    'hash' => md5(time() . trim($this->user->get_email()) . rand(0,10000)),
+                    'ocultar' => true,
+                 ];
+            $this->Arquetipos_model->invitar_alumno($id, $e);
+		}
+
+		$link = base_url("/arquetipos/alumno/$e[hash]");
+		$vars = array('link' => $link, 'name' => $this->user->get_name());
+		$email = ['from' => '<no_reply@citep.mailgun.com> CITEP MIC', 
+				  'to' => $e['email'],
+				  'subject' => "Focos: Previsualización ejercicio",
+				  'message' => $this->load->view('/emails/invitacion_ejercicio',$vars,true) 
+				  ];
+		$this->load->model('Email_model');
+		$this->Email_model->batch($email);
+		$this->session->set_flashdata('success_message', "Correo con link de preview enviado");
+		redirect('/arquetipos/');
+	}
+
+	public function link_publico($public_id) { 
+		$this->template_type ='arquetipo'; 
+		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
+        $preguntas = $this->Arquetipos_model->get_questions($public_id);
+        $ejercicio->preguntas = $preguntas;
+		if (!$ejercicio or !$ejercicio->public_id_enabled) die('Link publico no disponible');
+		$vars['respuestas'] = array();
+		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id);
+
+		foreach ($tmp_respuestas as $e) {
+            //print "Hay respuestas";
+			#if (!isset($vars['respuestas'][$e->alumno_id])) $vars['respuestas'][$e->alumno_id] = array();
+			$vars['respuestas'][$e->imagen_id][$e->pregunta_id] = $e;
+		}
+		$vars['imagenes'] = array();
+		$tmp_imagenes = $this->Arquetipos_model->get_images($ejercicio->id);
+		foreach ($tmp_imagenes as $imagen) { 
+			$vars['imagenes'][$imagen->id] = array('url' => $imagen->imagen_ubicacion,
+												   'titulo' => $imagen->titulo);
+            //print $imagen->id . '---';
+            //232---233---234---
+		}
+		$vars['ejercicio'] = $ejercicio;
+
+       // print json_encode($vars);
+      // exit;
+		$this->template('arquetipos/alumnos_resultados', $vars);
+
+	}
+
+	public function index()
+	{
+
+		$this->user->on_invalid_session('account/index');
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$this->template_type = 'admin';
+		$user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
+		$vars = array('ejercicios' => $this->Arquetipos_model->get_all($user_id));
+		$this->template('arquetipos/listado', $vars);
+	}
+	
+	public function ver_respuestas($arquetipo_id)
+	{
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$vars = array();
+		$vars['respuestas'] = array();
+		$vars['alumnos'] = array();
+		$tmp_respuestas = $this->Arquetipos_model->listado_respuestas($arquetipo_id);
+		foreach ($tmp_respuestas as $e) {
+			if (!isset($vars['respuestas'][$e->alumno_id])) $vars['respuestas'][$e->alumno_id] = array();
+			$vars['respuestas'][$e->alumno_id][$e->imagen_id] = $e;
+			$vars['alumnos'][$e->alumno_id] = $e;
+		}
+		$vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
+		$vars['arquetipo_id'] = $arquetipo_id;
+		#echo '<pre>';print_r($vars);echo '</pre>';
+		$this->template_type = 'admin';
+		$this->template('arquetipos/listado_respuestas', $vars);
+	}
+
+	public function ver_respuestas_listado($arquetipo_id)
+	{
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$vars = array();
+		$vars['respuestas'] = array();
+		$vars['alumnos'] = array();
+		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($arquetipo_id);
+		foreach ($tmp_respuestas as $e) {
+			#if (!isset($vars['respuestas'][$e->alumno_id])) $vars['respuestas'][$e->alumno_id] = array();
+			$vars['respuestas'][$e->alumno_id][$e->imagen_id][$e->pregunta_id] = $e;
+			$vars['alumnos'][$e->alumno_id] = $e;
+		}
+		$vars['imagenes'] = array();
+		$tmp_imagenes = $this->Arquetipos_model->get_images($arquetipo_id);
+		foreach ($tmp_imagenes as $imagen) { 
+			$vars['imagenes'][$imagen->id] = array('url' => $imagen->imagen_ubicacion,
+												   'titulo' => $imagen->titulo);
+		}
+		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+		#echo '<pre>';print_r($vars);echo '</pre>';die();
+		$this->template_type = 'admin';
+		$this->template('arquetipos/detalle_respuestas', $vars);
+	}
+	
+	public function upload_from_editor() {	
+		if (!$this->user->has_permission('arquetipos')) die("Not allowed");		
+		$upload_path_url = base_url().'uploads/';
+	
+		$config['upload_path'] = BASEPATH . '../assets/uploads/from_editor/';
+		$config['allowed_types'] = '*';
+		$config['max_size']	= '100000';
+		
+	  	$this->load->library('upload', $config);
+		
+		$funcNum = $this->input->get('CKEditorFuncNum');
+
+	  	if ( ! $this->upload->do_upload('upload')) {
+	  		$message = $this->upload->display_errors();
+	  		$url = "";
+		} else {
+			#die('2');
+			$data = $this->upload->data();
+			$url = assets_url('/uploads/from_editor/'. $data['file_name']);
+			$message = "";
+		}
+		$this->output
+		    ->set_output("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>");
+	}
+
+	public function do_upload() {	
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$upload_path_url = base_url().'uploads/';
+	
+		$config['upload_path'] = BASEPATH . '../assets/uploads/arquetipos/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '100000';
+		$config['max_width']  = '280';
+		$config['max_height']  = '280';
+		
+	  	$this->load->library('upload', $config);
+		
+	  	if ( ! $this->upload->do_upload('file')) {
+	  		$error = array('error' => $this->upload->display_errors());
+	  		echo json_encode(array($error));
+		} else {
+			#die('2');
+			$data = $this->upload->data();
+			//set the data for the json array	
+			$info = array();
+			$info['name'] = $data['file_name'];
+	        $info['size'] = $data['file_size'];
+			$info['type'] = $data['file_type'];
+		    $info['url'] = assets_url('/uploads/arquetipos/'. $data['file_name']);
+			
+			//this is why we put this in the constants to pass only json data
+			if (IS_AJAX) {
+				echo json_encode($info);
+				//this has to be the only data returned or you will get an error.
+				//if you don't give this a json array it will give you a Empty file upload result error
+				//it you set this without the if(IS_AJAX)...else... you get ERROR:TRUE (my experience anyway)
+
+			// so that this will still work if javascript is not enabled
+			} else {
+		  		$file_data['upload_data'] = $this->upload->data();
+			  	$this->load->view('admin/upload_success', $file_data);
+			}
+		}
+	}
+
+	public function editar($arquetipo_id = null)
+	{
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		#$list = scandir()
+		$vars = array('stock_imgs' => array());
+		$tmp = scandir(BASEPATH . '../assets/img/stock_arquetipos/'); 
+		foreach ($tmp as $file) { 
+			if (strlen($file) > 2) $vars['stock_imgs'][] = assets_url('/img/stock_arquetipos/' . $file);
+		}
+		$vars['_css'] = array(assets_url("css/jquery.fileupload-ui.css"));
+		$vars['preguntas'] = array();
+		$vars['imagenes'] = array();
+		if ($arquetipo_id) { 
+			$arquetipo = $this->Arquetipos_model->get($arquetipo_id);
+			if (!$arquetipo) die("Acceso no permitido");
+			if ($arquetipo->id_user != $this->user->get_id()) die("Acceso no permitido");
+			$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
+			$vars['arquetipo'] = $arquetipo;
+			$tmp = $this->Arquetipos_model->get_images($arquetipo_id);
+			$tmp_imagenes = array();
+			foreach($tmp as $e) { 
+				$source = "custom";
+				// delete the ones we use here. 
+				if (($key = array_search($e->imagen_ubicacion, $vars['stock_imgs'])) !== false) {
+					$source = 'stock';
+					unset($vars['stock_imgs'][$key]);
+				}
+				$tmp_imagenes[] = array(
+						'url'=> $e->imagen_ubicacion,
+                  		'source' => $source,
+                  		'selected' => true,
+                  		'titulo' => $e->titulo
+                );
+			}			
+		}
+		foreach ($vars['stock_imgs'] as $url) { 
+			$tmp_imagenes[] = array(
+					'url'=> $url,
+              		'source' => 'stock',
+              		'selected' => false,
+            );
+		}
+		#echo '<pre>';print_r($tmp_imagenes);die();
+		if ($this->input->post('imgs')) { 
+			$vars['imgs'] = json_decode($this->input->post('imgs'), true);
+		} else { 
+			$vars['imgs'] = $tmp_imagenes;
+		}
+		foreach ($vars['imgs'] as &$img) { 
+			if ($img['source'] == 'stock') $img['titulo'] = $this->Arquetipos_model->get_stock_image_name($img['url']);
+		}
+		#echo '<pre>';print_r($vars['imgs']);die();
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('pregunta[0]', 'Pregunta 1', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('pregunta[1]', 'Pregunta 2', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('pregunta[2]', 'Pregunta 3', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('consigna', 'Consigna', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('desarrollo', 'description', 'required|min_length[10]|max_length[50000]');
+		$vars['extra_errors'] = '';
+		if ($this->input->post()) { 
+			$imgs = json_decode($this->input->post('imgs'), true);
+			$count = 0;
+			foreach ($imgs as $e) {
+				if ($e['selected']) $count++;
+				if ($e['selected'] and $e['source'] == 'custom' and !$e['titulo']) $vars['extra_errors'] = "Falta el titulo de una de las imagenes subidas";
+			}
+			if ($count > 9) $vars['extra_errors'] = "Se pueden seleccionar sólo hasta 9 imagenes";
+			if ($count < 1) $vars['extra_errors'] = "Se debe elegir por lo menos una imagen";
+			#if ($count < 3) $vars['extra_errors'] = "Se deben seleccionar por lo menos 3 imagenes";
+		}
+		if ($this->input->post()  && $this->form_validation->run() === True && !$vars['extra_errors']) { 
+			$data = $this->input->post(); 
+			$data['id_user'] = $this->user->get_id();
+			unset($data['imgs']);
+			unset($data['pregunta']);
+			unset($data['titulo_imagen']);
+			unset($data['file']);
+			if ($arquetipo_id) { 
+				$this->Arquetipos_model->update($arquetipo_id, $data);
+				$this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
+				redirect("/arquetipos");
+			} else { 
+				//$data['public_id'] = uniqid();
+                $data['public_id'] = $this->Arquetipos_model->get_max_id();
+				$data['status'] = 'habilitado';
+				$arquetipo_id = $this->Arquetipos_model->insert($data);
+				$this->Arquetipos_model->agregar_preguntas($arquetipo_id, $this->input->post('pregunta'));
+				$imagenes = array();
+				foreach (json_decode($this->input->post('imgs'), true) as $i) { 
+					if (!$i['selected']) continue;
+					if ($i['source'] == 'stock') $i['titulo'] = $this->Arquetipos_model->get_stock_image_name($i['url']);
+					$imagenes[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
+				}
+				$this->Arquetipos_model->agregar_imagenes($arquetipo_id, $imagenes);				
+				$this->session->set_flashdata('success_message', 'El Ejercicio fue creado con éxito.');
+				redirect("/alumnos/invitar/arquetipos/$arquetipo_id");
+			}
+
+		}
+
+
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		$this->template_type = 'admin';
+		#echo '<pre>';print_r($vars);echo '</pre>';
+		$this->template('arquetipos/editar', $vars);
+	}
+
+	public function duplicar($arquetipo_id)
+	{
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		$nu_id = $this->Arquetipos_model->duplicar($arquetipo_id);
+		$this->session->set_flashdata('success_message', 'Ejercicio duplicado');
+		redirect('/arquetipos/editar/' . $nu_id);
+	
+	}
+
+	public function borrar($arquetipo_id)
+	{
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		if ($this->Arquetipos_model->delete($arquetipo_id)) { 
+			$this->session->set_flashdata('success_message', 'Un ejercicio fue eliminado');
+		} else { 
+			$this->session->set_flashdata('error_message', 'Problemas eliminando el ejercicio');
+		}
+		redirect('/arquetipos/');
+	}
+
+	public function ajax_respuestas($arquetipo_id, $alumno_id) { 
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		$listado = $this->Arquetipos_model->alumno_respuestas($arquetipo_id, $alumno_id);
+		$vars = array();
+		foreach ($listado as $l) { 
+			$vars['respuestas'][$l->imagen_id][] = $l;
+		}
+		$this->load->view("arquetipos/ajax_respuestas", $vars);
+		#echo "<h1>Vengo de ajax $alumno_id</h1>";
+	}
+
+
+	public function estado($estado, $arquetipo_id) {
+		if (!$this->user->has_permission('arquetipos')) redirect('/');		
+		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
+		if ($this->Arquetipos_model->update($arquetipo_id, array('status' => $estado))) { 
+			$this->session->set_flashdata('success_message', 'Procesamos el cambio de estado');
+		} else { 
+			$this->session->set_flashdata('error_message', 'No pudimos cambiar el estado');
+		}
+		redirect('/arquetipos/');
+	}
+
+	private function is_mine($arquetipo_id) { 
+		if ($this->user->has_permission('admin')) return true;
+		$ej = $this->Arquetipos_model->get($arquetipo_id);
+		return ($ej->id_user && $ej->id_user === $this->user->get_id());
+	}
+}
