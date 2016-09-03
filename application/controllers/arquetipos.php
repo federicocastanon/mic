@@ -27,26 +27,7 @@ class Arquetipos extends MY_Controller {
 		redirect('/arquetipos/ver_respuestas/' . $ejercicio->id);
 	}
 
-	public function ajax_respuesta($hash) { 
-		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
-		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
-		$alumno_id = $this->Arquetipos_model->get_alumno_id_by_hash($hash);
-		if (!$arquetipo_id) die('Link no valido');
-		$imagen_id = $this->input->post('img_id');
-		$tmp = $this->input->post('respuesta');
-		$respuestas = $tmp[$imagen_id];
-		$output = array('ok' => true);
-		if (!is_array($respuestas)) {
-			$output = array('ok' => false);
-		} else { 
-			foreach ($respuestas as $pregunta_id => $r) {
-				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $alumno_id, $imagen_id, $r);
-			}
-		}
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($output));
-	}
+
 	
 	public function alumno($hash) {
 		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
@@ -61,27 +42,22 @@ class Arquetipos extends MY_Controller {
 
 	
 
-	public function alumno_ejercicio($hash) {
-		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
-		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
-		$alumno_id = $this->Arquetipos_model->get_alumno_id_by_hash($hash);
-		if (!$arquetipo_id) die('Link no valido');
-		if ($this->input->post()) { 
+	public function alumno_ejercicio($public_id) {
+        $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
+		$arquetipo_id = $ejercicio->id ;
+		if (!$ejercicio) die('Link no valido' . '---' . $public_id);
+		if ($this->input->post()) {
 			foreach ($this->input->post('respuesta') as $pregunta_id=>$texto) { 
-				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $alumno_id, $this->input->post('img_id'), $texto);
+				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $this->input->post('img_id'), $texto);
 			} 
 		}
 		$this->template_type ='arquetipo'; 
 		$vars = array();
 		$vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
 		$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
-		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
-		$tmp = $this->Arquetipos_model->detalle_respuestas($arquetipo_id, $alumno_id);
-		$vars['respuestas'] = array();
-		foreach ($tmp as $r) { 
-			$vars['respuestas'][$r->imagen_id][$r->pregunta_id] = $r->respuesta;
-		}
-		$vars['hash'] = $hash;
+		$vars['ejercicio'] = $ejercicio;
+
+		$vars['public_id'] = $public_id;
 		$this->load->library('user_agent');
 		#echo '<pre>';print_r($vars);die();
 		if ($this->agent->is_mobile()) { 
@@ -90,6 +66,26 @@ class Arquetipos extends MY_Controller {
 			$this->template('arquetipos/alumno_ejercicio', $vars);
 		}
 	}
+
+    public function ajax_respuesta($public_id) {
+        $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
+        $arquetipo_id = $ejercicio->id ;
+        if (!$ejercicio) die('Link no valido' . '---' . $public_id);
+        $imagen_id = $this->input->post('img_id');
+        $tmp = $this->input->post('respuesta');
+        $respuestas = $tmp[$imagen_id];
+        $output = array('ok' => true);
+        if (!is_array($respuestas)) {
+            $output = array('ok' => false);
+        } else {
+            foreach ($respuestas as $pregunta_id => $r) {
+                $this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $r);
+            }
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
 
 	public function alumno_consigna($hash) { 
 		if (!preg_match('/^\w+$/', $hash)) die('Caracteres no permitidos');
@@ -437,10 +433,12 @@ class Arquetipos extends MY_Controller {
 		redirect('/arquetipos/');
 	}
 
-	public function ajax_respuestas($arquetipo_id, $alumno_id) { 
+	public function ajax_respuestas($arquetipo_id) {
+        print "PERFECTO";
+        exit;
 		if (!$this->user->has_permission('arquetipos')) redirect('/');		
 		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
-		$listado = $this->Arquetipos_model->alumno_respuestas($arquetipo_id, $alumno_id);
+		$listado = $this->Arquetipos_model->alumno_respuestas($arquetipo_id);
 		$vars = array();
 		foreach ($listado as $l) { 
 			$vars['respuestas'][$l->imagen_id][] = $l;

@@ -43,7 +43,7 @@
       }
       $(this).text('Enviando...');
       $(this).addClass('disabled');
-      var xhr = $.ajax('<?php echo base_url("/arquetipos/ajax_respuesta/$hash")?>', 
+      var xhr = $.ajax('<?php echo base_url("/arquetipos/ajax_respuesta/$public_id")?>',
         {
           data: post_data,
           type:'POST',
@@ -78,7 +78,7 @@
 
   $('#infoModal').on('show', function () {
     $("div#infoModal > div.infoModal_body").html('<i class="icon-spinner icon-spin icon-large"></i>');
-    $.get("<?php echo base_url('/arquetipos/ejercicio_get_description/' . $hash) ?>", "", function (html) {
+    $.get("<?php echo base_url('/arquetipos/ejercicio_get_description/' . $public_id) ?>", "", function (html) {
       $("div#infoModal > div.infoModal_body").html(html);
     });
   })

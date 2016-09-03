@@ -29,7 +29,10 @@
     </div>
     <div class='row-fluid'>
         <div class="span12 public">
-            <a class="btn pull-left" href='#' onClick=''> Responder</a><br>
+            <a class="btn btn-small btn-primary pull-left"
+               href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
+                <i class="icon-list-alt"></i> Responder
+            </a>
     		<a class="btn pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a><br>
 
     	</div>

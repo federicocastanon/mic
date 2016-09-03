@@ -35,7 +35,7 @@ class Arquetipos_model extends My_Model {
       return $tmp[0]->id;
     }
 
-    function agregar_respuesta($arquetipo_id, $pregunta_id, $alumno_id, $imagen_id, $respuesta) { 
+    function agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $respuesta) {
       $data = array(
         'arquetipo_id' => $arquetipo_id,
         'arquetipo_pregunta_id' => $pregunta_id,
