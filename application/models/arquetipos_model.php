@@ -35,13 +35,15 @@ class Arquetipos_model extends My_Model {
       return $tmp[0]->id;
     }
 
-    function agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $respuesta) {
+    function agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $respuesta, $nombre, $email) {
       $data = array(
         'arquetipo_id' => $arquetipo_id,
         'arquetipo_pregunta_id' => $pregunta_id,
         'arquetipo_imagen_id' => $imagen_id, 
         'respuesta' => $respuesta, 
-        'created_at' => date('Y-m-d H:i:s')
+        'created_at' => date('Y-m-d H:i:s'),
+        'nombre' => $nombre,
+        'email' => $email
       );
       #print_r($data);
       return $this->db->insert('arquetipo_respuestas', $data);
@@ -131,12 +133,11 @@ class Arquetipos_model extends My_Model {
     }
 
     function listado_respuestas($id_arquetipo) { 
-        $query = "select ai.id as imagen_id, group_concat(ar.arquetipo_pregunta_id) as respuestas,
-                        min(ar.created_at) as fecha
+        $query = "select ai.id as imagen_id, group_concat(ar.arquetipo_pregunta_id) as respuestas
                   from  arquetipo_respuestas ar
                   left join arquetipo_imagenes ai on ai.id = arquetipo_imagen_id
-                  where aa.arquetipo_id = $id_arquetipo 
-                  group by ai.id, aa.id 
+                  where ar.arquetipo_id = $id_arquetipo
+                  group by ai.id
                   order by nombre, ai.id";
         return $this->db->query($query)->result();
     }
@@ -152,18 +153,18 @@ class Arquetipos_model extends My_Model {
                 ORDER BY ai.id, ap.id";
       return $this->db->query($query)->result();           
     }*/
-    function detalle_respuestas($id_arquetipo, $id_alumno=0) { 
-        $query = "select ap.id as pregunta_id, ai.id as imagen_id, respuesta, pregunta,
-                        min(ar.created_at) as fecha
+    function detalle_respuestas($id_arquetipo, $soloPublico) {
+        $query = "select ap.id as pregunta_id, ai.id as imagen_id, ar.id as respuesta_id, respuesta, pregunta, publico
                   from arquetipo_respuestas ar
                   join arquetipo_imagenes ai on ai.id = ar.arquetipo_imagen_id
                   join arquetipo_preguntas ap on ap.id = ar.arquetipo_pregunta_id
-                  where ar.arquetipo_id = $id_arquetipo
-                  and ar.publico != 0 ";
+                  where ar.arquetipo_id = $id_arquetipo";
+        if($soloPublico){
 
+            $query =$query . " and ar.publico = $soloPublico ";
+        }
 
-        $query.= "group by ap.id, ai.id
-                  order by ai.id, ap.id";
+        $query.= " order by ai.id, ap.id";
         return $this->db->query($query)->result();
     }
 
@@ -184,4 +185,11 @@ class Arquetipos_model extends My_Model {
       #print_r($matches);
       return @$names[$matches[1]];
     }
+
+    function actualizar_publico($arquetipo_respuesta_id, $estado){
+
+        $query = "UPDATE arquetipo_respuestas  SET publico=$estado    where id = $arquetipo_respuesta_id";
+        $this->db->query($query);
+    }
+
 }

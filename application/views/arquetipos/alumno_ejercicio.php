@@ -27,7 +27,9 @@
       
       var form = $('form').serializeArray();
       var post_data = {
-        'img_id': img.data('rel')
+        'img_id': img.data('rel'),
+          'nombre' : $('#nombre').val(),
+          'email' : $('#email').val()
       };
       if (img.data('rel')) { 
         var key = 'respuesta[' + img.data('rel') + ']';
@@ -94,7 +96,9 @@
 
 
 
-<form method='post'> 
+<form method='post'>
+    <input type="text" id="email" name="email" placeholder="email"/>
+    <input type="text" id="nombre" name="nombre" placeholder="nombre y apellido"/>
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
   ?>  

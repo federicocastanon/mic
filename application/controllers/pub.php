@@ -4,7 +4,7 @@ class Pub extends MY_Controller {
 
 	public function index()
 	{
-		redirect('/account/login');
+		redirect('/account/home');
 		#$this->template('account/index');
 	}
 }

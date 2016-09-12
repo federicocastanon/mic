@@ -1,61 +1,85 @@
 <div class="container">
 <section>
+    <div class="row-fluid publichead">
+        <div class="span10">
+            <div>
+                <img src="<?= assets_url('/img/foco_public.png') ?>" width="76" height="92">
+                <span class="logosmall">Focos</span> <span class="logolightsmall"> en juego</span>
+            </div>
+        </div>
+        <div class="span2">
+            <div class="pull-right">
+                <a href="http://citep.rec.uba.ar" target="_blank">
+                    <img src="<?= assets_url('/img/citep-mic-web.png')?>" width="110" height="54">
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="row-fluid">
         <div class="page-header">
-            <h1>Respuestas</h1>
+            <h1><?= $ejercicio->consigna ?></h1>
         </div>
-        <div class="span12">
-            <a class="btn btn-large pull-right" href="<?php echo base_url("/arquetipos/ver_respuestas_listado/$arquetipo_id")?>">
-               <i class="icon-file-text-alt"></i> detalle completo
-            </a>
-            <br>
-            <br>
-            <br>
-        </div>
-        <table class="table table-striped table-hover">
-            <thead>
-                <th width="10%">Alumno</th>
-                <th width="20%">Fecha</th>
-                <?php foreach ($imagenes as $img): ?>
-				<th><?php echo $img->titulo ?></th>
-                <?php endforeach ?>
-                <th width="25%">Acci&oacute;n</th>
-			</thead>
-            <tbody>
-                <?php foreach ($alumnos as $alumno_id => $alumno) : ?>
-                <tr>
-                    <td><?php echo $alumno->nombre?></td>
-                    <td><?php echo $alumno->fecha ?></td>
-                    <?php foreach ($imagenes as $imagen) { 
-                        if (!isset($respuestas[$alumno_id][$imagen->id])) { 
-                            echo '<td class="tdarq"></td>';
-                        } else { 
-                            $resps = explode(",",$respuestas[$alumno_id][$imagen->id]->respuestas);
-                            if (count($resps) == 3) {
-                                echo '<td class="tdarq"><span class="badge badge-success badge-ajuste">&nbsp;</span></td>';
-                            } else { 
-                                echo '<td class="tdarq"><span class="badge badge-error">&nbsp;</span></td>';
-                            }
-                        }
-                    } 
-                    ?>
-                         <td>
-                            <? if ($alumno->fecha): ?> 
-                                <a data-toggle="modal" data-target="#modalRespuestas" class='btn'
-                                href="<?php echo base_url("/arquetipos/ajax_respuestas/$arquetipo_id/$alumno_id") ?>">
-                                    <i class='icon-search'></i> ver detalle
-                                </a>
-                                <a class='btn devolucion btn-primary' data-alumno-id="<?= $alumno_id ?>" href="#">
-                                 <i class="fa fa-envelope-o"></i> devolución
-                                </a>
-                            <? endif ?> 
-                        </td>
-                    </tr>
-			    <?php endforeach ?>
-                    
-            </tbody>
-        </table>
     </div>
+    <div class='row-fluid'>
+        <div class="span12 public">
+            <?php
+            foreach ($ejercicio->preguntas as $pregunta): ?>
+                <p><strong><?= $pregunta->pregunta ?></strong> </p>
+            <?php endforeach;  ?>
+        </div>
+    </div>
+    <div class='row-fluid'>
+        <div class="span12 public">
+            <a class="btn btn-small btn-primary pull-left"
+               href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
+                <i class="icon-list-alt"></i> Responder
+            </a>
+            <a class="btn pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a><br>
+
+        </div>
+    </div>
+    <?php foreach ($imagenes as $imagen_id => $imagen): ?>
+        <div class="publicwell">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td><h4><?= $imagen['titulo'] ?></h4></td>
+                    <td width="40%"><img src="<?= $imagen['url']?>" alt='foto de <?= $imagen['titulo']?>' width='280'></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span6" style="float: left; width: 100%;">
+                <?php
+                foreach ($ejercicio->preguntas as $pregunta): ?>
+                    <div style="float: left; width: 100%"><strong><?= $pregunta->pregunta ?></strong></div>
+                <?php
+                if (isset($respuestas[$imagen_id][$pregunta->id])){
+                    foreach ($respuestas[$imagen_id][$pregunta->id] as $resp): ?>
+                        <div  style="float: left; width:60%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
+                          <div style="width:60%;  float: left">  <?= $resp->respuesta ?></div>
+                            <div style="width:30%; float: left">
+                        <?php if($resp->publico){?>
+                            <a class="btn btn-small " style="float: right"
+                                                       href='<?php echo base_url('/arquetipos/ocultar/'. $ejercicio->id . '/' . $resp->respuesta_id)?>'>
+                                <i class="fa fa-eye"></i>
+                                    Ocultar
+                            </a>
+                        <?php }else{?>
+                            <a class="btn btn-small " style="float: right"
+                               href='<?php echo base_url('/arquetipos/hacer_publica/' . $ejercicio->id . '/' . $resp->respuesta_id)?>'>
+                                <i class="fa fa-eye"></i>
+                                Hacer pública
+                            </a>
+                                <?php }?>
+                            </div>
+                        </div>
+                    <?php endforeach; } ?>
+                <?php endforeach;  ?>
+            </div>
+
+        </div>
+    <?php endforeach //imagenes ?>
 
 <div id="emailModal" class="modal hide fade" tabindex="-1" role="dialog">
     <form action="<?= base_url('/arquetipos/enviar_devolucion/')?>" method="post">

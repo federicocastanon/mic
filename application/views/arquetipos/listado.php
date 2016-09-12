@@ -77,19 +77,16 @@
                     <a class="btn btn-small" href='<?php echo base_url('/alumnos/invitar/arquetipos/' . $e->id)?>'>
 					<i class="icon-share"></i> invitar
                     </a>
-					<?php if ($e->invitados): ?>
                         <a class="btn btn-small btn-primary" 
                             href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'>
                             <i class="icon-list-alt"></i> respuestas
                         </a>
-                    <?php else: ?>
                         <a class="btn btn-small btn-primary" 
                             href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
                             <i class="icon-list-alt"></i> editar
                         </a>
-                    <?php endif; ?> 
                     <a class="btn btn-small" 
-                            href='<?php echo base_url('/arquetipos/preview/' . $e->id)?>'>
+                            href='<?php echo base_url('/arquetipos/link_publico/' . $e->id)?>'>
                              <i class="fa fa-eye"></i> previsualizar
                         </a>
                     <a class="btn btn-small btn-danger" 

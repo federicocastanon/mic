@@ -10,4 +10,5 @@ body {
     <div class="container">
        <div id="logo">
        <img src="<?php echo assets_url('/img/citep_mic.gif'); ?>" width="232" height="66"></div>
+
     </div>

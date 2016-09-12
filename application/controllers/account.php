@@ -17,6 +17,14 @@ class Account extends MY_Controller {
 		redirect('account/login');
 	}
 
+    function home()
+    {
+        // If user is already logged in, send it to main
+        //$this->user->on_valid_session('admin/');
+        $this->template_type = 'public';
+        $this->template('account/home');
+    }
+
 	function login()
 	{
 		// If user is already logged in, send it to main
@@ -111,7 +119,7 @@ class Account extends MY_Controller {
 		
 		// Bye, thanks! :)
 		$this->session->set_flashdata('success_message', 'Te has desconectado.');
-		redirect('account/login');
+		redirect('account/home');
 	}
 
 	function edit() { 
