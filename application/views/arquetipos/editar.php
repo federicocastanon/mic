@@ -69,8 +69,9 @@
                 <?php echo validation_errors(); ?><?php echo $extra_errors?> 
         <form method='post'>
             <input type='hidden' name='imgs' value='<?php echo json_encode($imgs) ?>'> 
-            <div class="page-header">
-                <h1>Editar / Nuevo</h1>
+            <div class="page-header tituloWrapper" >
+                <h1 class="pull-left titulo" ">Editar / Nuevo</h1>
+                <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="icon-arrow-left"></i> Volver</a>
             </div>
             <label>Nombre</label>
             <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$arquetipo->nombre)?>">

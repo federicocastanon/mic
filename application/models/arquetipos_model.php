@@ -60,7 +60,7 @@ class Arquetipos_model extends My_Model {
     	$query = $this->db
             ->select('a.id, a.nombre, a.created_at, a.status, a.public_id, a.public_id_enabled')
             ->select('count(distinct ar.id) as respuestas')
-            ->select('count(distinct aa.id) as invitados')
+            ->select('count(distinct ar.email) as alumnos')
             ->select('u.name as autor')
     		->join('arquetipo_respuestas ar', 'ar.arquetipo_id = a.id', 'left')
             ->join('arquetipo_alumnos aa', 'aa.arquetipo_id = a.id', 'left')
@@ -154,7 +154,7 @@ class Arquetipos_model extends My_Model {
       return $this->db->query($query)->result();           
     }*/
     function detalle_respuestas($id_arquetipo, $soloPublico) {
-        $query = "select ap.id as pregunta_id, ai.id as imagen_id, ar.id as respuesta_id, respuesta, pregunta, publico
+        $query = "select ap.id as pregunta_id, ai.id as imagen_id, ar.id as respuesta_id, respuesta, pregunta, publico, ar.email as email
                   from arquetipo_respuestas ar
                   join arquetipo_imagenes ai on ai.id = ar.arquetipo_imagen_id
                   join arquetipo_preguntas ap on ap.id = ar.arquetipo_pregunta_id
@@ -167,6 +167,7 @@ class Arquetipos_model extends My_Model {
         $query.= " order by ai.id, ap.id";
         return $this->db->query($query)->result();
     }
+
 
     function get_stock_image_name($url) { 
       $names = array(
@@ -189,6 +190,11 @@ class Arquetipos_model extends My_Model {
     function actualizar_publico($arquetipo_respuesta_id, $estado){
 
         $query = "UPDATE arquetipo_respuestas  SET publico=$estado    where id = $arquetipo_respuesta_id";
+        $this->db->query($query);
+    }
+
+    function ocultarTodas($arquetipoId){
+        $query = "UPDATE arquetipo_respuestas  SET publico=FALSE    where arquetipo_id = $arquetipoId";
         $this->db->query($query);
     }
 

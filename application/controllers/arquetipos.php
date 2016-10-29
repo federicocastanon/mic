@@ -163,10 +163,11 @@ class Arquetipos extends MY_Controller {
 		foreach ($tmp_respuestas as $e) {
             //print "Hay respuestas";
 			#if (!isset($vars['respuestas'][$e->alumno_id])) $vars['respuestas'][$e->alumno_id] = array();
-            if (!isset($vars['respuestas'][$e->imagen_id])){
-                $vars['respuestas'][$e->imagen_id] = array();
+            if (!isset($vars['respuestas'][$e->imagen_id][$e->pregunta_id])){
+                $vars['respuestas'][$e->imagen_id][$e->pregunta_id] = array();
             }
-			array_push($vars['respuestas'][$e->imagen_id], $e);
+			//array_push($vars['respuestas'][$e->imagen_id], $e);
+            array_push($vars['respuestas'][$e->imagen_id][$e->pregunta_id], $e);
 		}
 		$vars['imagenes'] = array();
 		$tmp_imagenes = $this->Arquetipos_model->get_images($ejercicio->id);
@@ -180,6 +181,9 @@ class Arquetipos extends MY_Controller {
 
        // print json_encode($vars);
       // exit;
+        if ($this->user->has_permission('arquetipos')) {
+            $this->template_type = 'admin';
+        }
 		$this->template('arquetipos/alumnos_resultados', $vars);
 
 	}
@@ -346,7 +350,13 @@ class Arquetipos extends MY_Controller {
 		$tmp = scandir(BASEPATH . '../assets/img/stock_arquetipos/'); 
 		foreach ($tmp as $file) { 
 			if (strlen($file) > 2) $vars['stock_imgs'][] = assets_url('/img/stock_arquetipos/' . $file);
-		}
+		}/*
+        print_r($vars['stock_imgs']);
+
+        $tmp = scandir(BASEPATH . '../assets/uploads/arquetipos/');
+        foreach ($tmp as $file) {
+            if (strlen($file) > 2) $vars['stock_imgs'][] = assets_url('/img/stock_arquetipos/' . $file);
+        }*/
 		$vars['_css'] = array(assets_url("css/jquery.fileupload-ui.css"));
 		$vars['preguntas'] = array();
 		$vars['imagenes'] = array();
@@ -508,4 +518,18 @@ class Arquetipos extends MY_Controller {
         $this->Arquetipos_model->actualizar_publico($respuesta_id,0);
         $this->ver_respuestas($arquetipo_id);
     }
+
+    public function publicarTodas($arquetipo_id){
+        // Oculto todas y pongo publicas solo las que me chequearon
+        $ejercicio = $this->Arquetipos_model->ocultarTodas($arquetipo_id);
+        $listaChequeados = $this->input->post('pub');
+        if($listaChequeados) {
+            foreach ($listaChequeados as $l) {
+                $this->Arquetipos_model->actualizar_publico($l, 1);
+            }
+        }
+        $this->ver_respuestas($arquetipo_id);
+    }
+
+
 }

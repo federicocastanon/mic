@@ -130,6 +130,15 @@ section#logos {
     margin: 0px 0px 31.5px !important;
 }
 
+.tituloWrapper{
+    float:left;
+    width: 100%;
+}
+
+.titulo{
+    max-width: 80%;
+}
+
 .modalAmpliar{
 	background: rgba(255,255,255,0.4);
 	border-radius: 10px;

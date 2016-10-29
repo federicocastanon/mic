@@ -2,17 +2,35 @@
 <h1>Ejercicio no existente</h1>
 <?php return;endif ?>
 <script type='text/javascript'>
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
   if (typeof String.prototype.startsWith != 'function') {
     String.prototype.startsWith = function (str){
       return this.slice(0, str.length) == str;
     };
   }
   $(document).ready(function() {
-    $('a.enviar').click(function() { 
-      var img = $(this);
+    $('a.enviar').click(function() {
+        var img = $(this);
+        var div = img.parents('.modalResponder');
+        if(!validateEmail($('#email').val())){
+            $('#mensaje').text('Ingrese un Email verdadero').show();
+            return;
+        }else{
+            if( $('#nombre').val() == '' ) {
+                $('#mensaje').text('Ingrese un nombre').show();
+                return;
+            }
+        }
+        $('#mensaje').text('Ingrese un Email verdadero').hide();
+
       if (img.attr('disabled')) return false;
       var completed = true;
-      var div = img.parents('.modalResponder');
+
       div.find('textarea').each(function() {
         if ($(this).val().length <= 10 || completed == false) {
           completed = false;
@@ -97,7 +115,8 @@
 
 
 <form method='post'>
-    <input type="text" id="email" name="email" placeholder="email"/>
+    <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
+    <input type="email" id="email" name="email" placeholder="email" required="true"/>
     <input type="text" id="nombre" name="nombre" placeholder="nombre y apellido"/>
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
@@ -114,8 +133,8 @@
         <div class="span4">
           <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
             src="<?php echo $img->imagen_ubicacion?>" width='150px' height='150px' alt="">
-            <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
-                 src="<?php echo assets_url('img/alert.gif')?>" width='150px' height='150px' alt="">
+          <!--  <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
+                 src="<?php echo assets_url('img/alert.gif')?>" width='150px' height='150px' alt=""> -->
         </div>
         <div class="span8">
           <?php foreach($preguntas as $preg): ?>

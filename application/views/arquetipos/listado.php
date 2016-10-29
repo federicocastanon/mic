@@ -27,6 +27,7 @@
 	<div class="page-header"><h1>Ejercicios</h1></div>
 	
     <div class="span12">
+        <a class="btn btn-large pull-right" href="<?php echo base_url('/admin')?>"><i class="icon-arrow-left"></i> Volver</a>
       <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="icon-plus"></i> nuevo ejercicio</a><br>
       <br>
       <br>
@@ -38,8 +39,8 @@
         <th width="25%">Nombre</th>
         <th width="8%">Fecha</th>
         <th width="15%">Autor</th>
-        <th width="10%">Invitados</th>
-        <th width="10%">Respuestas</th>
+        <th width="10%">Código público</th>
+        <th width="10%">Respuestas (alumnos)</th>
         <th width="32%">Acciones</th>
     </thead>
     <tbody>
@@ -52,9 +53,10 @@
                     </span>
                 </td>
                 <td><?php echo $e->autor ?></td>
-                <td><span class="badge"><?php echo (int) $e->invitados?></span></td>
-                <td><span class="badge badge-success "><?php echo (int) $e->respuestas?></span></td>
+                <td><span class="badge"><?php echo $e->id?></span></td>
+                <td><span class="badge badge-success "><?php echo (int) $e->respuestas?> ( <?php echo (int) $e->alumnos?>  )</span></td>
                 <td>
+                    <!--
                     <?php if ($e->status == 'habilitado'): ?>
                         <a id="habilitarbt" class="btn btn-small btn-inverse" 
                             href='<?php echo base_url('/arquetipos/estado/deshabilitado/' . $e->id)?>'>
@@ -66,16 +68,22 @@
                             <i class="icon-thumbs-up-alt icon-white"></i> habilitar
                         </a>
                     <?php endif; ?>
-                    <?php if ($e->invitados == 0): ?>
+
+
+                    <a class="btn btn-small" href='<?php echo base_url('/alumnos/invitar/arquetipos/' . $e->id)?>'>
+					<i class="icon-share"></i> invitar
+                    </a>
+
+                     <a class="btn btn-small"
+                            href='<?php echo base_url('/arquetipos/link_publico/' . $e->id)?>'>
+                             <i class="fa fa-eye"></i> previsualizar
+                        </a>
+                     -->
                     <a class="btn btn-small" href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
                         editar
                     </a>
-                    <?php endif ?>
                     <a class="btn btn-small" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'>
-					   <i class="icon-copy"></i> copiar y editar
-                    </a>
-                    <a class="btn btn-small" href='<?php echo base_url('/alumnos/invitar/arquetipos/' . $e->id)?>'>
-					<i class="icon-share"></i> invitar
+                        <i class="icon-copy"></i> copiar y editar
                     </a>
                         <a class="btn btn-small btn-primary" 
                             href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'>
@@ -85,10 +93,7 @@
                             href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
                             <i class="icon-list-alt"></i> editar
                         </a>
-                    <a class="btn btn-small" 
-                            href='<?php echo base_url('/arquetipos/link_publico/' . $e->id)?>'>
-                             <i class="fa fa-eye"></i> previsualizar
-                        </a>
+
                     <a class="btn btn-small btn-danger" 
                         href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>' 
                         onClick='return confirm("Confirme que quiere borrar este ejercicio");'>
