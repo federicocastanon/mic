@@ -198,4 +198,24 @@ class Arquetipos_model extends My_Model {
         $this->db->query($query);
     }
 
+    function actualizarPreguntas($arquetipo_id,$listaPreguntasViejas,$listaPreguntasActualizada){
+
+        foreach($listaPreguntasViejas as $pregunta){
+            if($listaPreguntasActualizada[$pregunta->id]){
+                //es un update
+                $laPregunta = $listaPreguntasActualizada[$pregunta->id];
+                $elId = $pregunta->id;
+                $query = "UPDATE arquetipo_preguntas  SET pregunta='$laPregunta' where id = $elId";
+
+                $this->db->query($query);
+                unset($listaPreguntasActualizada[$pregunta->id]);
+            }
+        }
+        if(count($listaPreguntasActualizada) > 0){
+            $this->agregar_preguntas($arquetipo_id,$listaPreguntasActualizada);
+        }
+
+
+    }
+
 }

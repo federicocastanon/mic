@@ -1,5 +1,19 @@
 <script type="text/javascript" src="<?php echo assets_url('js/ckeditor/ckeditor.js');?>"></script>
-<script type='text/javascript'> 
+<script type='text/javascript'>
+    var cantidadPreguntas = 1;
+    function agregarPregunta(cantidadP){
+        if(cantidadPreguntas < 2 && cantidadP > 0){
+            cantidadPreguntas = cantidadP +1;
+        }else{
+            cantidadPreguntas++;
+        }
+
+
+        $( "#preguntas" ).append( "<input name='pregunta[]' class='input-xxlarge' type='text' placeholder='Pregunta "+cantidadPreguntas + "' value=''><br><br>" );
+
+    }
+
+
     $(document).ready(function() { 
         $('form').click(refresh_selected_images);
         $(document).on('click', 'a.thumbnail' ,function() {
@@ -132,10 +146,19 @@
                         </ul>
                         <br>
                         <h4>Ingresar preguntas</h4><br>
-                        <input name="pregunta[0]" class="input-xxlarge" type="text" placeholder="Pregunta 1" value="<?php echo set_value('pregunta[0]', @$preguntas[0]->pregunta)?>"><br><br>
-                        <input name="pregunta[1]" class="input-xxlarge" type="text" placeholder="Pregunta 2" value="<?php echo set_value('pregunta[1]', @$preguntas[1]->pregunta)?>"><br><br>
-                        <input name="pregunta[2]" class="input-xxlarge" type="text" placeholder="Pregunta 3" value="<?php echo set_value('pregunta[2]', @$preguntas[2]->pregunta)?>"><br><br>
-
+                        <div id="preguntas">
+                        <?php foreach ($preguntas as $indice=>$pregunta): ?>
+                            <input name="pregunta[<?= $pregunta->id ?>]" class="input-xxlarge" type="text" placeholder="Pregunta <?= $indice ?>" value="<?php echo set_value('pregunta['+$pregunta->id+']', $pregunta->pregunta)?>"><br><br>
+                        <?php endforeach ?>
+                            <?php if(!$preguntas){?>
+                                <input name="pregunta[]" class="input-xxlarge" type="text" placeholder="Pregunta 1" value=""><br><br>
+                            <?php }?>
+                        </div>
+                        <a class="btn btn-small " style="float: left"
+                            onclick="agregarPregunta(<?= count($preguntas) ?>)">
+                            <i class="fa fa-plus"></i>
+                            Agregar Pregunta
+                        </a>
                         <button class="btn btn-primary btn-large pull-right" href="#">Continuar</button><br>
                         <br>
                         <br>

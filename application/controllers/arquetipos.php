@@ -403,11 +403,12 @@ class Arquetipos extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[5]|max_length[200]');
-		$this->form_validation->set_rules('pregunta[0]', 'Pregunta 1', 'required|min_length[5]|max_length[200]');
-		$this->form_validation->set_rules('pregunta[1]', 'Pregunta 2', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('pregunta[]', 'Pregunta ', 'required|min_length[5]|max_length[200]');
+		/*$this->form_validation->set_rules('pregunta[1]', 'Pregunta 2', 'required|min_length[5]|max_length[200]');
 		$this->form_validation->set_rules('pregunta[2]', 'Pregunta 3', 'required|min_length[5]|max_length[200]');
-		$this->form_validation->set_rules('consigna', 'Consigna', 'required|min_length[5]|max_length[200]');
-		$this->form_validation->set_rules('desarrollo', 'description', 'required|min_length[10]|max_length[50000]');
+		*/
+        $this->form_validation->set_rules('consigna', 'Consigna', 'required|min_length[5]|max_length[200]');
+		$this->form_validation->set_rules('desarrollo', 'descripción', 'required|min_length[10]|max_length[50000]');
 		$vars['extra_errors'] = '';
 		if ($this->input->post()) { 
 			$imgs = json_decode($this->input->post('imgs'), true);
@@ -421,17 +422,24 @@ class Arquetipos extends MY_Controller {
 			#if ($count < 3) $vars['extra_errors'] = "Se deben seleccionar por lo menos 3 imagenes";
 		}
 		if ($this->input->post()  && $this->form_validation->run() === True && !$vars['extra_errors']) { 
-			$data = $this->input->post(); 
+			$data = $this->input->post();
+            /*print_r($this->input->post('pregunta'));
+            print_r( $vars['preguntas']);
+            exit;*/
 			$data['id_user'] = $this->user->get_id();
 			unset($data['imgs']);
-			unset($data['pregunta']);
+
 			unset($data['titulo_imagen']);
 			unset($data['file']);
-			if ($arquetipo_id) { 
+			if ($arquetipo_id) {
+                $this->Arquetipos_model->actualizarPreguntas($arquetipo_id, $vars['preguntas'],$this->input->post('pregunta'));
+                unset($data['pregunta']);
 				$this->Arquetipos_model->update($arquetipo_id, $data);
+
 				$this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
 				redirect("/arquetipos");
-			} else { 
+			} else {
+                unset($data['pregunta']);
 				//$data['public_id'] = uniqid();
                 $data['public_id'] = $this->Arquetipos_model->get_max_id();
 				$data['status'] = 'habilitado';
