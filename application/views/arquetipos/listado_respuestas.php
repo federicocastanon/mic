@@ -3,11 +3,11 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
     <script type="text/javascript" src="<?php echo assets_url('js/d3.layout.cloud.js');?>"></script>
     <script>
-
-        $( document ).ready(function() {
         function seleccionarTodas(imgId){
             $( ".cheq" + imgId ).prop('checked', $("#tp" +imgId)[0].checked);
         }
+        $( document ).ready(function() {
+
         /* D3  */
 
         var width = document.body.clientWidth * 0.8;
@@ -78,10 +78,13 @@
             //console.log(wordCount);
 
             var wordCountArr = [];
-
+            wordCountArr.push({text: '  ', size: 0});
+            wordCountArr.push({text: '  ', size: 0});
+            wordCountArr.push({text: '     ', size: 0});
             for(var prop in wordCount) {
                 wordCountArr.push({text: prop, size: wordCount[prop]});
             }
+
 
             return wordCountArr;
         }
