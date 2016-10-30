@@ -1,12 +1,102 @@
 <div class="container">
-    <script>
-        function seleccionarTodas(imgId){
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script type="text/javascript" src="<?php echo assets_url('js/d3.layout.cloud.js');?>"></script>
+    <script>
+
+        $( document ).ready(function() {
+        function seleccionarTodas(imgId){
             $( ".cheq" + imgId ).prop('checked', $("#tp" +imgId)[0].checked);
         }
+        /* D3  */
 
+        var width = document.body.clientWidth * 0.8;
+        var height =300;
+
+        var typeFace = 'Gorditas';
+        var minFontSize = 24;
+        var colors = d3.scale.category20b();
+
+        var svg = d3.select('#cloud').append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate('+width/2+', '+height/2+')');
+
+
+        function calculateCloud(wordCount) {
+            d3.layout.cloud()
+                .size([width, height])
+                .words(wordCount)
+                .rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg
+                .font(typeFace)
+                .fontSize(function(d) { return d.size * minFontSize; })
+                .on('end', drawCloud)
+                .start();
+        }
+
+        function drawCloud(words) {
+            var vis = svg.selectAll('text').data(words);
+
+            vis.enter().append('text')
+                .style('font-size', function(d) { return d.size + 'px'; })
+                .style('font-family', function(d) { return d.font; })
+                .style('fill', function(d, i) { return colors(i); })
+                .attr('text-anchor', 'middle')
+                .attr('transform', function(d) {
+                    return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
+                })
+                .text(function(d) { return d.text; });
+        }
+
+        /* convert the raw data into a proper form of key/value obj to pass to d3.layout.cloud
+         it should return [{text: 'str', size: n},...]
+         */
+
+        function processData(strings) {
+            if(!strings) return;
+
+            // convert the array to a long string
+           // strings = strings.join(' ');
+
+            // strip stringified objects and punctuations from the string
+            strings = strings.toLowerCase().replace(/object Object/g, '').replace(/[\+\.,\/#!$%\^&\*{}=_`~]/g,'');
+
+            // convert the str back in an array
+            strings = strings.split(' ');
+
+            // Count frequency of word occurance
+            var wordCount = {};
+
+            for(var i = 0; i < strings.length; i++) {
+                if(!wordCount[strings[i]])
+                    wordCount[strings[i]] = 0;
+
+                wordCount[strings[i]]++; // {'hi': 12, 'foo': 2 ...}
+            }
+
+            //console.log(wordCount);
+
+            var wordCountArr = [];
+
+            for(var prop in wordCount) {
+                wordCountArr.push({text: prop, size: wordCount[prop]});
+            }
+
+            return wordCountArr;
+        }
+        function getData(){
+            var data = $('#dataCruda')[0].innerText;
+            calculateCloud(processData(data));
+        }
+
+            getData();
+        });
     </script>
 <section>
+    <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
+    <section style="float: left; width: 30%; height: 200px" id="cloud">
+    </section>
     <div class="row-fluid publichead">
         <div class="span10">
             <div>
@@ -64,7 +154,7 @@
                 </div>
                 <button style="float: right" class="btn btn-large" type="submit">Publicar las chequeadas</button>
             </div>
-            <div class="span6" style="float: left; width: 100%;">
+            <div class="span6" style="float: left; width: 60%;">
                 <?php
                 foreach ($ejercicio->preguntas as $pregunta): ?>
                     <div style="float: left; width: 60%"><strong><?= $pregunta->pregunta ?></strong></div>
@@ -72,9 +162,9 @@
                 <?php
                 if (isset($respuestas[$imagen_id][$pregunta->id])){
                     foreach ($respuestas[$imagen_id][$pregunta->id] as $resp): ?>
-                        <div  style="float: left; width:60%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
-                          <div style="width:60%;  float: left">  <?= $resp->respuesta ?> (<?= $resp->email ?> )</div>
-                            <div style="width:30%; float: left">
+                        <div  style="float: left; width:97%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
+                          <div style="width:60%;  float: left">  <?= $resp->respuesta ?> <br> (<?= $resp->email ?> )</div>
+                            <div style=" float: left">
                                 <input type="checkbox" class="cheq<?= $imagen_id ?>" id="<?php echo $resp->respuesta_id ?>" name="pub[]" value="<?php echo $resp->respuesta_id?>"
                         <?php if($resp->publico){?>
                                 checked
@@ -85,6 +175,7 @@
                     <?php endforeach; } ?>
                 <?php endforeach;  ?>
             </div>
+
 
         </div>
        </form>

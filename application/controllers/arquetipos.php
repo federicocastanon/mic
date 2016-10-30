@@ -220,6 +220,7 @@ class Arquetipos extends MY_Controller {
         $vars['ejercicio'] = $ejercicio;
         $vars['respuestas'] = array();
         $tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id, false);
+        $crudoRespuestas = "";
 
         foreach ($tmp_respuestas as $e) {
             //print "Hay respuestas";
@@ -228,7 +229,10 @@ class Arquetipos extends MY_Controller {
                 $vars['respuestas'][$e->imagen_id][$e->pregunta_id] = array();
             }
             array_push($vars['respuestas'][$e->imagen_id][$e->pregunta_id], $e);
+            $crudoRespuestas = $crudoRespuestas . ' '.  $e->respuesta;
         }
+        $crudoRespuestas = $crudoRespuestas . ' ';
+        $vars['crudoRespuestas'] = $crudoRespuestas;
         $vars['imagenes'] = array();
         $tmp_imagenes = $this->Arquetipos_model->get_images($ejercicio->id);
         foreach ($tmp_imagenes as $imagen) {
