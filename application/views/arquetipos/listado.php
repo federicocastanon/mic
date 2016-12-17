@@ -115,7 +115,7 @@
                         <a class="btn btn-small" taget="_new" href='<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>'>
                            <i class="fa fa-external-link"></i> link publico
                         </a>
-                        <input type="hidden" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>" />
+                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>" />
                         <button class="btnC btn btn-small" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar</button>
                         <a class="btn btn-small" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
                            <i class="fa fa-chain-broken"></i> desactivar link publico
