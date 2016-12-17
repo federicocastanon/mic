@@ -1,6 +1,6 @@
 <div class="container">
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="<?php echo assets_url('js/d3.min.js');?>"></script>
     <script type="text/javascript" src="<?php echo assets_url('js/d3.layout.cloud.js');?>"></script>
     <script>
         function seleccionarTodas(imgId){
@@ -10,11 +10,11 @@
 
         /* D3  */
 
-        var width = document.body.clientWidth * 0.8;
+        var width = Math.floor(document.body.clientWidth * 0.8);
         var height =300;
 
         var typeFace = 'Gorditas';
-        var minFontSize = 24;
+        var minFontSize = 6;
         var colors = d3.scale.category20b();
 
         var svg = d3.select('#cloud').append('svg')
@@ -25,13 +25,18 @@
 
 
         function calculateCloud(wordCount) {
-            d3.layout.cloud()
+           d3.layout.cloud()
                 .size([width, height])
                 .words(wordCount)
-                .rotate(function() { return ~~(Math.random()*2) * 90;}) // 0 or 90deg
+                .rotate(function() {
+                    //var rot = (Math.floor(Math.random()*2)) * 90;
+                   var rot = 0;
+                   return rot;}
+            ) // 0 or 90deg
                 .font(typeFace)
-                .fontSize(function(d) { return d.size * minFontSize; })
-                .on('end', drawCloud)
+                .fontSize(function(d) {
+                    var tam = d.size * minFontSize;
+                    return tam }).on('end', drawCloud)
                 .start();
         }
 
@@ -69,6 +74,9 @@
             var wordCount = {};
 
             for(var i = 0; i < strings.length; i++) {
+                if(excluirComunes(strings[i])){
+                    continue;
+                }
                 if(!wordCount[strings[i]])
                     wordCount[strings[i]] = 0;
 
@@ -78,9 +86,6 @@
             //console.log(wordCount);
 
             var wordCountArr = [];
-            wordCountArr.push({text: '  ', size: 0});
-            wordCountArr.push({text: '  ', size: 0});
-            wordCountArr.push({text: '     ', size: 0});
             for(var prop in wordCount) {
                 wordCountArr.push({text: prop, size: wordCount[prop]});
             }
@@ -88,6 +93,19 @@
 
             return wordCountArr;
         }
+
+        var excluidas = ["", " "];
+
+        function excluirComunes(palabra){
+
+            if(excluidas.indexOf(palabra) > -1){
+                return true;
+            }
+
+
+            return false;
+        }
+
         function getData(){
             var data = $('#dataCruda')[0].innerText;
             calculateCloud(processData(data));
@@ -97,9 +115,7 @@
         });
     </script>
 <section>
-    <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
-    <section style="float: left; width: 30%; height: 200px" id="cloud">
-    </section>
+
     <div class="row-fluid publichead">
         <div class="span10">
             <div>
@@ -115,6 +131,9 @@
             </div>
         </div>
     </div>
+    <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
+    <section style="float: left; width: 30%; height: 300px" id="cloud">
+    </section>
     <div class="row-fluid">
         <div class="page-header">
             <h1><?= $ejercicio->consigna ?></h1>
@@ -134,12 +153,15 @@
                href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
                 <i class="icon-list-alt"></i> Responder
             </a>
-            <a class="btn pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a><br>
-
+            <div class="span12 public">
+            <a class="btn btn-large pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a>
+            <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="icon-arrow-left"></i> Volver</a>
+            </div>
         </div>
     </div>
     <?php foreach ($imagenes as $imagen_id => $imagen): ?>
         <form method="post" action='<?php echo base_url('/arquetipos/publicarTodas/' . $ejercicio->id)?>'>
+            <input type="hidden" id="<?= $imagen_id ?>" name="imgId" value="<?= $imagen_id ?>"/>
         <div class="publicwell">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -168,7 +190,7 @@
                         <div  style="float: left; width:97%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
                           <div style="width:60%;  float: left">  <?= $resp->respuesta ?> <br> (<?= $resp->email ?> )</div>
                             <div style=" float: left">
-                                <input type="checkbox" class="cheq<?= $imagen_id ?>" id="<?php echo $resp->respuesta_id ?>" name="pub[]" value="<?php echo $resp->respuesta_id?>"
+                                <input type="checkbox" class="cheq<?= $imagen_id ?>" id="<?php echo $resp->respuesta_id ?>" name="pub[]" value="<?php echo $resp->respuesta_id ?>"
                         <?php if($resp->publico){?>
                                 checked
                         <?php }?>

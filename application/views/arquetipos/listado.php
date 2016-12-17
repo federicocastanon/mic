@@ -1,5 +1,6 @@
 <script src="<?php echo assets_url('/js/jquery.dataTables.js')?>"></script>
 <script src="<?php echo assets_url('/js/bootstrap-datatables.js')?>"></script>
+<script src="<?php echo assets_url('js/clipboard.min.js');?>"></script>
 <script type='text/javascript'> 
     $(document).ready(function() {
         var oTable = $('#list').dataTable( {
@@ -21,7 +22,17 @@
         oTable.fnSort( [ [1,'desc'] ] );
     } );
 </script>
+<script>
+    var clipboard = new Clipboard('.btnC');
 
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+</script>
 <section>
 <div class="row-fluid">
 	<div class="page-header"><h1>Ejercicios</h1></div>
@@ -104,6 +115,8 @@
                         <a class="btn btn-small" taget="_new" href='<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>'>
                            <i class="fa fa-external-link"></i> link publico
                         </a>
+                        <input type="hidden" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>" />
+                        <button class="btnC btn btn-small" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar</button>
                         <a class="btn btn-small" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
                            <i class="fa fa-chain-broken"></i> desactivar link publico
                         </a>

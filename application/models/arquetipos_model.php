@@ -167,7 +167,16 @@ class Arquetipos_model extends My_Model {
         $query.= " order by ai.id, ap.id";
         return $this->db->query($query)->result();
     }
+    function listado_respuestas_por_mail($id_arquetipo, $mail) {
+        $query = "select ap.id as pregunta_id, ai.id as imagen_id, ar.id as respuesta_id, respuesta, pregunta, publico, ar.email as email
+                  from arquetipo_respuestas ar
+                  join arquetipo_imagenes ai on ai.id = ar.arquetipo_imagen_id
+                  join arquetipo_preguntas ap on ap.id = ar.arquetipo_pregunta_id
+                  where ar.arquetipo_id = $id_arquetipo and ar.email like '$mail'";
 
+        $query.= " order by ap.id";
+        return $this->db->query($query)->result();
+    }
 
     function get_stock_image_name($url) { 
       $names = array(
@@ -193,8 +202,8 @@ class Arquetipos_model extends My_Model {
         $this->db->query($query);
     }
 
-    function ocultarTodas($arquetipoId){
-        $query = "UPDATE arquetipo_respuestas  SET publico=FALSE    where arquetipo_id = $arquetipoId";
+    function ocultarTodas($arquetipoId, $imagenId){
+        $query = "UPDATE arquetipo_respuestas  SET publico=FALSE    where arquetipo_id = $arquetipoId and arquetipo_imagen_id = $imagenId";
         $this->db->query($query);
     }
 

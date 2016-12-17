@@ -7,7 +7,10 @@ class Arquetipos extends MY_Controller {
         $this->load->helper('url');
 		$this->load->model('Arquetipos_model');
 	}
-
+    public function printClose($imprimible){
+        print_r($imprimible);
+        exit;
+    }
 	public function enviar_devolucion() { 
 		if (!$this->user->has_permission('arquetipos')) redirect('/');
 		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_alumno_id($this->input->post('alumno_id'));
@@ -42,17 +45,22 @@ class Arquetipos extends MY_Controller {
 
 	
 
-	public function alumno_ejercicio($public_id) {
+	public function alumno_ejercicio($public_id, $respuestas = null) {
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
 		$arquetipo_id = $ejercicio->id ;
 		if (!$ejercicio) die('Link no valido' . '---' . $public_id);
+        $vars = array();
 		if ($this->input->post()) {
-			foreach ($this->input->post('respuesta') as $pregunta_id=>$texto) { 
-				$this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $this->input->post('img_id'), $texto);
-			} 
+            $obtResp = $this->input->post('obtenerRespuestas');
+            if ($obtResp != 1) {
+                foreach ($this->input->post('respuesta') as $pregunta_id => $texto) {
+                    $this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $this->input->post('img_id'), $texto);
+                }
+            }else{
+                $vars['respuestasAnteriores'] = $respuestas;
+            }
 		}
-		$this->template_type ='arquetipo'; 
-		$vars = array();
+		$this->template_type ='arquetipo';
 		$vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
 		$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
 		$vars['ejercicio'] = $ejercicio;
@@ -159,6 +167,8 @@ class Arquetipos extends MY_Controller {
 		if (!$ejercicio or !$ejercicio->public_id_enabled) die('Link publico no disponible');
 		$vars['respuestas'] = array();
 		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id, true);
+        $crudoRespuestas = "";
+
 
 		foreach ($tmp_respuestas as $e) {
             //print "Hay respuestas";
@@ -167,8 +177,11 @@ class Arquetipos extends MY_Controller {
                 $vars['respuestas'][$e->imagen_id][$e->pregunta_id] = array();
             }
 			//array_push($vars['respuestas'][$e->imagen_id], $e);
+            $crudoRespuestas = $crudoRespuestas . ' '.  $e->respuesta;
             array_push($vars['respuestas'][$e->imagen_id][$e->pregunta_id], $e);
 		}
+        $crudoRespuestas = $crudoRespuestas . ' ';
+        $vars['crudoRespuestas'] = $crudoRespuestas;
 		$vars['imagenes'] = array();
 		$tmp_imagenes = $this->Arquetipos_model->get_images($ejercicio->id);
 		foreach ($tmp_imagenes as $imagen) { 
@@ -531,10 +544,13 @@ class Arquetipos extends MY_Controller {
         $this->ver_respuestas($arquetipo_id);
     }
 
-    public function publicarTodas($arquetipo_id){
+    public function publicarTodas($arquetipo_id ){
+        $imagen_id = $this->input->post('imgId');
         // Oculto todas y pongo publicas solo las que me chequearon
-        $ejercicio = $this->Arquetipos_model->ocultarTodas($arquetipo_id);
+        $ejercicio = $this->Arquetipos_model->ocultarTodas($arquetipo_id, $imagen_id);
         $listaChequeados = $this->input->post('pub');
+        //print_r($listaChequeados);
+        //exit;
         if($listaChequeados) {
             foreach ($listaChequeados as $l) {
                 $this->Arquetipos_model->actualizar_publico($l, 1);
@@ -542,6 +558,14 @@ class Arquetipos extends MY_Controller {
         }
         $this->ver_respuestas($arquetipo_id);
     }
+
+    public function respuestasAnteriores($arquetipo_id){
+        $mail = $this->input->post('email');
+        $respuestas = $this->Arquetipos_model->listado_respuestas_por_mail($arquetipo_id, $mail);
+        $this->alumno_ejercicio($arquetipo_id, $respuestas);
+        //$this->printClose($respuestas);
+    }
+
 
 
 }
