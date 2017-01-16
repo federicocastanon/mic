@@ -135,9 +135,9 @@
 	   <div class="page-header tituloWrapper">
 	       <h1 class="pull-left titulo"><?= $ejercicio->consigna ?></h1>
            <?php if ($this->template_type == 'admin'): ?>
-               <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="icon-arrow-left"></i> Volver</a>
+               <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="fa fa-arrow-left"></i> Volver</a>
            <?php else: ?>
-               <a class="btn btn-large pull-right" href="<?php echo base_url('/')?>"><i class="icon-arrow-left"></i> Volver</a>
+               <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/')?>"><i class="fa fa-arrow-left"></i> Volver</a>
            <?php endif; ?>
 
         </div>
@@ -152,11 +152,11 @@
     </div>
     <div class='row-fluid'>
         <div class="span12 public">
-            <a class="btn btn-small btn-primary pull-left"
+            <a class="btn-primary pull-left"
                href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
                 <i class="icon-list-alt"></i> Responder
             </a>
-    		<a class="btn pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a><br>
+    		<a class="btn btn-default pull-right" href='#' onClick='window.print();'><i class="fa fa-print"></i> imprimir</a><br>
 
     	</div>
     </div>

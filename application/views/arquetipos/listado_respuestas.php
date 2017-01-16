@@ -149,13 +149,13 @@
     </div>
     <div class='row-fluid'>
         <div class="span12 public">
-            <a class="btn btn-small btn-primary pull-left"
+            <a class="btn btn-primary pull-left"
                href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
                 <i class="icon-list-alt"></i> Responder
             </a>
             <div class="span12 public">
-            <a class="btn btn-large pull-right" href='#' onClick='window.print();'><i class="icon-print"></i> imprimir</a>
-            <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="icon-arrow-left"></i> Volver</a>
+            <a class="btn btn-lg btn-default pull-right" href='#' onClick='window.print();'><i class="fa fa-print"></i> imprimir</a>
+            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="fa fa-arrow-left"></i> Volver</a>
             </div>
         </div>
     </div>

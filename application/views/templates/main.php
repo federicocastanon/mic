@@ -25,10 +25,13 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="<?php echo assets_url('css/bootstrap.min.css')?>" rel="stylesheet" media='screen'>
+    <link href="<?php echo assets_url('plugins/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet" media='screen'>
     <link href="<?php echo assets_url('css/bootstrap-responsive.css')?>" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+      <link rel="stylesheet" href="<?php echo assets_url('plugins/font-awesome/css/font-awesome.css')?>">
+      <link rel="stylesheet" href="<?php echo assets_url('plugins/prism/prism.css')?>">
+      <link rel="stylesheet" href="<?php echo assets_url('css/styles.css')?>">
+
     <link href="<?php echo assets_url('css/custom.css')?>" rel="stylesheet">
     <?php if (isset($_css) && $_css) {
       foreach($_css as $e) { 
@@ -40,14 +43,21 @@
     <!--[if lt IE 9]>
       <script src="<?php echo assets_url('js/html5shiv.js')?>"></script>
     <![endif]-->
-    <script src="<?php echo assets_url("/js/jquery-1.10.2.min.js")?>"></script>
+      <script src="<?php echo assets_url("plugins/jquery-1.11.3.min.js")?>"></script>
+      <script src="<?php echo assets_url("plugins/jquery.easing.1.3.js")?>"></script>
+      <script src="<?php echo assets_url("/js/bootstrap.min.js")?>"></script>
+      <script src="<?php echo assets_url("/js/bootstrap-datepicker.js")?>"></script>
+      <script src="<?php echo assets_url("plugins/jquery-scrollTo/jquery.scrollTo.min.js")?>"></script>
+      <script src="<?php echo assets_url("plugins/prism/prism.js")?>"></script>
+      <script src="<?php echo assets_url("js/main.js")?>"></script>
+
     <link rel="icon" href="<?php echo assets_url('/img/favicon.ico')?>" type="image/x-icon" />
   </head>
 
   <body>
     <?php if (!(isset($_hide_menu) && $_hide_menu)) echo $_template_menu_content ?>
 
-    <div class="container">
+    <div class="container offset-header">
       <?php foreach ($error_msgs as $msg) { ?> 
       <div class="alert alert-error" style='position:relative;top:60px;'>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -70,7 +80,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?php echo assets_url("/js/bootstrap.min.js")?>"></script>
-    <script src="<?php echo assets_url("/js/bootstrap-datepicker.js")?>"></script>
+
+
   </body>
 </html>

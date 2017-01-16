@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <?foreach ($users as $u): ?>
+                  <?php foreach ($users as $u): ?>
                   <tr>
 
                     <td><?php echo $u->name?></td>

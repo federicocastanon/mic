@@ -1,10 +1,10 @@
 <?php
 
 $config['protocol'] = 'smtp';
-$config['smtp_host'] = 'smtp.mailgun.org';
-$config['smtp_user'] = 'postmaster@citep.mailgun.org';
-$config['smtp_pass'] = '9agitgdbkyr1';
-$config['smtp_port'] = 587;
+$config['smtp_host'] = 'ssl://sirius.duplika.com';
+$config['smtp_user'] = 'info@mic.en-construccion.net';
+$config['smtp_pass'] = 'Abril2016';
+$config['smtp_port'] = 465;
 $config['crlf'] = "\r\n";
 $config['newline'] = "\r\n";
 $config['mailtype'] = 'html';

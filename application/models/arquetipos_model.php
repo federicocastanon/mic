@@ -66,7 +66,8 @@ class Arquetipos_model extends My_Model {
             ->join('arquetipo_alumnos aa', 'aa.arquetipo_id = a.id', 'left')
             ->join('users u', 'u.id = a.id_user')
         ->where(array('a.deleted' => 0))
-    		->group_by('a.id');
+    		->group_by('a.id')
+        ->order_by('a.id desc');
         
         if ($id_user) $query = $query->where(array('id_user' => $id_user));
         $query = $query->get('arquetipos a');

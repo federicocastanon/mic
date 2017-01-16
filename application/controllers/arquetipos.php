@@ -84,14 +84,32 @@ class Arquetipos extends MY_Controller {
         $imagen_id = $this->input->post('img_id');
         $tmp = $this->input->post('respuesta');
         $respuestas = $tmp[$imagen_id];
+        $tmp2 = $this->input->post('pregunta');
+        $preguntas = $tmp2[$imagen_id];
         $output = array('ok' => true);
+        $mensaje = "";
         if (!is_array($respuestas)) {
             $output = array('ok' => false);
         } else {
             foreach ($respuestas as $pregunta_id => $r) {
                 $this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $r, $nombre, $email);
+                $mensaje .= '<b>'. $preguntas[$pregunta_id] .'</b>'. $r . '  <br/>';
             }
         }
+        if($mensaje != ""){
+print $mensaje;
+            exit;
+            $this->load->library('email');
+            $this->email->from('info@mic.en-construccion.net', 'CITEP MIC');
+            $this->email->to($email);
+            $this->email->subject('Tus respuestas en Focos en Juego');
+            $this->email->message($mensaje);
+
+            $this->email->send();
+
+        }
+
+
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($output));

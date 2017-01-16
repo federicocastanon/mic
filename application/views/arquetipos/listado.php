@@ -38,8 +38,8 @@
 	<div class="page-header"><h1>Ejercicios</h1></div>
 	
     <div class="span12">
-        <a class="btn btn-large pull-right" href="<?php echo base_url('/admin')?>"><i class="icon-arrow-left"></i> Volver</a>
-      <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="icon-plus"></i> nuevo ejercicio</a><br>
+        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
+      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nuevo ejercicio</a><br>
       <br>
       <br>
 
@@ -90,39 +90,36 @@
                              <i class="fa fa-eye"></i> previsualizar
                         </a>
                      -->
-                    <a class="btn btn-small" href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
-                        editar
+                    <a class="btn btn-info pull-left" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'>
+                        <i class="icon-copy"></i> Copiar y Editar
                     </a>
-                    <a class="btn btn-small" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'>
-                        <i class="icon-copy"></i> copiar y editar
+                    <a class="btn btn-success pull-left"
+                        href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'>
+                        <i class="icon-list-alt"></i> Respuestas
                     </a>
-                        <a class="btn btn-small btn-primary" 
-                            href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'>
-                            <i class="icon-list-alt"></i> respuestas
-                        </a>
-                        <a class="btn btn-small btn-primary" 
-                            href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
-                            <i class="icon-list-alt"></i> editar
-                        </a>
+                    <a class="btn btn-primary pull-left"
+                        href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
+                        <i class="icon-list-alt"></i> Editar
+                    </a>
 
-                    <a class="btn btn-small btn-danger" 
+                    <a class="btn btn-danger pull-left"
                         href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>' 
                         onClick='return confirm("Confirme que quiere borrar este ejercicio");'>
-                        <i class="fa fa-trash-o"></i> eliminar
+                        <i class="fa fa-trash-o"></i> Eliminar
                     </a>
-                    
+
                     <?php if ($e->public_id_enabled): ?>
-                        <a class="btn btn-small" taget="_new" href='<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>'>
-                           <i class="fa fa-external-link"></i> link publico
+                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>'>
+                           <i class="fa fa-external-link"></i> Link publico
                         </a>
                         <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>" />
-                        <button class="btnC btn btn-small" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar</button>
-                        <a class="btn btn-small" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
-                           <i class="fa fa-chain-broken"></i> desactivar link publico
+                        <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar</button>
+                        <a class="btn btn-danger pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
+                           <i class="fa fa-chain-broken"></i> Desactivar link publico
                         </a>
                     <?php else: ?>
-                        <a class="btn btn-small" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'>
-                           <i class="fa fa-external-link"></i> activar link publico
+                        <a class="btn btn-warning pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'>
+                           <i class="fa fa-external-link"></i> Activar link publico
                         </a>
                     <?php endif ?>
                 </td>

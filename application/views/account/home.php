@@ -1,6 +1,9 @@
 <div style="float: right;">
     <a href="<?php echo base_url('/account/index')?>">Ingreso Docente</a>
 </div>
+<div style="float: right;">
+    <a href="<?php echo base_url('/dialogo/testing')?>">TEST CONTROLLER</a>
+</div>
 
 <form method='POST' action='<?php echo base_url('arquetipos/ingresoAlumno')?>'>
        <div id="logo" class="span4">

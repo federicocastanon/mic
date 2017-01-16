@@ -57,6 +57,10 @@
           if (elem['name'].startsWith(key)) { 
             post_data[elem['name']] = elem['value']
           }
+          //TOdO: esto no anda
+          else if (elem['name'].startsWith('pregunta')) {
+                post_data[elem['name']] = elem['value']
+            }
         } 
       } else { 
         respuestas = form; 
@@ -130,12 +134,16 @@
 
 <form method='post' action='<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?>'>
     <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
-    <a class="btn btn-large pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="icon-arrow-left"></i> Volver</a>
-    <input type="email" id="email" name="email" placeholder="email" required="true"/>
-    <input type="text" id="nombre" name="nombre" placeholder="nombre y apellido"/>
-    <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
-    <button class="btn btn-large" type="submit">Respuestas anteriores</button>
-
+    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-arrow-left"></i> Volver</a>
+    <div class="row-fluid">
+        <input type="email" id="email" name="email" placeholder="email" required="true"/>
+        <input type="text" id="nombre" name="nombre" placeholder="nombre y apellido"/>
+    </div>
+    <div class="row-fluid">
+        <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
+        <button class="btn btn-large" type="submit">Respuestas anteriores</button>
+    </div>
+    <div class="spacer"></div>
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
   ?>  
@@ -156,7 +164,8 @@
         </div>
         <div class="span8">
           <?php foreach($preguntas as $preg): ?>
-            <p><?php echo $preg->pregunta?></p>          
+              <input type="hidden" name="pregunta[<?php echo $img->id?>][<?php echo $preg->id?>]" value="<?php echo $preg->pregunta?>" />
+            <p ><?php echo $preg->pregunta?></p>
             <div class="control-group">
               <div class="controls">
                 <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2" 
@@ -166,7 +175,7 @@
             </div>   
           <?php endforeach; ?>
         </div>
-        <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-large pull-right enviar' data-rel='<?php echo $img->id ?>'>
+        <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
           enviar respuestas
         </a>
         <br /><br />

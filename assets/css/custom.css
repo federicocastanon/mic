@@ -184,7 +184,7 @@ section#logos {
 	pointer-events: auto;
 }
 .modalResponder > div {
-	width: 600px;
+
 	position: relative;
 	border-radius: 10px;
 	background-color: #B3E0FF;
@@ -677,4 +677,9 @@ label.checkbox.inline{
     border: 1px solid #DCDCDC;
     border-radius: 4px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+.spacer {
+    height: 20px;
+    width: 100%;
 }

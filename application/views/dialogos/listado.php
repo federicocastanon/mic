@@ -28,35 +28,39 @@
 	<div class="page-header"><h1>Ejercicios</h1></div>
 	
     <div class="span12">
-      <a class="btn btn-large pull-right" href="<?php echo base_url('/dialogos/editar/')?>"><i class="icon-plus"></i> nuevo ejercicio</a><br>
+      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogos/editar/')?>"><i class="fa fa-plus"></i> nuevo ejercicio</a><br>
       <br>
       <br>
 
   </div>
-<?php if (isset($ejercicios) && $ejercicios): ?>
+<?php if (isset($dialogos) && $dialogos): ?>
 <table class="table table-striped table-bordered table-hover" id='list'>
     <thead>
-        <th width="25%">Nombre</th>
+
         <th width="8%">Fecha</th>
-        <th width="15%">Autor</th>
-        <th width="10%">Invitados</th>
-        <th width="10%">Respuestas</th>
-        <th width="10%">Pendientes</th>
+        <th width="º0%">Autor</th>
+        <th width="10%">Nombre</th>
+        <th width="25%">Descripción</th>
+        <th width="10%">Roles</th>
+        <th width="10%">Dialogos</th>
         <th width="32%">Acciones</th>
     </thead>
     <tbody>
-        <?php foreach ($ejercicios as $e): ?>
+        <?php foreach ($dialogos as $e): ?>
             <tr>
-                <td><?php echo $e->nombre ?> </td>
+
                 <td>
-                    <span title='<?php echo strtotime($e->created_at)?>'>
-                        <?php echo date('d/m/Y', strtotime($e->created_at))?>
+                    <span title='<?php echo strtotime($e->fecha)?>'>
+                        <?php echo date('d/m/Y', strtotime($e->fecha))?>
                     </span>
                 </td>
                 <td><?php echo $e->autor ?></td>
-                <td><span class="badge"><?php echo (int) $e->invitados?></span></td>
-                <td><span class="badge badge-success "><?php echo (int) $e->respuestas?></span></td>
-                <td><span class="badge "><?php echo (int) $e->pendientes?></span></td>
+                <td><?php echo $e->nombre ?> </td>
+                <td><?php echo (int) $e->descripcion?></td>
+                <td><b>Profesional: </b><?php echo $e->profesional?> <br>
+                    <b>Secundario: </b><?php echo $e->secundario?>
+                </td>
+                <td><span class="badge "><?php echo (int) $e->dialogos?></span></td>
                 <td>
                     <?php if ($e->status == 'habilitado'): ?>
                         <a id="habilitarbt" class="btn btn-small btn-inverse" 

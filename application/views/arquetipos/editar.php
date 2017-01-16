@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo assets_url('js/ckeditor/ckeditor.js');?>"></script>
+
 <script type='text/javascript'>
     var cantidadPreguntas = 1;
     function agregarPregunta(cantidadP){
@@ -77,19 +77,23 @@
 
 
 
-<div class="container">
+
 <section>
+    <div class="container">
     <div class="row-fluid">
                 <?php echo validation_errors(); ?><?php echo $extra_errors?> 
         <form method='post'>
             <input type='hidden' name='imgs' value='<?php echo json_encode($imgs) ?>'> 
             <div class="page-header tituloWrapper" >
                 <h1 class="pull-left titulo" ">Editar / Nuevo</h1>
-                <a class="btn btn-large pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="icon-arrow-left"></i> Volver</a>
+                <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="fa fa-arrow-left"></i> Volver</a>
             </div>
-            <label>Nombre</label>
-            <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$arquetipo->nombre)?>">
-            <div class="tabbable"> 
+            <div class="row-fluid">
+                <label>Nombre</label>
+                <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$arquetipo->nombre)?>">
+            </div>
+            <div class="spacer"></div>
+            <div class="tabbable">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab">Consigna</a></li>
                     <li class=""><a href="#tab2" data-toggle="tab">Arquetipos</a></li>
@@ -98,6 +102,7 @@
                     <div class="tab-pane active" id="tab1"><!-- CONSIGNA -->
                         <div class="tab-content">
                             <input name='consigna' id="consigna" class="input-xxlarge" type="text" placeholder="Consigna del ejercicio" value="<?php echo set_value('consigna', @$arquetipo->consigna)?>">
+                            <div class="spacer"></div>
                             <h4>Desarrollar</h4>
                             <textarea name='desarrollo' style='height:500px;'> <?php echo set_value('desarrollo', @$arquetipo->desarrollo)?> </textarea>
                         </div>
@@ -113,6 +118,7 @@
                         
 <h4>Seleccionar arquetipos</h4>
                         </div>
+                        <div class="row-fluid">
                         <ul class="thumbnails">
                             <?php foreach ($imgs as $e):
                                 if ($e['source'] != 'stock') continue; 
@@ -126,24 +132,29 @@
                                 </li>
                             <?php endforeach ?>
                         </ul>
+                        </div>
                         <br>
-                        <h4>Cargar nuevo arquetipo</h4>
-                        <p>Solamente JPG / GIF / PNG. Im&aacute;genes de tama&ntilde;o 280 x 280 p&iacute;xeles a 72 dpi de resoluci&oacute;n funcionan mejor.</p>
-                        <input id="fileupload" type="file" name="file" data-url="<?php echo base_url('arquetipos/do_upload')?>">
-                        <ul class="thumbnails" id='uploaded'>
-                            <?php foreach ($imgs as $e):
-                                #echo '<pre>';print_r($e);echo '</pre>';
-                                if ($e['source'] != 'custom') continue; 
-                                $class = ($e['selected'])?' thumbnail_selected':'';
-                            ?>
-                                <li>
-                                    <a class="thumbnail <?php echo $class?>" href="#">
-                                        <img src="<?php echo $e['url']?>" data-source="custom" width='150px' height='150px'/>
-                                    </a>
-                                    <input type="text" name="titulo_imagen" style="width:150px;" placeholder="Titulo del arquetipo" value="<?php echo $e['titulo']?>" />
-                                </li>
-                            <?php endforeach ?>
-                        </ul>
+                        <div class="row-fluid">
+                            <h4>Cargar nuevo arquetipo</h4>
+                        </div>
+                        <div class="row-fluid">
+                                <p>Solamente JPG / GIF / PNG. Im&aacute;genes de tama&ntilde;o 280 x 280 p&iacute;xeles a 72 dpi de resoluci&oacute;n funcionan mejor.</p>
+                                <input id="fileupload" type="file" name="file" data-url="<?php echo base_url('arquetipos/do_upload')?>">
+                                <ul class="thumbnails" id='uploaded'>
+                                    <?php foreach ($imgs as $e):
+                                        #echo '<pre>';print_r($e);echo '</pre>';
+                                        if ($e['source'] != 'custom') continue;
+                                        $class = ($e['selected'])?' thumbnail_selected':'';
+                                    ?>
+                                        <li>
+                                            <a class="thumbnail <?php echo $class?>" href="#">
+                                                <img src="<?php echo $e['url']?>" data-source="custom" width='150px' height='150px'/>
+                                            </a>
+                                            <input type="text" name="titulo_imagen" style="width:150px;" placeholder="Titulo del arquetipo" value="<?php echo $e['titulo']?>" />
+                                        </li>
+                                    <?php endforeach ?>
+                                </ul>
+                        </div>
                         <br>
                         <h4>Ingresar preguntas</h4><br>
                         <div id="preguntas">
@@ -168,10 +179,13 @@
             </div>
         </form>
     </div>
-</section>
+
 </div>
+</section>
+
+<script type="text/javascript" src="<?php echo assets_url('js/ckeditor/ckeditor.js');?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/vendor/jquery.ui.widget.js');?>"></script>
+<script type="text/javascript" src="<?php echo assets_url('js/jquery.fileupload.js');?>"></script>
 <script type='text/javascript'>
     CKEDITOR.replace( 'desarrollo', {filebrowserUploadUrl: "<?php echo base_url('/arquetipos/upload_from_editor')?>"} );
 </script>
-<script src="<?php echo assets_url('js/vendor/jquery.ui.widget.js');?>"></script>
-<script src="<?php echo assets_url('/js/jquery.fileupload.js');?>"></script>
