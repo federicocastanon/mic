@@ -11,28 +11,31 @@
             <div class="control-group">
                 <label class="control-label" for="nombre">Nombre</label>
                 <div class="controls">
-                    <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$dialogo->nombre)?>">
+                    <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$prisma->nombre)?>">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="consigna">Consigna</label>
+                <label class="control-label" for="profesional">Profesional</label>
                 <div class="controls">
-                    <input name='consigna' id="consigna" class="input-xxlarge" type="text" placeholder="Consigna del ejercicio" value="<?php echo set_value('consigna', @$dialogo->consigna)?>">
+                    <input name='profesional' id="profesional" class="input-xxlarge" type="text" placeholder="Nombre del Rol profesional" value="<?php echo set_value('profesional', @$prisma->profesional)?>">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Desarrollo</label>
+                <label class="control-label" for="secundario">Secundario</label>
                 <div class="controls">
-                    <textarea name='desarrollo' style='height:500px;'> <?php echo set_value('desarrollo', @$dialogo->desarrollo)?> </textarea>
+                    <input name='secundario' id="secundario" class="input-xxlarge" type="text" placeholder="Nombre del rol Secundario" value="<?php echo set_value('secundario', @$prisma->secundario)?>">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Ideas claves</label>
+                <label class="control-label">Descripción</label>
                 <div class="controls">
-                    <input name="pregunta_1" class="input-xxlarge" type="text" placeholder="Idea 1" value="<?php echo set_value('pregunta_1', @$dialogo->pregunta_1)?>"><br><br>
-                    <input name="pregunta_2" class="input-xxlarge" type="text" placeholder="Idea 2" value="<?php echo set_value('pregunta_2', @$dialogo->pregunta_2)?>"><br><br>
-                    <input name="pregunta_3" class="input-xxlarge" type="text" placeholder="Idea 3" value="<?php echo set_value('pregunta_3', @$dialogo->pregunta_3)?>"><br><br>
-                    <span class='help-block'>Les proponemos tener en cuenta las siguientes ideas claves para iniciar  la resoluci&oacute;n del ejercicio.</span>
+                    <textarea name='descripcion' style='height:500px;'> <?php echo set_value('descripcion', @$prisma->descripcion)?> </textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="dialogos">Dialogos</label>
+                <div class="controls">
+                    <input name='dialogos' id="dialogos" class="input-xxlarge" type="number" placeholder="Cantidad de Dialogos a crear" value="<?php echo set_value('dialogos', @$prisma->dialogos)?>">
                 </div>
             </div>
             <div class='control-group'> 
@@ -43,7 +46,7 @@
 </section>
 </div>
 <script type='text/javascript'>
-    CKEDITOR.replace( 'desarrollo', {filebrowserUploadUrl: "<?php echo base_url('/arquetipos/upload_from_editor')?>"} );
+    CKEDITOR.replace( 'descripcion', {filebrowserUploadUrl: "<?php echo base_url('/arquetipos/upload_from_editor')?>"} );
 </script>
 <script src="<?php echo assets_url('js/vendor/jquery.ui.widget.js');?>"></script>
 <script src="<?php echo assets_url('/js/jquery.fileupload.js');?>"></script>

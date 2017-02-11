@@ -24,16 +24,16 @@ class DialogoModel extends My_Model
         return $this->db->query($query)->result();*/
 
     function obtenerTodosLosPrismas() {
-        $query = "select p.id, p.nombre, p.descripcion, u.name as autor, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
-                  from prisma p join users u on u.id = p.creador";
+        $query = "SELECT p.id, p.nombre, p.descripcion, u.name as autor, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
+                  FROM prisma p join users u on u.id = p.creador ORDER BY p.id DESC ";
         return $this->db->query($query)->result();
     }
 
     function obtenerPrisma($id) {
-        $query = "select *
+        $query = "select p.id, p.nombre, p.descripcion,p.creador, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
                   from prisma p
                   where p.id = $id";
-        return $this->db->query($query)->result();
+        return $this->db->query($query)->row();
     }
 
     function obtenerDialogosPorPrisma($id) {
@@ -42,6 +42,14 @@ class DialogoModel extends My_Model
                   where d.prisma = $id";
         return $this->db->query($query)->result();
     }
+
+    function obtenerDialogosPorId($id) {
+        $query = "select *
+                  from dialogo d
+                  where d.id = $id";
+        return $this->db->query($query)->row();
+    }
+
     function obtenerDialogosPorPrismaConPromedioEvaluacion($id) {
         $query = "SELECT d.*, AVG(e.puntaje) as promedio
                   FROM dialogo d JOIN evaluacion e on d.id = e.dialogo
@@ -66,7 +74,7 @@ class DialogoModel extends My_Model
     function obtenerMiEvaluacion($id,$email) {
         $query = "select *
                   from evaluacion e
-                  where e.dialogo = $id and e.email = $email";
+                  where e.dialogo = $id and e.email = '$email'";
         return $this->db->query($query)->result();
     }
 
@@ -89,6 +97,7 @@ class DialogoModel extends My_Model
         $query = "INSERT INTO enconstr_mic.prisma (id, nombre, descripcion, creador, fecha, profesional, secundario)
       VALUES (NULL, '$nombre', '$descripcion', '$creador', CURRENT_TIMESTAMP, '$profesional', '$secundario')";
         $this->db->query($query);
+        return $this->db->insert_id();
     }
 
     function editarPrisma($id,$nombre, $descripcion, $profesional, $secundario){
@@ -121,14 +130,18 @@ class DialogoModel extends My_Model
        for($i=0;$i<$n; $i++){
            $this->db->query($query);
        }
+        $this->editarCantidadDialogos($idPrisma);
     }
 
     function tomarRol($idDialogo, $email, $profesional){
         //$profesional boolean
-        if($profesional){
-            $query = "UPDATE dialogo SET evaluado = $email WHERE dialogo.id = $idDialogo";
+
+        if($profesional == 'true'){
+
+            $query = "UPDATE dialogo SET evaluado = '$email' WHERE dialogo.id = $idDialogo";
         }else{
-            $query = "UPDATE dialogo SET secundario = $email WHERE dialogo.id = $idDialogo";
+
+            $query = "UPDATE dialogo SET secundario = '$email' WHERE dialogo.id = $idDialogo";
         }
         $this->db->query($query);
     }
@@ -147,4 +160,21 @@ class DialogoModel extends My_Model
         $query = "INSERT INTO evaluacion (id, dialogo, email, puntaje, sugerencias, positivo, aclaracion) VALUES (NULL, '$dialogo', '$email', '$puntaje', '$sugerencias', '$valoracionPositiva', '$aclaraciones')";
         $this->db->query($query);
     }
+
+    function levantarse($dialogo, $profesional){
+        if($profesional == 'true'){
+
+            $query = "UPDATE dialogo SET evaluado = null WHERE dialogo.id = $dialogo";
+        }else{
+
+            $query = "UPDATE dialogo SET secundario = null WHERE dialogo.id = $dialogo";
+        }
+        $this->db->query($query);
+    }
+
+    function terminarConversacion($dialogo){
+        $query = "UPDATE dialogo SET terminado = 1 WHERE dialogo.id = $dialogo";
+        $this->db->query($query);
+    }
+
 }

@@ -19,7 +19,7 @@
                 { "asSorting": [] },
             ]
         } );
-        oTable.fnSort( [ [1,'desc'] ] );
+        oTable.fnSort( [ [0,'desc'] ] );
     } );
 </script>
 
@@ -28,12 +28,12 @@
 	<div class="page-header"><h1>Ejercicios</h1></div>
 	
     <div class="span12">
-      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogos/editar/')?>"><i class="fa fa-plus"></i> nuevo ejercicio</a><br>
+      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/editar/')?>"><i class="fa fa-plus"></i> nuevo ejercicio</a><br>
       <br>
       <br>
 
   </div>
-<?php if (isset($dialogos) && $dialogos): ?>
+<?php if (isset($prismas) && $prismas): ?>
 <table class="table table-striped table-bordered table-hover" id='list'>
     <thead>
 
@@ -46,7 +46,7 @@
         <th width="32%">Acciones</th>
     </thead>
     <tbody>
-        <?php foreach ($dialogos as $e): ?>
+        <?php foreach ($prismas as $e): ?>
             <tr>
 
                 <td>
@@ -62,56 +62,38 @@
                 </td>
                 <td><span class="badge "><?php echo (int) $e->dialogos?></span></td>
                 <td>
-                    <?php if ($e->status == 'habilitado'): ?>
-                        <a id="habilitarbt" class="btn btn-small btn-inverse" 
-                            href='<?php echo base_url('/dialogos/estado/deshabilitado/' . $e->id)?>'>
-                            <i class="icon-thumbs-down icon-white"></i> deshabilitar
+                    <a class="btn btn-info pull-left" href='<?php echo base_url('/dialogo/duplicar/' . $e->id)?>'>
+                        <i class="icon-copy"></i> Copiar y Editar
+                    </a>
+                    <a class="btn btn-success pull-left"
+                       href='<?php echo base_url('/dialogo/ver_respuestas/' . $e->id)?>'>
+                        <i class="icon-list-alt"></i> Respuestas
+                    </a>
+                    <a class="btn btn-primary pull-left"
+                       href='<?php echo base_url('/dialogo/editar/' . $e->id)?>'>
+                        <i class="icon-list-alt"></i> Editar
+                    </a>
+
+                    <a class="btn btn-danger pull-left"
+                       href='<?php echo base_url('/dialogo/borrar/' . $e->id)?>'
+                       onClick='return confirm("Confirme que quiere borrar este ejercicio");'>
+                        <i class="fa fa-trash-o"></i> Eliminar
+                    </a>
+
+                    <?php if ($e->publico): ?>
+                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/dialogo/dialogosPorPrisma/' . $e->id)?>'>
+                            <i class="fa fa-external-link"></i> Link publico
+                        </a>
+                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->id?>" value="<?php echo base_url('/dialogo/link_publico/' . $e->id)?>" />
+                        <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->id?>"> <i class="icon-copy"></i> Copiar</button>
+                        <a class="btn btn-danger pull-left" href='<?php echo base_url('/dialogo/publicar/' . $e->id . '/0')?>'>
+                            <i class="fa fa-chain-broken"></i> Desactivar link publico
                         </a>
                     <?php else: ?>
-                        <a id="habilitarbt" class="btn btn-small btn-success" 
-                            href='<?php echo base_url('/dialogos/estado/habilitado/' . $e->id)?>'>
-                            <i class="icon-thumbs-up-alt icon-white"></i> habilitar
+                        <a class="btn btn-warning pull-left" href='<?php echo base_url('/dialogo/publicar/' . $e->id . '/1')?>'>
+                            <i class="fa fa-external-link"></i> Activar link publico
                         </a>
-                    <?php endif; ?>
-                    <? if ($e->invitados == 0): ?> 
-                        <a class="btn btn-small" href='<?php echo base_url('/dialogos/editar/' . $e->id)?>'>
-                            editar
-                        </a>
-                    <? endif; ?>
-                    <a class="btn btn-small" href='<?php echo base_url('/dialogos/duplicar/' . $e->id)?>'>
-					   <i class="icon-copy"></i> copiar y editar
-                    </a>
-                    <a class="btn btn-small" href='<?php echo base_url('/alumnos/invitar/dialogos/' . $e->id )?>'>
-					<i class="icon-share"></i> invitar
-                    </a>
-					<?php if ($e->invitados): ?>
-                        <a class="btn btn-small btn-primary" 
-                            href='<?php echo base_url('/dialogos/resumen_respuestas/' . $e->id)?>'>
-                            <i class="icon-list-alt"></i> respuestas
-                        </a>
-                    <?php else: ?>
-                        <a class="btn btn-small btn-primary" 
-                            href='<?php echo base_url('/dialogos/editar/' . $e->id)?>'>
-                            <i class="icon-list-alt"></i> editar
-                        </a>
-                    <?php endif; ?> 
-                    <a class="btn btn-small btn-danger" 
-                        href='<?php echo base_url('/dialogos/borrar/' . $e->id)?>' 
-                        onClick='return confirm("Confirme que quiere borrar este ejercicio");'>
-                        <i class="fa fa-trash-o"></i> eliminar
-                    </a>
-                    <? if ($e->public_id_enabled): ?>
-                        <a class="btn btn-small" taget="_new" href='<?php echo base_url('/dialogos/link_publico/' . $e->public_id)?>'>
-                           <i class="fa fa-external-link"></i> link publico
-                        </a>
-                        <a class="btn btn-small" href='<?php echo base_url('/dialogos/publicar/' . $e->id . '/0')?>'>
-                            <i class="fa fa-chain-broken"></i> desactivar link publico
-                        </a>
-                    <? else: ?>
-                        <a class="btn btn-small" href='<?php echo base_url('/dialogos/publicar/' . $e->id . '/1')?>'>
-                           <i class="fa fa-external-link"></i> activar link publico
-                        </a>
-                    <? endif ?>
+                    <?php endif ?>
                 </td>
             </tr>
         <?php endforeach ?>

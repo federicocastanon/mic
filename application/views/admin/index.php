@@ -11,7 +11,7 @@
 				</a>
 			<?php endif ?>
 			<?php if ($this->user->has_permission('dialogos')) : ?>
-				<a href='<?php echo base_url('/dialogos/')?>'>
+				<a href='<?php echo base_url('/dialogo/')?>'>
 					<div id="logo" class="span4">
 						<span class="logoxsmall">Prismas</span>
 						<span class="logolightxsmall"> entramados</span><br /> 
