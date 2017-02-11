@@ -85,6 +85,18 @@ class Dialogo extends MY_Controller
         $this->template('dialogos/editar', $vars);
     }
 
+    public function publicar($id, $status) {
+        if (!$this->user->has_permission('dialogos')) redirect('/');
+        $this->dialogo_model->publicar($id, $status);
+        if ($status) {
+            $msg = "El link publico ha sido activado";
+        } else {
+            $msg = "El link publico ha sido desactivado";
+        }
+        $this->session->set_flashdata('success_message', $msg);
+        redirect('/dialogo/');
+    }
+
     function dialogosPorPrismaAlumno(){
         session_start();
 
@@ -132,7 +144,6 @@ class Dialogo extends MY_Controller
         session_start();
         if ($this->user->get_id())
             $this->template_type = 'admin';
-        print json_encode($_POST);
         $dialogoId = $_POST['dialogoId'];
         $profesional= $_POST['profesional'];
         $email = $_POST['email'];
@@ -150,9 +161,11 @@ class Dialogo extends MY_Controller
             $this->template_type = 'admin';
         $email = $_SESSION["email"] ;
         $vars = array('intervenciones' =>  $this->dialogo_model->obtenerIntervencionesPorDialogo($dialogoId));
-
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
+        $prisma = $this->dialogo_model->obtenerPrisma($dialogo->prisma);
+
         $vars['dialogo'] = $dialogo;
+        $vars['prisma'] = $prisma;
         $evaluacion = $this->dialogo_model->obtenerMiEvaluacion($dialogoId,$email);
         if($evaluacion){
             $vars['evaluacion'] = $evaluacion;

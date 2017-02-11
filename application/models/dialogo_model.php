@@ -107,6 +107,12 @@ class Dialogo_model extends My_Model
         $this->db->query($query);
 
     }
+    function publicar($id,$publico){
+        $query = "UPDATE prisma SET publico = $publico WHERE prisma.id = $id";
+
+        $this->db->query($query);
+
+    }
 
     function editarCantidadDialogos($idPrisma){
         //obtengo dialogos con count

@@ -13,7 +13,9 @@
         <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR CHARLA</a>
         </p>
 <?php endif; ?>
-
+<div id="ret">
+    <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
+</div>
     <?php if (isset($intervenciones) && $intervenciones): ?>
         <?php foreach ($intervenciones as $e): ?>
         <div class="row top30">

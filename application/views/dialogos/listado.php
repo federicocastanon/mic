@@ -38,11 +38,12 @@
     <thead>
 
         <th width="8%">Fecha</th>
-        <th width="º0%">Autor</th>
+        <th width="10%">Autor</th>
         <th width="10%">Nombre</th>
         <th width="25%">Descripción</th>
         <th width="10%">Roles</th>
-        <th width="10%">Dialogos</th>
+        <th width="5%">Dialogos</th>
+        <th width="5%">Código</th>
         <th width="32%">Acciones</th>
     </thead>
     <tbody>
@@ -56,11 +57,12 @@
                 </td>
                 <td><?php echo $e->autor ?></td>
                 <td><?php echo $e->nombre ?> </td>
-                <td><?php echo (int) $e->descripcion?></td>
+                <td><?php echo $e->descripcion?></td>
                 <td><b>Profesional: </b><?php echo $e->profesional?> <br>
                     <b>Secundario: </b><?php echo $e->secundario?>
                 </td>
                 <td><span class="badge "><?php echo (int) $e->dialogos?></span></td>
+                <td><span class="badge "><?php echo $e->id?></span></td>
                 <td>
                     <a class="btn btn-info pull-left" href='<?php echo base_url('/dialogo/duplicar/' . $e->id)?>'>
                         <i class="icon-copy"></i> Copiar y Editar
