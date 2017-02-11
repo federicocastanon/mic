@@ -1,5 +1,5 @@
 <?php
-class DialogoModel extends My_Model
+class Dialogo_model extends My_Model
 {
 
     public $before_create = array('created_at', 'updated_at');
