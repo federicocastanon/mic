@@ -159,7 +159,9 @@
             </div>
         </div>
     </div>
-    <?php foreach ($imagenes as $imagen_id => $imagen): ?>
+    <?php
+
+    foreach ($imagenes as $imagen_id => $imagen): ?>
         <form method="post" action='<?php echo base_url('/arquetipos/publicarTodas/' . $ejercicio->id)?>'>
             <input type="hidden" id="<?= $imagen_id ?>" name="imgId" value="<?= $imagen_id ?>"/>
         <div class="publicwell">
@@ -181,14 +183,19 @@
             </div>
             <div class="span6" style="float: left; width: 60%;">
                 <?php
+
                 foreach ($ejercicio->preguntas as $pregunta): ?>
                     <div style="float: left; width: 60%"><strong><?= $pregunta->pregunta ?></strong></div>
 
                 <?php
+                    $rc = 0;
                 if (isset($respuestas[$imagen_id][$pregunta->id])){
-                    foreach ($respuestas[$imagen_id][$pregunta->id] as $resp): ?>
-                        <div  style="float: left; width:97%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
-                          <div style="width:60%;  float: left">  <?= $resp->respuesta ?> <br> (<?= $resp->email ?> )</div>
+                    foreach ($respuestas[$imagen_id][$pregunta->id] as $resp):
+                        $rc++;?>
+                        <div  style="float: left; width:97%; min-height: 40px;
+                            color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>;
+                            background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>">
+                          <div style="width:60%;  float: left">  <?= $resp->respuesta ?> <br> <i>(<?= $resp->email ?> )</i></div>
                             <div style=" float: left">
                                 <input type="checkbox" class="cheq<?= $imagen_id ?>" id="<?php echo $resp->respuesta_id ?>" name="pub[]" value="<?php echo $resp->respuesta_id ?>"
                         <?php if($resp->publico){?>

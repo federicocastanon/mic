@@ -162,5 +162,14 @@ class Account extends MY_Controller {
 		}
 		$this->template('account/change_password', $vars);
 	}
+
+    public function post(){
+        // This is our new stuff
+        $context = new ZMQContext();
+        $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+        $socket->connect("tcp://159.203.176.82:5555");
+
+        $socket->send(json_encode("Encolar!"));
+    }
 }
 ?>

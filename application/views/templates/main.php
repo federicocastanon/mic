@@ -27,7 +27,6 @@
     <!-- Le styles -->
     <link href="<?php echo assets_url('plugins/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet" media='screen'>
     <link href="<?php echo assets_url('css/bootstrap-responsive.css')?>" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
       <link rel="stylesheet" href="<?php echo assets_url('plugins/font-awesome/css/font-awesome.css')?>">
       <link rel="stylesheet" href="<?php echo assets_url('plugins/prism/prism.css')?>">
       <link rel="stylesheet" href="<?php echo assets_url('css/styles.css')?>">

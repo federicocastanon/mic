@@ -46,11 +46,32 @@ class Arquetipos extends MY_Controller {
 	
 
 	public function alumno_ejercicio($public_id, $respuestas = null) {
+
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
+
+            $alias= $_POST['alias'];
+            if(strlen($alias)>=1) {
+                $_SESSION["alias"] = $alias;
+            }else{
+                $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
+            }
+        }else if(!isset($_SESSION["alias"])){
+            //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
+            //esto quiere decir que entró por link_publico
+            $vars['urlDestino'] = base_url(). 'arquetipos/alumno_ejercicio/' . $public_id;
+            $this->template('account/SolicitarAlias', $vars);
+            return;
+        }
+
+
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
 		$arquetipo_id = $ejercicio->id ;
 		if (!$ejercicio) die('Link no valido' . '---' . $public_id);
         $vars = array();
-		if ($this->input->post()) {
+		if (isset($_POST['obtenerRespuestas'])) {
             $obtResp = $this->input->post('obtenerRespuestas');
             if ($obtResp != 1) {
                 foreach ($this->input->post('respuesta') as $pregunta_id => $texto) {
@@ -60,10 +81,11 @@ class Arquetipos extends MY_Controller {
                 $vars['respuestasAnteriores'] = $respuestas;
             }
 		}
-		$this->template_type ='arquetipo';
+		//$this->template_type ='arquetipo';
 		$vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
 		$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
 		$vars['ejercicio'] = $ejercicio;
+        $vars['alias'] = $_SESSION["alias"];
 
 		$vars['public_id'] = $public_id;
 		$this->load->library('user_agent');
@@ -76,11 +98,14 @@ class Arquetipos extends MY_Controller {
 	}
 
     public function ajax_respuesta($public_id) {
+        if(!isset($_SESSION)){
+            session_start();
+        }
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
         $arquetipo_id = $ejercicio->id ;
         if (!$ejercicio) die('Link no valido' . '---' . $public_id);
         $nombre = $this->input->post('nombre');
-        $email = $this->input->post('email');
+        $alias =  $_SESSION["alias"];
         $imagen_id = $this->input->post('img_id');
         $tmp = $this->input->post('respuesta');
         $respuestas = $tmp[$imagen_id];
@@ -92,21 +117,20 @@ class Arquetipos extends MY_Controller {
             $output = array('ok' => false);
         } else {
             foreach ($respuestas as $pregunta_id => $r) {
-                $this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $r, $nombre, $email);
+                $this->Arquetipos_model->agregar_respuesta($arquetipo_id, $pregunta_id, $imagen_id, $r, $nombre, $alias);
                 $mensaje .= '<b>'. $preguntas[$pregunta_id] .'</b>'. $r . '  <br/>';
             }
         }
         if($mensaje != ""){
-print $mensaje;
-            exit;
-            $this->load->library('email');
-            $this->email->from('info@mic.en-construccion.net', 'CITEP MIC');
-            $this->email->to($email);
-            $this->email->subject('Tus respuestas en Focos en Juego');
-            $this->email->message($mensaje);
+            /*
+                $this->load->library('email');
+                $this->email->from('info@mic.en-construccion.net', 'CITEP MIC');
+                $this->email->to($email);
+                $this->email->subject('Tus respuestas en Focos en Juego');
+                $this->email->message($mensaje);
 
-            $this->email->send();
-
+                $this->email->send();
+            */
         }
 
 
@@ -177,7 +201,9 @@ print $mensaje;
 		redirect('/arquetipos/');
 	}
 
-	public function link_publico($public_id) { 
+	public function link_publico($public_id) {
+
+
 		$this->template_type ='arquetipo'; 
 		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
         $preguntas = $this->Arquetipos_model->get_questions($public_id);
@@ -235,8 +261,14 @@ print $mensaje;
     }
 
     public function ingresoAlumno(){
+        session_start();
+        $alias= trim($_POST['alias']);
+        if(strlen($alias)<1){
+            $alias = 'Anonimo-' . rand(1,10000);
+        }
+        $_SESSION["alias"] =$alias ;
         $publica = $this->input->post('id');
-        $this->link_publico($publica);
+        $this->alumno_ejercicio($publica,null);
     }
 	
 	public function ver_respuestas($arquetipo_id)
@@ -398,7 +430,7 @@ print $mensaje;
 		if ($arquetipo_id) { 
 			$arquetipo = $this->Arquetipos_model->get($arquetipo_id);
 			if (!$arquetipo) die("Acceso no permitido");
-			if ($arquetipo->id_user != $this->user->get_id()) die("Acceso no permitido");
+			//if ($arquetipo->id_user != $this->user->get_id()) die("Acceso no permitido");
 			$vars['preguntas'] = $this->Arquetipos_model->get_questions($arquetipo_id);
 			$vars['arquetipo'] = $arquetipo;
 			$tmp = $this->Arquetipos_model->get_images($arquetipo_id);
@@ -578,12 +610,30 @@ print $mensaje;
     }
 
     public function respuestasAnteriores($arquetipo_id){
-        $mail = $this->input->post('email');
-        $respuestas = $this->Arquetipos_model->listado_respuestas_por_mail($arquetipo_id, $mail);
-        $this->alumno_ejercicio($arquetipo_id, $respuestas);
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        $alias= $_SESSION["alias"];
+        $vars['alias'] = $alias;
+        $respuestas = $this->Arquetipos_model->listado_respuestas_por_mail($arquetipo_id, $alias);
+        $vars['respuestasAnteriores'] = $respuestas;
+        $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($arquetipo_id);
+        $vars['ejercicio'] = $ejercicio;
+        $vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
+        $this->template_type ='arquetipo';
+        //$this->alumno_ejercicio($arquetipo_id, $respuestas);
+        $this->template('arquetipos/respuestas_anteriores', $vars);
         //$this->printClose($respuestas);
     }
 
-
+    public function cambiarAlias($public_id){
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        unset($_SESSION["alias"]);
+        $vars['urlDestino'] = base_url(). 'arquetipos/alumno_ejercicio/' . $public_id;
+        $this->template('account/SolicitarAlias', $vars);
+        return;
+    }
 
 }

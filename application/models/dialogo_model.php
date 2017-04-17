@@ -29,6 +29,12 @@ class Dialogo_model extends My_Model
         return $this->db->query($query)->result();
     }
 
+    function obtenerTodosLosPrismasPorUsuario($id) {
+        $query = "SELECT p.id, p.nombre, p.descripcion, u.name as autor, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
+                  FROM prisma p join users u on u.id = p.creador  where p.creador = '$id' ORDER BY p.id DESC ";
+        return $this->db->query($query)->result();
+    }
+
     function obtenerPrisma($id) {
         $query = "select p.id, p.nombre, p.descripcion,p.creador, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
                   from prisma p
@@ -101,12 +107,17 @@ class Dialogo_model extends My_Model
     }
 
     function editarPrisma($id,$nombre, $descripcion, $profesional, $secundario){
-        $query = "UPDATE prisma SET nombre = $nombre, descripcion = $descripcion,profesional = $profesional,
-                  secundario = $secundario WHERE prisma.id = $id";
+        $query = "UPDATE prisma SET nombre = '$nombre', descripcion = '$descripcion',profesional = '$profesional',
+                  secundario = '$secundario' WHERE prisma.id = '$id'";
 
         $this->db->query($query);
 
     }
+    function borrarPrisma($id){
+        $query = " DELETE FROM enconstr_mic.prisma WHERE prisma.id = '$id'";
+        $this->db->query($query);
+    }
+
     function publicar($id,$publico){
         $query = "UPDATE prisma SET publico = $publico WHERE prisma.id = $id";
 

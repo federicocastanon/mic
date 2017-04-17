@@ -1,20 +1,20 @@
-@font-face {
-	font-family: 'NexaBold';
-	src: url('http://assets.citep.fastbox.co/css/fonts/NexaBold.eot?') format('eot'), 
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold.otf')  format('opentype'),
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold.woff') format('woff'), 
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold.ttf')  format('truetype'),
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold.svg#NexaBold') format('svg');
+/*@font-face {
+	font-family: 'NexaBold,Helvetica,Arial';
+	src: url('http://assets.citep.fastbox.co/css/fonts/NexaBold,Helvetica,Arial.eot?') format('eot'), 
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold,Helvetica,Arial.otf')  format('opentype'),
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold,Helvetica,Arial.woff') format('woff'), 
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold,Helvetica,Arial.ttf')  format('truetype'),
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaBold,Helvetica,Arial.svg#NexaBold,Helvetica,Arial') format('svg');
 }
 @font-face {
-	font-family: 'NexaLight';
-	src: url('http://assets.citep.fastbox.co/css/fonts/NexaLight.eot?') format('eot'), 
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight.otf')  format('opentype'),
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight.woff') format('woff'), 
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight.ttf')  format('truetype'),
-	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight.svg#NexaLight') format('svg');
+	font-family: 'NexaLight,Helvetica,Arial';
+	src: url('http://assets.citep.fastbox.co/css/fonts/NexaLight,Helvetica,Arial.eot?') format('eot'), 
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight,Helvetica,Arial.otf')  format('opentype'),
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight,Helvetica,Arial.woff') format('woff'), 
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight,Helvetica,Arial.ttf')  format('truetype'),
+	     url('http://assets.citep.fastbox.co/css/fonts/NexaLight,Helvetica,Arial.svg#NexaLight,Helvetica,Arial') format('svg');
 		 
-}
+}*/
 li{
 	list-style-type: none!important;	
 	}
@@ -23,32 +23,32 @@ li{
 	padding-top: 15px;
 }
 .logo{
-	font-family: NexaBold;
+	font-family: NexaBold,Helvetica,Arial;
 	font-size: 45px;
 	color: #333;
 }
 .logolight{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 43px;
 	color: #333;
 }
 .logosmall{
-	font-family: NexaBold;
+	font-family: NexaBold,Helvetica,Arial;
 	font-size: 42px;
 	color: #333;
 }
 .logolightsmall{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 40px;
 	color: #333;
 }
 .logoxsmall{
-	font-family: NexaBold;
+	font-family: NexaBold,Helvetica,Arial;
 	font-size: 30px;
 	color: #333;
 }
 .logolightxsmall{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 28px;
 	color: #333;
 }
@@ -510,13 +510,13 @@ label.checkbox.inline{
 /* LINK PUBLICO*/
 
 .logosmall{
-	font-family: NexaBold;
+	font-family: NexaBold,Helvetica,Arial;
 	font-size: 36px;
 	color: #333;
 	margin-right:5px;
 }
 .logolightsmall{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 32px;
 	color: #333;
 }
@@ -648,12 +648,12 @@ label.checkbox.inline{
 	margin-right: 30px;
 }
 .seccion{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 30px;
 	color: #BD097E;
 }
 .links{
-	font-family: NexaLight;
+	font-family: NexaLight,Helvetica,Arial;
 	font-size: 13px;
 	color: #666;
 	text-decoration: none;

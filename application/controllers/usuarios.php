@@ -159,5 +159,7 @@ class Usuarios extends MY_Controller {
 		}
 		redirect('/usuarios');
 	}
+
+
 }
 ?>

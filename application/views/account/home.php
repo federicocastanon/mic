@@ -13,7 +13,8 @@ session_start();
                <div id="logo" class="span4">
                     <span class="logoxsmall">Focos en juego</span><br />
                     <img src="<?= assets_url('/img/foco.png')?>" width="116" height="120" border="0">
-                   <input type="text" name='id' class="input-block-level" placeholder="Código ejercicio">
+                   <input type="text" name='alias' class="input-block-level" placeholder="Alias para identificarte" >
+                   <input type="text" name='id' class="input-block-level" placeholder="Código ejercicio" required="true">
                    <button class="btn btn-large" type="submit">ACCEDER</button>
                 </div>
         </form>
@@ -23,8 +24,8 @@ session_start();
             <div id="logo" class="span4">
                 <span class="logoxsmall">Prismas</span><br />
                 <img src="<?= assets_url('/img/prismas.png')?>" width="116" height="120" border="0">
-                <input type="text" name='id' class="input-block-level" placeholder="Código ejercicio">
-                <input type="email" name='email' class="input-block-level" placeholder="Mail para identificarte" required="true">
+                <input type="text" name='alias' class="input-block-level" placeholder="Alias para identificarte" >
+                <input type="text" name='id' class="input-block-level" placeholder="Código ejercicio" required="true">
                 <button class="btn btn-large" type="submit">ACCEDER</button>
             </div>
         </form>

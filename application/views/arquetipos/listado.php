@@ -35,7 +35,7 @@
 </script>
 <section>
 <div class="row-fluid">
-	<div class="page-header"><h1>Ejercicios</h1></div>
+	<div class="page-header"><h1>Actividades</h1></div>
 	
     <div class="span12">
         <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
@@ -109,11 +109,11 @@
                     </a>
 
                     <?php if ($e->public_id_enabled): ?>
-                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>'>
+                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'>
                            <i class="fa fa-external-link"></i> Link publico
                         </a>
-                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/link_publico/' . $e->public_id)?>" />
-                        <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar</button>
+                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>" />
+                        <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar Link</button>
                         <a class="btn btn-danger pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
                            <i class="fa fa-chain-broken"></i> Desactivar link publico
                         </a>
@@ -130,5 +130,5 @@
 <section>
 
 <?php else: ?> 
-<h3>No hay ejercicios cargados.</h3>
+<h3>No hay actividades cargadas.</h3>
 <?php endif; ?>

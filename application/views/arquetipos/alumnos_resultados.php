@@ -152,7 +152,7 @@
     </div>
     <div class='row-fluid'>
         <div class="span12 public">
-            <a class="btn-primary pull-left"
+            <a class="btn btn-primary pull-left"
                href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
                 <i class="icon-list-alt"></i> Responder
             </a>

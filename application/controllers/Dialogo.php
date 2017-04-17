@@ -22,8 +22,8 @@ class Dialogo extends MY_Controller
         $this->user->on_invalid_session('account/home');
         if (!$this->user->has_permission('dialogos')) redirect('/');
         $this->template_type = 'admin';
-        $user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
-        $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismas());
+        $user_id = $this->user->get_id();
+        $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismasPorUsuario($user_id));
 
         $this->template('dialogos/listado', $vars);
     }
@@ -65,9 +65,11 @@ class Dialogo extends MY_Controller
             unset($data['file']);
             if ($prismaId) {
                 //EDITANDO
-
+                //($id,$nombre, $descripcion, $profesional, $secundario)
+                $this->dialogo_model->editarPrisma($prismaId,$data['nombre'],$data['descripcion'],
+                    $data['profesional'],$data['secundario']);
                 $this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
-                redirect("/arquetipos");
+                redirect("/dialogo/");
             } else {
                 //CREANDO NUEVO
                 //dialogos
@@ -95,6 +97,12 @@ class Dialogo extends MY_Controller
         }
         $this->session->set_flashdata('success_message', $msg);
         redirect('/dialogo/');
+    }
+
+    public function borrar($id){
+        $this->dialogo_model->borrarPrisma($id);
+        $this->session->set_flashdata('success_message', 'El Ejercicio fue eliminado con éxito.');
+        redirect("/dialogo/");
     }
 
     function dialogosPorPrismaAlumno(){

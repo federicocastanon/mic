@@ -17,16 +17,6 @@
     $('a.enviar').click(function() {
         var img = $(this);
         var div = img.parents('.modalResponder');
-        if(!validateEmail($('#email').val())){
-            $('#mensaje').text('Ingrese un Email verdadero').show();
-            return;
-        }else{
-            if( $('#nombre').val() == '' ) {
-                $('#mensaje').text('Ingrese un nombre').show();
-                return;
-            }
-        }
-        $('#mensaje').text('Ingrese un Email verdadero').hide();
 
       if (img.attr('disabled')) return false;
       var completed = true;
@@ -37,7 +27,7 @@
         }
       })
       if (!completed) {
-        div.find('div.alert').text('Complete las 3 preguntas con al menos 10 caracteres').removeClass('hide');
+        div.find('div.alert').text('Complete las preguntas con al menos 10 caracteres').removeClass('hide');
         return false;
       } else { 
         div.find('div.alert').addClass('hide');
@@ -129,19 +119,18 @@
 <div class="row-fluid">
     <div class="span12"><h2><?php echo $ejercicio->consigna ?></h2> </div>
 </div>
+<div class="row-fluid">
+    <div class="span12"><b>Alias: </b> <i><?= $alias?></i> <a class="btn btn-large" href="<?php echo base_url('/arquetipos/cambiarAlias/' . $ejercicio->id)?>"> Cambiar Alias</a> </div>
 
+</div>
 
 
 <form method='post' action='<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?>'>
     <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
-    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-arrow-left"></i> Volver</a>
-    <div class="row-fluid">
-        <input type="email" id="email" name="email" placeholder="email" required="true"/>
-        <input type="text" id="nombre" name="nombre" placeholder="nombre y apellido"/>
-    </div>
+    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Ejercicio</a>
     <div class="row-fluid">
         <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
-        <button class="btn btn-large" type="submit">Respuestas anteriores</button>
+
     </div>
     <div class="spacer"></div>
 <?php foreach ($imagenes as $i=>$img): 
@@ -175,19 +164,21 @@
             </div>   
           <?php endforeach; ?>
         </div>
+          <div class="alert alert-error pull-left hide">
+              Complete las preguntas para continuar.
+          </div>
+          <br /><br />
         <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
-          enviar respuestas
+          Enviar respuestas
         </a>
-        <br /><br />
-        <div class="alert alert-error pull-left hide">
-            Complete las preguntas para continuar.
-        </div>
+
+
       </div>
     </div>
 
   </div>
 <?php endforeach ?>
-</form>
+
 <div class="container gallery">  
 <?php foreach ($imagenes as $i=>$img): ?>  
   <?php if ($i == 0 or $i == 3): ?>
@@ -213,3 +204,5 @@
   <?php endif ?>
 <?php endforeach ?>
 </div>
+    <a class="btn btn-large" target="_blank" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Respuestas anteriores</a>
+</form>
