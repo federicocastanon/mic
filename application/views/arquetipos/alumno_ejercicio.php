@@ -117,7 +117,11 @@
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span12"><h2><?php echo $ejercicio->consigna ?></h2> </div>
+    <div class="span12">
+        <h2><?php echo $ejercicio->consigna ?></h2>
+        <h4><?php echo $ejercicio->desarrollo ?></h4>
+
+    </div>
 </div>
 <div class="row-fluid">
     <div class="span12"><b>Alias: </b> <i><?= $alias?></i> <a class="btn btn-large" href="<?php echo base_url('/arquetipos/cambiarAlias/' . $ejercicio->id)?>"> Cambiar Alias</a> </div>

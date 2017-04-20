@@ -20,7 +20,7 @@
     <div class="span12"><b>Alias: </b> <i><?= $alias?></i>  </div>
 
 </div>
-
+<?php  if (isset($respuestasAnteriores) && count($respuestasAnteriores)>0):?>
 <div class="container gallery">
     <?php foreach ($imagenes as $i=>$img): ?>
         <?php if ($i == 0 or $i == 3): ?>
@@ -46,3 +46,6 @@
         <?php endif ?>
     <?php endforeach ?>
 </div>
+<?php else: ?>
+<div> <i> No hay respuestas anteriores para esta actividad. Asegúrese de haber ingresado el mismo alias que utilizó anteriormente.</i></div>
+<?php endif; ?>

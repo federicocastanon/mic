@@ -228,4 +228,17 @@ class Arquetipos_model extends My_Model {
 
     }
 
+    function nube($ejercicioId, $valor){
+
+        if($valor == 1){
+            $query = "UPDATE arquetipos  SET nube=TRUE    where id=$ejercicioId";
+        }else{
+            $query = "UPDATE arquetipos  SET nube=FALSE    where id=$ejercicioId";
+        }
+
+
+        $this->db->query($query);
+        
+    }
+
 }

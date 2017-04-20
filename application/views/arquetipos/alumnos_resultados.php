@@ -129,11 +129,14 @@
         </div>
     </div>
     <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
+    <?php if($ejercicio->nube && strlen($crudoRespuestas) > 2): ?>
     <section style="float: left; width: 30%; height: 200px" id="cloud">
     </section>
+    <?php endif;?>
     <div class="row-fluid">
 	   <div class="page-header tituloWrapper">
-	       <h1 class="pull-left titulo"><?= $ejercicio->consigna ?></h1>
+	       <div class="row"><h1 class="pull-left titulo"><?= $ejercicio->consigna ?></h1></div>
+            <div class="row"><h4 class="pull-left titulo"><?= $ejercicio->desarrollo ?></h4></div>
            <?php if ($this->template_type == 'admin'): ?>
                <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="fa fa-arrow-left"></i> Volver</a>
            <?php else: ?>

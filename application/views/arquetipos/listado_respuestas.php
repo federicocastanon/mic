@@ -137,8 +137,17 @@
     <div class="row-fluid">
         <div class="page-header">
             <h1><?= $ejercicio->consigna ?></h1>
+            <h4><?= $ejercicio->desarrollo ?></h4>
         </div>
     </div>
+    <div class='row-fluid'>
+        <?php if ($ejercicio->nube) :?>
+            <a href='<?php echo base_url('/arquetipos/ocultar_nube/' . $ejercicio->id)?>' class="btn btn-default pull-left">Ocultar nube</a>
+        <?php else:?>
+            <a href='<?php echo base_url('/arquetipos/publicar_nube/' . $ejercicio->id)?>' class="btn btn-default pull-left">Publicar nube</a>
+        <?php endif;?>
+    </div>
+    <br>
     <div class='row-fluid'>
         <div class="span12 public">
             <?php

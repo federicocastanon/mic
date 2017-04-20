@@ -520,7 +520,8 @@ class Arquetipos extends MY_Controller {
 				}
 				$this->Arquetipos_model->agregar_imagenes($arquetipo_id, $imagenes);				
 				$this->session->set_flashdata('success_message', 'El Ejercicio fue creado con éxito.');
-				redirect("/alumnos/invitar/arquetipos/$arquetipo_id");
+				//redirect("/alumnos/invitar/arquetipos/$arquetipo_id");
+                redirect("/arquetipos");
 			}
 
 		}
@@ -632,8 +633,17 @@ class Arquetipos extends MY_Controller {
         }
         unset($_SESSION["alias"]);
         $vars['urlDestino'] = base_url(). 'arquetipos/alumno_ejercicio/' . $public_id;
-        $this->template('account/SolicitarAlias', $vars);
+        $this->template('account/solicitarAlias', $vars);
         return;
     }
 
+    public function publicar_nube($arquetipo_id){
+        $this->Arquetipos_model->nube($arquetipo_id, 1);
+        redirect('/arquetipos/ver_respuestas/' . $arquetipo_id);
+    }
+
+    public function ocultar_nube($arquetipo_id){
+        $this->Arquetipos_model->nube($arquetipo_id, 0);
+        redirect('/arquetipos/ver_respuestas/' . $arquetipo_id);
+    }
 }

@@ -13,6 +13,24 @@
 
     }
 
+    function continuar(){
+        if(estaCompleto()){
+            $('.nav-tabs').find('a[href=#tab2]').click();return false;
+        }else{
+            $('#mensajes').html("Complete los campos obligatorios antes de continuar. Todos deben tener al menos 5 carácteres de longitud");
+        }
+
+    }
+
+    function estaCompleto(){
+        var nombre = $('#nombre').val();
+        var consigna = $('#consigna').val();
+        var desarrollo = $('iframe').contents().find('.cke_editable_themed > p').html();
+        if(nombre.length > 4 && consigna.length > 4 && desarrollo.length > 4){
+            return true;
+        }
+        return false;
+    }
 
     $(document).ready(function() { 
         $('form').click(refresh_selected_images);
@@ -81,6 +99,7 @@
 <section>
     <div class="container">
     <div class="row-fluid">
+        <div id="mensajes"></div>
                 <?php echo validation_errors(); ?><?php echo $extra_errors?> 
         <form method='post'>
             <input type='hidden' name='imgs' value='<?php echo json_encode($imgs) ?>'> 
@@ -104,10 +123,10 @@
                             <input name='consigna' id="consigna" class="input-xxlarge" type="text" placeholder="Consigna del ejercicio" value="<?php echo set_value('consigna', @$arquetipo->consigna)?>">
                             <div class="spacer"></div>
                             <h4>Desarrollar</h4>
-                            <textarea name='desarrollo' style='height:500px;'> <?php echo set_value('desarrollo', @$arquetipo->desarrollo)?> </textarea>
+                            <textarea name='desarrollo' style='height:500px;' id="desarrollo"> <?php echo set_value('desarrollo', @$arquetipo->desarrollo)?> </textarea>
                         </div>
                         <br /><br />
-                        <a class="btn btn-primary btn-large pull-right" href="#" onclick="$('.nav-tabs').find('a[href=#tab2]').click();return false;">Continuar</a><br>
+                        <a class="btn btn-primary btn-large pull-right" href="#" onclick="continuar()">Continuar</a><br>
                     </div>
                     <div class="tab-pane" id="tab2"><!-- ARQUETIPOS -->
                         <div class="span12">
@@ -162,7 +181,7 @@
                             <input name="pregunta[<?= $pregunta->id ?>]" class="input-xxlarge" type="text" placeholder="Pregunta <?= $indice ?>" value="<?php echo set_value('pregunta['+$pregunta->id+']', $pregunta->pregunta)?>"><br><br>
                         <?php endforeach ?>
                             <?php if(!$preguntas){?>
-                                <input name="pregunta[]" class="input-xxlarge" type="text" placeholder="Pregunta 1" value=""><br><br>
+                                <input name="pregunta[]" class="input-xxlarge" type="text" placeholder="Pregunta 1" value="" ><br><br>
                             <?php }?>
                         </div>
                         <a class="btn btn-small " style="float: left"
