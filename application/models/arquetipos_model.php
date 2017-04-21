@@ -238,7 +238,7 @@ class Arquetipos_model extends My_Model {
 
 
         $this->db->query($query);
-        
+
     }
 
 }

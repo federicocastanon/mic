@@ -1,14 +1,15 @@
 
 <div class="row-fluid">
+    <?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario ): ?>
         <div class="span12">
             <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/lobbyDialogos/' . $dialogo->prisma)?>"><i class="fa fa-arrow-left"></i> Volver</a>
        </div>
-
+    <?php endif; ?>
     </div>
 
     <div class="spacer"></div>
-<?php if ($_SESSION["email"] == $dialogo->evaluado or $_SESSION["email"] == $dialogo->secundario ): ?>
-    <p><i>Estás actuando como <b><?php echo  $_SESSION["email"] ?> </b></i>
+<?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
+    <p><i>Estás actuando como <b><?php echo  $_SESSION["alias"] ?> </b></i>
         <a class="btn btn-lg btn-info" href="<?php echo base_url('/dialogo/levantarse/'. $dialogo->id)?>">LEVANTARSE</a>
         <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR CHARLA</a>
         </p>
@@ -33,11 +34,11 @@
     <?php else: ?>
         <h1>Este dialogo no empezó</h1>
     <?php endif; ?>
-            <?php if ($_SESSION["email"] == $dialogo->evaluado or $_SESSION["email"] == $dialogo->secundario ): ?>
+            <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
                 <form id="myForm" method='post' action='<?php echo base_url('/dialogo/intervenir/' . $dialogo->id)?>'>
                     <input type="hidden" name="dialogoId" id="dialogoId">
                     <input type="hidden" name="profesional" id="profesional">
-                    <?php if ($_SESSION["profesional"]): ?>
+                    <?php if ($_SESSION["alias"] == $dialogo->evaluado): ?>
                     <div class="col-sm-6 " style="float: left;">
                         <?php else: ?>
                         <div class="col-sm-6 " style="float: right">
@@ -52,7 +53,7 @@
             <?php endif; ?>
 
             <div class="spacer"></div> <div class="spacer"></div> <div class="spacer"></div>
-<?php if ($_SESSION["email"] != $dialogo->evaluado and $_SESSION["email"] != $dialogo->secundario ): ?>
+<?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario ): ?>
 
             <link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
             <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>

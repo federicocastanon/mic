@@ -77,21 +77,21 @@ class Dialogo_model extends My_Model
         return $this->db->query($query)->result();
     }
 
-    function obtenerMiEvaluacion($id,$email) {
+    function obtenerMiEvaluacion($id,$alias) {
         $query = "select *
                   from evaluacion e
-                  where e.dialogo = $id and e.email = '$email'";
+                  where e.dialogo = $id and e.alias = '$alias'";
         return $this->db->query($query)->result();
     }
 
-    function obtenerMisEvaluacion($email) {
+    function obtenerMisEvaluacion($alias) {
         $query = "select *
                   from evaluacion e
-                  where e.email = $email";
+                  where e.alias = $alias";
         return $this->db->query($query)->result();
     }
 
-    function obtenerDetalleDialogoPorPrismaConEmail($id, $email) {
+    function obtenerDetalleDialogoPorPrismaConAlias($id, $alias) {
 
     }
 
@@ -150,20 +150,20 @@ class Dialogo_model extends My_Model
         $this->editarCantidadDialogos($idPrisma);
     }
 
-    function tomarRol($idDialogo, $email, $profesional){
+    function tomarRol($idDialogo, $alias, $profesional){
         //$profesional boolean
 
         if($profesional == 'true'){
 
-            $query = "UPDATE dialogo SET evaluado = '$email' WHERE dialogo.id = $idDialogo";
+            $query = "UPDATE dialogo SET evaluado = '$alias' WHERE dialogo.id = $idDialogo";
         }else{
 
-            $query = "UPDATE dialogo SET secundario = '$email' WHERE dialogo.id = $idDialogo";
+            $query = "UPDATE dialogo SET secundario = '$alias' WHERE dialogo.id = $idDialogo";
         }
         $this->db->query($query);
     }
 
-    function insertarIntervencion($dialogo, $email, $texto, $profesional){
+    function insertarIntervencion($dialogo, $alias, $texto, $profesional){
         $query = "INSERT INTO intervencion (id, dialogo, profesional, texto, fecha) VALUES (NULL, '$dialogo', '$profesional', '$texto', CURRENT_TIMESTAMP)";
         $this->db->query($query);
     }
@@ -172,14 +172,21 @@ class Dialogo_model extends My_Model
         $query = "UPDATE dialogo SET evaluacion = $puntaje WHERE dialogo.id = $dialogo";
         $this->db->query($query);
     }
+
+    function obtenerEvaluacionDocente($dialogo){
+        $query = "select *
+                  from dialogo d
+                  where d.id = $dialogo and d.evaluacion != 0";
+        return $this->db->query($query)->result();
+    }
     
-    function insertarEvaluacionPar($dialogo, $email, $puntaje, $sugerencias, $valoracionPositiva, $aclaraciones){
-        $query = "INSERT INTO evaluacion (id, dialogo, email, puntaje, sugerencias, positivo, aclaracion) VALUES (NULL, '$dialogo', '$email', '$puntaje', '$sugerencias', '$valoracionPositiva', '$aclaraciones')";
+    function insertarEvaluacionPar($dialogo, $alias, $puntaje, $sugerencias, $valoracionPositiva, $aclaraciones){
+        $query = "INSERT INTO evaluacion (id, dialogo, alias, puntaje, sugerencia, positivo, aclaracion) VALUES (NULL, '$dialogo', '$alias', '$puntaje', '$sugerencias', '$valoracionPositiva', '$aclaraciones')";
         $this->db->query($query);
     }
 
     function levantarse($dialogo, $profesional){
-        if($profesional == 'true'){
+        if($profesional){
 
             $query = "UPDATE dialogo SET evaluado = null WHERE dialogo.id = $dialogo";
         }else{

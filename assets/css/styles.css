@@ -562,6 +562,24 @@ pre code {
 .footer .fa-heart {
   color: #fb866a;
 }
+
+.filaCalificacion{
+    background-color: #CFD8DC;
+}
+
+.sugerencia a{
+    background-color: #d5d59d !important;
+    color: white !important;
+}
+
+.positiva a{
+    background-color: #277415 !important;
+    color: white !important;
+}
+.aclaracion a{
+    background-color: #66ff66 !important;
+    color: white !important;
+}
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .header .main-nav button {
