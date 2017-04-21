@@ -131,7 +131,7 @@ class Dialogo extends MY_Controller
             //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
             //esto quiere decir que entró por link_publico
             $vars['urlDestino'] = base_url(). 'dialogo/dialogosPorPrisma/' . $prismaId;
-            $this->template('account/SolicitarAlias', $vars);
+            $this->template('account/solicitarAlias', $vars);
             return;
         }
 

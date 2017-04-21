@@ -17,7 +17,6 @@
                 <thead>
                 <th>id</th>
                 <th>Profesional</th>
-                <th>Profesional</th>
                 <th>Secundario</th>
                 <th>Tu puntaje</th>
                 <th>Promedio de pares</th>
