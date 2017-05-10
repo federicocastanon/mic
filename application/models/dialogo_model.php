@@ -32,6 +32,7 @@ class Dialogo_model extends My_Model
     function obtenerTodosLosPrismasPorUsuario($id) {
         $query = "SELECT p.id, p.nombre, p.descripcion, u.name as autor, p.fecha, p.profesional, p.secundario, p.dialogos, p.publico
                   FROM prisma p join users u on u.id = p.creador  where p.creador = '$id' ORDER BY p.id DESC ";
+
         return $this->db->query($query)->result();
     }
 
@@ -125,7 +126,16 @@ class Dialogo_model extends My_Model
 
     }
 
-    function editarCantidadDialogos($idPrisma){
+    function cantidadDialogos($idPrisma)
+    {
+        //obtengo dialogos con count
+        $query = "select count(*) as cant
+                  from dialogo d
+                  where d.prisma = $idPrisma";
+        return $this->db->query($query)->row();
+    }
+
+        function editarCantidadDialogos($idPrisma){
         //obtengo dialogos con count
         $query = "select count(*) as cant
                   from dialogo d
@@ -153,12 +163,12 @@ class Dialogo_model extends My_Model
     function tomarRol($idDialogo, $alias, $profesional){
         //$profesional boolean
 
-        if($profesional == 'true'){
-
+        if($profesional){
             $query = "UPDATE dialogo SET evaluado = '$alias' WHERE dialogo.id = $idDialogo";
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,$profesional);
         }else{
-
             $query = "UPDATE dialogo SET secundario = '$alias' WHERE dialogo.id = $idDialogo";
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,$profesional);
         }
         $this->db->query($query);
     }
@@ -185,13 +195,14 @@ class Dialogo_model extends My_Model
         $this->db->query($query);
     }
 
-    function levantarse($dialogo, $profesional){
+    function levantarse($dialogo,$alias, $profesional){
         if($profesional){
 
             $query = "UPDATE dialogo SET evaluado = null WHERE dialogo.id = $dialogo";
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono el diálogo' ,$profesional);
         }else{
-
             $query = "UPDATE dialogo SET secundario = null WHERE dialogo.id = $dialogo";
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono diálogo' ,$profesional);
         }
         $this->db->query($query);
     }
@@ -199,6 +210,17 @@ class Dialogo_model extends My_Model
     function terminarConversacion($dialogo){
         $query = "UPDATE dialogo SET terminado = 1 WHERE dialogo.id = $dialogo";
         $this->db->query($query);
+    }
+
+
+    function duplicar($id) {
+        $query = "INSERT INTO enconstr_mic.prisma (nombre, descripcion, creador, fecha, profesional, secundario, dialogos, publico)
+      select  concat('Copia de ', p.nombre), p.descripcion,p.creador, now(), p.profesional, p.secundario, p.dialogos, p.publico
+                  from prisma p
+                  where p.id = $id";
+        $this->db->query($query);
+        return $this->db->insert_id();
+
     }
 
 }

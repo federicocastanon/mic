@@ -3,7 +3,7 @@
 <script src="<?php echo assets_url('js/clipboard.min.js');?>"></script>
 <script type='text/javascript'> 
     $(document).ready(function() {
-        var oTable = $('#list').dataTable( {
+      /*  var oTable = $('#list').dataTable( {
             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
@@ -19,7 +19,7 @@
                 { "asSorting": [] },
             ]
         } );
-        oTable.fnSort( [ [1,'desc'] ] );
+        oTable.fnSort( [ [1,'desc'] ] );*/
     } );
 </script>
 <script>
@@ -27,6 +27,7 @@
 
     clipboard.on('success', function(e) {
         console.log(e);
+        alert("Link copiado con éxito");
     });
 
     clipboard.on('error', function(e) {
@@ -39,7 +40,7 @@
 	
     <div class="span12">
         <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nuevo ejercicio</a><br>
+      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nueva actividad</a><br>
       <br>
       <br>
 

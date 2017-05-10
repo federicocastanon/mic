@@ -62,14 +62,15 @@ class Arquetipos extends MY_Controller {
             //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
             //esto quiere decir que entró por link_publico
             $vars['urlDestino'] = base_url(). 'arquetipos/alumno_ejercicio/' . $public_id;
-            $this->template('account/SolicitarAlias', $vars);
+            $this->template('account/solicitarAlias', $vars);
             return;
         }
 
 
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
-		$arquetipo_id = $ejercicio->id ;
-		if (!$ejercicio) die('Link no valido' . '---' . $public_id);
+
+		if (!$ejercicio) die('El código de ejercicio que ingresaste no existe,' . '---' . $public_id);
+        $arquetipo_id = $ejercicio->id ;
         $vars = array();
 		if (isset($_POST['obtenerRespuestas'])) {
             $obtResp = $this->input->post('obtenerRespuestas');
@@ -90,11 +91,8 @@ class Arquetipos extends MY_Controller {
 		$vars['public_id'] = $public_id;
 		$this->load->library('user_agent');
 		#echo '<pre>';print_r($vars);die();
-		if ($this->agent->is_mobile()) { 
-			$this->template('arquetipos/alumno_ejercicio_mobile', $vars);
-		} else {
-			$this->template('arquetipos/alumno_ejercicio', $vars);
-		}
+		$this->template('arquetipos/alumno_ejercicio', $vars);
+		
 	}
 
     public function ajax_respuesta($public_id) {
@@ -208,7 +206,7 @@ class Arquetipos extends MY_Controller {
 		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
         $preguntas = $this->Arquetipos_model->get_questions($public_id);
         $ejercicio->preguntas = $preguntas;
-		if (!$ejercicio or !$ejercicio->public_id_enabled) die('Link publico no disponible');
+		if (!$ejercicio or !$ejercicio->public_id_enabled) die('El código de ejercicio que ingresaste no existe');
 		$vars['respuestas'] = array();
 		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id, true);
         $crudoRespuestas = "";

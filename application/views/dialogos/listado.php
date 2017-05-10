@@ -3,7 +3,7 @@
 <script src="<?php echo assets_url('js/clipboard.min.js');?>"></script>
 <script type='text/javascript'> 
     $(document).ready(function() {
-        var oTable = $('#list').dataTable( {
+       /* var oTable = $('#list').dataTable( {
             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
             "sPaginationType": "bootstrap",
             "oLanguage": {
@@ -21,13 +21,14 @@
                 { "asSorting": [] },
             ]
         } );
-        oTable.fnSort( [ [0,'desc'] ] );
+        oTable.fnSort( [ [6,'desc'] ] );*/
     } );
 </script>
 <script>
     var clipboard = new Clipboard('.btnC');
 
     clipboard.on('success', function(e) {
+        alert("Link copiado con éxito");
         console.log(e);
     });
 
@@ -47,17 +48,17 @@
 
   </div>
 <?php if (isset($prismas) && $prismas): ?>
-<table class="table table-striped table-bordered table-hover" id='list'>
+<table class="table table-striped table-bordered table-hover" style="table-layout: fixed; width: 100%; overflow-x: scroll" id='list'>
     <thead>
 
-        <th width="8%">Fecha</th>
-        <th width="10%">Autor</th>
-        <th width="10%">Nombre</th>
-        <th width="25%">Descripción</th>
-        <th width="10%">Roles</th>
-        <th width="5%">Dialogos</th>
-        <th width="5%">Código</th>
-        <th width="32%">Acciones</th>
+        <th width="9%">Fecha</th>
+        <th width="8%">Autor</th>
+        <th width="13%">Nombre</th>
+        <th width="20%">Descripción</th>
+        <th width="15%">Roles</th>
+        <th width="8%">Dialogos</th>
+        <th width="7%">Código</th>
+        <th width="20%">Acciones</th>
     </thead>
     <tbody>
         <?php foreach ($prismas as $e): ?>
@@ -70,7 +71,7 @@
                 </td>
                 <td><?php echo $e->autor ?></td>
                 <td><?php echo $e->nombre ?> </td>
-                <td><?php echo $e->descripcion?></td>
+                <td style="overflow: hidden; width: 25%" ><?php echo $e->descripcion?></td>
                 <td><b>Profesional: </b><?php echo $e->profesional?> <br>
                     <b>Secundario: </b><?php echo $e->secundario?>
                 </td>

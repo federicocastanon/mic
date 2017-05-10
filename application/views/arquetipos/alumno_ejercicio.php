@@ -1,5 +1,5 @@
 <?php if (!$ejercicio->consigna): ?>
-<h1>Ejercicio no existente</h1>
+<h1>Actividad no existente</h1>
 <?php return;endif ?>
 <script type='text/javascript'>
 
@@ -131,7 +131,7 @@
 
 <form method='post' action='<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?>'>
     <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
-    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Ejercicio</a>
+    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
     <div class="row-fluid">
         <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
 
@@ -140,7 +140,7 @@
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
   ?>  
-  <div id="openModal<?php echo $i?>" class="modalResponder"> <!-- modal 5-->
+  <div id="openModal<?php echo $i?>" class="modalResponder col-sm-11"> <!-- modal 5-->
     <div>
       <a href="#close" title="Close" class="closemodal"><i class="icon-remove icon-white"></i></a>
       <div class='row-fluid'>
@@ -162,7 +162,7 @@
             <div class="control-group">
               <div class="controls">
                 <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2" 
-                  class="input-xlarge" id="textarea2"
+                  class="input-large" id="textarea2"
                   <?php if ($disabled):?>disabled<?php endif?>><?php echo @$respuestas[$img->id][$preg->id]?></textarea>
               </div>
             </div>   
@@ -172,7 +172,7 @@
               Complete las preguntas para continuar.
           </div>
           <br /><br />
-        <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
+        <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-left enviar' data-rel='<?php echo $img->id ?>'>
           Enviar respuestas
         </a>
 
@@ -208,5 +208,5 @@
   <?php endif ?>
 <?php endforeach ?>
 </div>
-    <a class="btn btn-large" target="_blank" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Respuestas anteriores</a>
+    <a class="btn btn-large btn-default" target="_blank" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
 </form>

@@ -99,7 +99,7 @@
 <section>
     <div class="container">
     <div class="row-fluid">
-        <div id="mensajes"></div>
+        <div id="mensajes" style="color: red;"></div>
                 <?php echo validation_errors(); ?><?php echo $extra_errors?> 
         <form method='post'>
             <input type='hidden' name='imgs' value='<?php echo json_encode($imgs) ?>'> 

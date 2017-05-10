@@ -149,7 +149,7 @@
         <div class="chat-arrowglobo"></div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-large">enviar</a>
+        <a class="btn btn-large">enviar</a>
       </div>
       <? if ($respuestas): ?>
         <div class="modal-chat">

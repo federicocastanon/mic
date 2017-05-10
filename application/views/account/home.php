@@ -1,7 +1,3 @@
-<?php
-// Start the session
-session_start();
-?>
 
 <div style="float: right;">
     <a href="<?php echo base_url('/account/index')?>">Ingreso Docente</a>

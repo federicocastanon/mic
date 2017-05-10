@@ -38,6 +38,9 @@ function sentarse(dialogoId, profesional){
     <div class="spacer"></div>
     <form id="myForm" method='post' action='<?php echo base_url('/dialogo/sentarse/')?>'>
     <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
+        <div id="ret">
+            <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
+        </div>
     <div class="row"> Con este alias entrás a los dialogos <b><?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?></b>
         <a class="btn btn-large" href="<?php echo base_url('/dialogo/cambiarAlias/' . $prisma->id)?>"> Cambiar Alias</a>
     </div>
@@ -101,16 +104,16 @@ function sentarse(dialogoId, profesional){
                 </div>
             <?php if ($this->template_type == 'admin'): ?>
                 <div class="col-sm-2">
-                    <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar Docente</a>
+                    <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar</a>
                 </div>
             <?php else: ?>
                 <?php if ($_SESSION["alias"] != $e->evaluado and $_SESSION["alias"] != $e->secundario ): ?>
                     <div class="col-sm-2">
-                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar Compañeros</a>
+                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar</a>
                     </div>
                 <?php else: ?>
                     <div class="col-sm-2">
-                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Continuar charla</a>
+                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Continuar diálogo</a>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>

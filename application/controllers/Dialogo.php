@@ -22,8 +22,14 @@ class Dialogo extends MY_Controller
         $this->user->on_invalid_session('account/home');
         if (!$this->user->has_permission('dialogos')) redirect('/');
         $this->template_type = 'admin';
-        $user_id = $this->user->get_id();
-        $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismasPorUsuario($user_id));
+        if($this->user->has_permission('admin')){
+            $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismas());
+        }
+        else
+        {
+            $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismasPorUsuario($this->user->get_id()));
+        };
+
 
         $this->template('dialogos/listado', $vars);
     }
@@ -38,7 +44,7 @@ class Dialogo extends MY_Controller
             $prisma = $this->dialogo_model->obtenerPrisma($prismaId);
 
             if (!$prisma) die("Acceso no permitido");
-            if ($prisma->creador != $this->user->get_id()) die("Acceso no permitido");
+            if ($prisma->creador != $this->user->get_id() && !$this->user->has_permission('admin')) die("Acceso no permitido");
 
             $vars['prisma'] = $prisma;
         }
@@ -48,7 +54,7 @@ class Dialogo extends MY_Controller
         $this->load->helper('form');
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[5]|max_length[200]');
-        $this->form_validation->set_rules('descripcion', 'Descripción', 'required|min_length[5]|max_length[200]');
+        $this->form_validation->set_rules('descripcion', 'Descripción', 'required|min_length[5]');
         $this->form_validation->set_rules('profesional', 'Profesional', 'required|min_length[5]|max_length[200]');
         $this->form_validation->set_rules('secundario', 'Secundario', 'required|min_length[5]|max_length[200]');
         $vars['extra_errors'] = '';
@@ -68,6 +74,12 @@ class Dialogo extends MY_Controller
                 //($id,$nombre, $descripcion, $profesional, $secundario)
                 $this->dialogo_model->editarPrisma($prismaId,$data['nombre'],$data['descripcion'],
                     $data['profesional'],$data['secundario']);
+                $cantDialogos = intval($this->dialogo_model->cantidadDialogos($prismaId)->cant);
+                $dialogosACrear = intval($data['dialogos']);
+
+                if($dialogosACrear > $cantDialogos){
+                    $this->dialogo_model->crearDialogos($prismaId, $dialogosACrear - $cantDialogos);
+                }
                 $this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
                 redirect("/dialogo/");
             } else {
@@ -104,13 +116,32 @@ class Dialogo extends MY_Controller
         $this->session->set_flashdata('success_message', 'El Ejercicio fue eliminado con éxito.');
         redirect("/dialogo/");
     }
+    private function is_mine($id) {
+        if ($this->user->has_permission('admin')) return true;
+        $ej = $this->dialogo_model->get($id);
+        return ($ej->id_user && $ej->id_user === $this->user->get_id());
+    }
+
+    public function duplicar($id)
+    {
+        if (!$this->user->has_permission('arquetipos')) redirect('/');
+        if (!$this->is_mine($id)) die('Operacion no permitida');
+        $nu_id = $this->dialogo_model->duplicar($id);
+        $this->session->set_flashdata('success_message', 'Actividad duplicada');
+        redirect('/dialogo/editar/' . $nu_id);
+
+    }
 
     function dialogosPorPrismaAlumno(){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
 
         $id= $_POST['id'];
         $alias= trim($_POST['alias']);
-        $_SESSION["alias"] =$alias ;
+        if(strlen($alias)>=1) {
+            $_SESSION["alias"] = $alias;
+        }else{
+            $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
+        }
         $this->dialogosPorPrisma($id);
     }
 
@@ -143,8 +174,16 @@ class Dialogo extends MY_Controller
             $_SESSION["alias"] = trim($this->user->get_email());
         }
         $user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
-        $vars = array('dialogos' => $this->dialogo_model->obtenerDialogosPorPrisma($prismaId));
-        $vars['prisma'] = $this->dialogo_model->obtenerPrisma($prismaId);
+        $prisma = $this->dialogo_model->obtenerPrisma($prismaId);
+        if(!$prisma){
+            $this->session->set_flashdata('error_message', 'El diálogo seleccionado no existe');
+
+            $this->template('/account/home');
+            return;
+        }
+        $dialogos = $this->dialogo_model->obtenerDialogosPorPrisma($prismaId);
+        $vars = array('dialogos' => $dialogos);
+        $vars['prisma'] = $prisma;
 
         $this->template('dialogos/elegir_dialogo', $vars);
     }
@@ -168,7 +207,7 @@ class Dialogo extends MY_Controller
     }
 
     function sentarse(){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         if ($this->user->get_id())
             $this->template_type = 'admin';
         $dialogoId = $_POST['dialogoId'];
@@ -178,7 +217,7 @@ class Dialogo extends MY_Controller
         $_SESSION["alias"] =trim($alias) ;
         $_SESSION["profesional"] =$profesional ==  'true';
 
-        $this->dialogo_model->tomarRol($dialogoId, $alias, $profesional);
+        $this->dialogo_model->tomarRol($dialogoId, $alias, $_SESSION["profesional"] );
         //$this->lobbyDialogos(7);
         $this->armarDialogo($dialogoId);
     }
@@ -207,7 +246,7 @@ class Dialogo extends MY_Controller
     }
 
     function intervenir($dialogoId){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         $profesional = $_SESSION["profesional"];
         $alias = $_SESSION["alias"] ;
         $intervencion= $_POST['intervencion'];
@@ -217,14 +256,14 @@ class Dialogo extends MY_Controller
     }
 
     function levantarse($dialogoId){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         $alias = $_SESSION["alias"] ;
 
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
 
         if($dialogo->terminado == 0){
             //Si está terminado no te borro del dialogo
-            $this->dialogo_model->levantarse($dialogoId,$alias == $dialogo->evaluado );
+            $this->dialogo_model->levantarse($dialogoId,$alias, $alias == $dialogo->evaluado );
         }
 
 
@@ -233,7 +272,7 @@ class Dialogo extends MY_Controller
     }
 
     function terminar($dialogoId){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         $this->dialogo_model->terminarConversacion($dialogoId);
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
 
@@ -242,7 +281,7 @@ class Dialogo extends MY_Controller
 
 
     function calificar($dialogoId){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         if ($this->user->get_id())
             $this->template_type = 'admin';
 
@@ -261,7 +300,7 @@ class Dialogo extends MY_Controller
                 $this->dialogo_model->insertarEvaluacionPar($dialogoId, $alias, $calificacion, $sugerencias, $valoracionPositiva, $aclaraciones) ;
            }
 
-            $this->lobbyDialogos($dialogo->prisma);
+            $this->verCalificaciones($dialogo->prisma);
         }else{
 
             $this->armarDialogo($dialogoId);
@@ -270,7 +309,7 @@ class Dialogo extends MY_Controller
     }
 
     function verCalificaciones($prismaId){
-        session_start();
+        if(!isset($_SESSION)){             session_start();         }
         if ($this->user->get_id())
             $this->template_type = 'admin';
 

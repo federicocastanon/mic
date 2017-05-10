@@ -18,7 +18,7 @@
                 <th>id</th>
                 <th>Profesional</th>
                 <th>Secundario</th>
-                <th>Tu puntaje</th>
+                <th>Tu opinión</th>
                 <th>Promedio de pares</th>
                 <th>Calificación docente</th>
                 <th>Acciones</th>
@@ -35,8 +35,11 @@
                         <td>
                             <?php echo $e->secundario ?>
                         </td>
-                        <td>
-                            <input class="estrellas" name="calificacion" value="<?php echo $e->tuPuntaje ?>" >
+                        <td><?php if($e->tuPuntaje > 0){ ?>
+                                <input class="estrellas" name="calificacion" value="<?php echo $e->tuPuntaje ?>" >
+                            <?php }else{ ?>
+                                <a class="btn btn-sm btn-warning pull-left" href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">CALIFICAR</a>
+                            <?php } ?>
                         </td>
                         <td>
                             <input class="estrellas" name="calificacion" value="<?php echo $e->promedio ?>" >

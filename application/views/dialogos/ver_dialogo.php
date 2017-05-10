@@ -11,7 +11,7 @@
 <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
     <p><i>Estás actuando como <b><?php echo  $_SESSION["alias"] ?> </b></i>
         <a class="btn btn-lg btn-info" href="<?php echo base_url('/dialogo/levantarse/'. $dialogo->id)?>">LEVANTARSE</a>
-        <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR CHARLA</a>
+        <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR DIÁLOGO</a>
         </p>
 <?php endif; ?>
 <div id="ret">
@@ -59,11 +59,15 @@
             <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
             <script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
             <form id="myForm" method='post' action='<?php echo base_url('/dialogo/calificar/' . $dialogo->id)?>'>
-                <?php if (isset($evaluacion) ): ?>
+                <?php if (isset($evaluacion) ){ ?>
                     <div>
                         <h2>Ya calificaste este dialogo</h2>
                     </div>
-                <?php else: ?>
+                <?php }else if ( !$dialogo->evaluado or !$dialogo->secundario){ ?>
+                    <div>
+                        <h2>No se puede calificar este dialogo pues al menos uno de los participantes está ausente y el dialogo no está terminado</h2>
+                    </div>
+                <?php }else{ ?>
                     <?php if ($this->template_type != 'admin'  ): ?>
 
                         <div class="form-group">
@@ -82,7 +86,7 @@
                     <?php endif; ?>
                     <input id="input-id" name="calificacion"  >
                     <button type="submit" class="vinculo"> Calificar</button>
-                <?php endif; ?>
+                <?php } ?>
             </form>
             <script type='text/javascript'>
                 $(document).ready(function() {

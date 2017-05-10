@@ -185,7 +185,11 @@
                                 <div  style="float: left; width:100%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
                                     <div style="width:100%;  float: left">  <?= $resp->respuesta ?> </div>
                                 </div>
-                            <?php endforeach; } ?>
+                        <?php endforeach; }else{ ?>
+                            <div  style="float: left; width:100%; min-height: 40px; color: lightslategrey">
+                                <div style="width:100%;  float: left"> Todavía no hay respuestas publicadas </div>
+                            </div>
+                        <?php }?>
                     <?php endforeach;  ?>
                 </div>
 
