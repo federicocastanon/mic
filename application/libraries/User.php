@@ -104,7 +104,7 @@ class User {
 	*/
 	function on_invalid_session($destiny){
 		if(!$this->validate_session()){
-			$this->CI->session->set_flashdata('error_message', 'Invalid session.');
+			$this->CI->session->set_flashdata('error_message', 'La sesión caducó.');
 			redirect($destiny);
 		}
 	}

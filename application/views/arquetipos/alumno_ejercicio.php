@@ -16,7 +16,7 @@
   $(document).ready(function() {
     $('a.enviar').click(function() {
         var img = $(this);
-        var div = img.parents('.modalResponder');
+        var div = img.parents('.modal');
 
       if (img.attr('disabled')) return false;
       var completed = true;
@@ -79,7 +79,7 @@
             img.removeClass('disabled');
         })
         .always(function() { 
-            div.find('a[href=#close]')[0].click();
+            div.find('button')[0].click();
         });
         
       return false;
@@ -139,60 +139,68 @@
     <div class="spacer"></div>
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
-  ?>  
-  <div id="openModal<?php echo $i?>" class="modalResponder col-sm-11"> <!-- modal 5-->
-    <div>
-      <a href="#close" title="Close" class="closemodal"><i class="icon-remove icon-white"></i></a>
-      <div class='row-fluid'>
-        <h3>
-          <?php echo $img->titulo ?>
-        </h3>
-      </div>
-      <div class="row-fluid">
-        <div class="span4">
-          <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
-            src="<?php echo $img->imagen_ubicacion?>" width='150px' height='150px' alt="">
-          <!--  <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
-                 src="<?php echo assets_url('img/alert.gif')?>" width='150px' height='150px' alt=""> -->
-        </div>
-        <div class="span8">
-          <?php foreach($preguntas as $preg): ?>
-              <input type="hidden" name="pregunta[<?php echo $img->id?>][<?php echo $preg->id?>]" value="<?php echo $preg->pregunta?>" />
-            <p ><?php echo $preg->pregunta?></p>
-            <div class="control-group">
-              <div class="controls">
-                <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2" 
-                  class="input-large" id="textarea2"
-                  <?php if ($disabled):?>disabled<?php endif?>><?php echo @$respuestas[$img->id][$preg->id]?></textarea>
-              </div>
-            </div>   
-          <?php endforeach; ?>
-        </div>
-          <div class="alert alert-error pull-left hide">
-              Complete las preguntas para continuar.
-          </div>
-          <br /><br />
-        <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-left enviar' data-rel='<?php echo $img->id ?>'>
-          Enviar respuestas
-        </a>
+  ?>
+    <div class="modal fade" id="modal-container-<?php echo $img->id?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <?php echo $img->titulo ?>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row pad15">
+                        <div class="col-md-4">
+                            <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
+                                 src="<?php echo $img->imagen_ubicacion?>" width='150px' height='150px' alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <?php foreach($preguntas as $preg): ?>
+                                <input type="hidden" name="pregunta[<?php echo $img->id?>][<?php echo $preg->id?>]" value="<?php echo $preg->pregunta?>" />
+                                <p ><?php echo $preg->pregunta?></p>
+                                <div class="control-group">
+                                    <div class="controls">
+                <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2"
+                          class="input-large" id="textarea2"
+                          <?php if ($disabled):?>disabled<?php endif?>><?php echo @$respuestas[$img->id][$preg->id]?></textarea>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
 
-      </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                    <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-left enviar' data-rel='<?php echo $img->id ?>'>
+                        Enviar respuestas
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-  </div>
 <?php endforeach ?>
 
-<div class="container gallery">  
+    <div class="container gallery">
 <?php foreach ($imagenes as $i=>$img): ?>  
   <?php if ($i == 0 or $i == 3): ?>
     <div class="row">
   <?php endif ?>
         <div class="col-lg-4" style="width: 300px;">
-          <a class="thumbnail" href="#openModal<?php echo $i?>">
-            <img <?php if (isset($respuestas[$img->id])): ?> class='grayscale' <?php endif;?> id='img_<?php echo $img->id?>'
-              src="<?php echo $img->imagen_ubicacion?>" width='280px' height='280px' alt="" />
-          </a>
+              <a id="modal-<?php echo $img->id?>" href="#modal-container-<?php echo $img->id?>" role="button" class="btn"
+                 data-toggle="modal">
+                  <img <?php if (isset($respuestas[$img->id])): ?> class='grayscale' <?php endif;?> id='img_<?php echo $img->id?>'
+                    src="<?php echo $img->imagen_ubicacion?>" width='280px' height='280px' alt="" />
+              </a>
           <p class="text-info"><?php echo $img->titulo ?></p>
             <?php
             if (isset($respuestasAnteriores)){

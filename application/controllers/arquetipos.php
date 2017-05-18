@@ -246,7 +246,7 @@ class Arquetipos extends MY_Controller {
 	public function index()
 	{
 
-		$this->user->on_invalid_session('arquetipos/alumnoHome');
+		$this->user->on_invalid_session('/');
 		if (!$this->user->has_permission('arquetipos')) redirect('/');		
 		$this->template_type = 'admin';
 		$user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();

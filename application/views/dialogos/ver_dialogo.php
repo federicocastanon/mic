@@ -10,10 +10,63 @@
     <div class="spacer"></div>
 <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
     <p><i>Estás actuando como <b><?php echo  $_SESSION["alias"] ?> </b></i>
-        <a class="btn btn-lg btn-info" href="<?php echo base_url('/dialogo/levantarse/'. $dialogo->id)?>">LEVANTARSE</a>
-        <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR DIÁLOGO</a>
+        <a id="modal-838576" href="#modal-container-838576" role="button" class="btn btn-lg btn-info" data-toggle="modal">LEVANTARSE</a>
+        <a id="modal-838577" href="#modal-container-838577" role="button" class="btn btn-lg btn-danger" data-toggle="modal">TERMINAR DIÁLOGO</a>
+
         </p>
+
+    <div class="modal fade" id="modal-container-838576" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Vas a abandonar el diálogo y otro podrá tomar tu lugar
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Seguir la charla
+                    </button>
+                    <a class="btn btn-lg btn-info" href="<?php echo base_url('/dialogo/levantarse/'. $dialogo->id)?>">LEVANTARSE</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal fade" id="modal-container-838577" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Darás por concluido el diálogo. De todas formas podrás retomarlo más adelante
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Seguir la charla
+                    </button>
+                    <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR DIÁLOGO</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 <?php endif; ?>
+
+
+
+
 <div id="ret">
     <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
 </div>

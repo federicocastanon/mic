@@ -165,16 +165,17 @@ class Dialogo_model extends My_Model
 
         if($profesional){
             $query = "UPDATE dialogo SET evaluado = '$alias' WHERE dialogo.id = $idDialogo";
-            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,$profesional);
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,1);
         }else{
             $query = "UPDATE dialogo SET secundario = '$alias' WHERE dialogo.id = $idDialogo";
-            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,$profesional);
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,0);
         }
         $this->db->query($query);
     }
 
     function insertarIntervencion($dialogo, $alias, $texto, $profesional){
-        $query = "INSERT INTO intervencion (id, dialogo, profesional, texto, fecha) VALUES (NULL, '$dialogo', '$profesional', '$texto', CURRENT_TIMESTAMP)";
+
+        $query = "INSERT INTO intervencion (dialogo, profesional, texto, fecha) VALUES ( '$dialogo', '$profesional', '$texto', CURRENT_TIMESTAMP)";
         $this->db->query($query);
     }
 
@@ -198,11 +199,11 @@ class Dialogo_model extends My_Model
     function levantarse($dialogo,$alias, $profesional){
         if($profesional){
 
-            $query = "UPDATE dialogo SET evaluado = null WHERE dialogo.id = $dialogo";
-            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono el diálogo' ,$profesional);
+            $query = "UPDATE dialogo SET evaluado = '' WHERE dialogo.id = $dialogo";
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono el diálogo' ,1);
         }else{
-            $query = "UPDATE dialogo SET secundario = null WHERE dialogo.id = $dialogo";
-            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono diálogo' ,$profesional);
+            $query = "UPDATE dialogo SET secundario = '' WHERE dialogo.id = $dialogo";
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono diálogo' ,0);
         }
         $this->db->query($query);
     }

@@ -21,6 +21,7 @@ class Account extends MY_Controller {
     {
         // If user is already logged in, send it to main
         //$this->user->on_valid_session('admin/');
+
         $this->template_type = 'public';
         $this->template('account/home');
     }
