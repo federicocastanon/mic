@@ -92,10 +92,10 @@
                     </a>
 
                     <?php if ($e->publico): ?>
-                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/dialogo/dialogosPorPrisma/' . $e->id)?>'>
+                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/dialogo/recepcionPrisma/' . $e->id)?>'>
                             <i class="fa fa-external-link"></i> Ir al Lobby
                         </a>
-                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->id?>" value="<?php echo base_url('/dialogo/dialogosPorPrisma/' . $e->id)?>" />
+                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->id?>" value="<?php echo base_url('/dialogo/recepcionPrisma/' . $e->id)?>" />
                         <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->id?>"> <i class="icon-copy"></i> Copiar Link</button>
                         <a class="btn btn-danger pull-left" href='<?php echo base_url('/dialogo/publicar/' . $e->id . '/0')?>'>
                             <i class="fa fa-chain-broken"></i> Desactivar link publico

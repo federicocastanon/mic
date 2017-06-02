@@ -50,6 +50,25 @@ class Dialogo_model extends My_Model
         return $this->db->query($query)->result();
     }
 
+    function obtenerDialogosPorPrismaCalificables($id, $alias) {
+        $query = "select *
+                  from dialogo d
+                  where d.prisma = $id AND d.terminado = 1 AND d.evaluado != '$alias' AND d.secundario != '$alias'";
+        return $this->db->query($query)->result();
+    }
+    function obtenerDialogosPorPrismaTerminados($id) {
+        $query = "select *
+                  from dialogo d
+                  where d.prisma = $id AND d.terminado = 1 ";
+        return $this->db->query($query)->result();
+    }
+    function obtenerDialogosPorPrismaCalificados($id, $alias) {
+        $query = "select d.id
+                  from dialogo d JOIN evaluacion e on d.id = e.dialogo
+                  where d.prisma = $id AND e.alias = '$alias'";
+        return $this->db->query($query)->result();
+    }
+
     function obtenerDialogosPorId($id) {
         $query = "select *
                   from dialogo d
@@ -165,22 +184,22 @@ class Dialogo_model extends My_Model
 
         if($profesional){
             $query = "UPDATE dialogo SET evaluado = '$alias' WHERE dialogo.id = $idDialogo";
-            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,1);
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,1,3);
         }else{
             $query = "UPDATE dialogo SET secundario = '$alias' WHERE dialogo.id = $idDialogo";
-            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,0);
+            $this->insertarIntervencion($idDialogo, $alias, $alias . ' se incorporó al diálogo' ,0,3);
         }
         $this->db->query($query);
     }
 
-    function insertarIntervencion($dialogo, $alias, $texto, $profesional){
+    function insertarIntervencion($dialogo, $alias, $texto, $profesional, $tipo){
 
-        $query = "INSERT INTO intervencion (dialogo, profesional, texto, fecha) VALUES ( '$dialogo', '$profesional', '$texto', CURRENT_TIMESTAMP)";
+        $query = "INSERT INTO intervencion (dialogo, profesional, texto, fecha, tipo) VALUES ( '$dialogo', '$profesional', '$texto', CURRENT_TIMESTAMP,$tipo)";
         $this->db->query($query);
     }
 
-    function crearEvaluacionDocente($dialogo, $puntaje, $creador){
-        $query = "UPDATE dialogo SET evaluacion = $puntaje WHERE dialogo.id = $dialogo";
+    function crearEvaluacionDocente($dialogo, $creador, $puntaje,$sugerencias, $valoracionPositiva, $aclaraciones){
+        $query = "UPDATE dialogo SET evaluacion = $puntaje, sugerencia = '$sugerencias', positivo = '$valoracionPositiva', `aclaracion` = '$aclaraciones' WHERE dialogo.id = $dialogo";
         $this->db->query($query);
     }
 
@@ -200,10 +219,10 @@ class Dialogo_model extends My_Model
         if($profesional){
 
             $query = "UPDATE dialogo SET evaluado = '' WHERE dialogo.id = $dialogo";
-            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono el diálogo' ,1);
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono el diálogo' ,1,3);
         }else{
             $query = "UPDATE dialogo SET secundario = '' WHERE dialogo.id = $dialogo";
-            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono diálogo' ,0);
+            $this->insertarIntervencion($dialogo, $alias, $alias . ' abandono diálogo' ,0,3);
         }
         $this->db->query($query);
     }
@@ -221,6 +240,34 @@ class Dialogo_model extends My_Model
                   where p.id = $id";
         $this->db->query($query);
         return $this->db->insert_id();
+
+    }
+
+    function obtenerDialogoPendiente($id, $alias) {
+        $query = "select d.id
+                  from dialogo d
+                  where d.prisma = $id AND d.terminado =0 AND (d.evaluado = '$alias' OR d.secundario = '$alias')";
+        return $this->db->query($query)->row();
+    }
+
+    function obtenerPrimerDialogoSinRolPorPrisma($id, $profesional){
+        $query = "select  d.id
+                  from dialogo d
+                  where d.prisma = $id  AND ";
+        if($profesional){
+            $query .= "d.evaluado = ''";
+        }else{
+            $query .= "d.secundario = ''";
+        }
+        $query .= ' LIMIT 1';
+        return $this->db->query($query)->row();
+    }
+
+    function obtenerNuevasIntervenciones($dialogoId,$intervencionId){
+        $query = "select *
+                  from intervencion i
+                  where i.dialogo = $dialogoId and i.id > $intervencionId order by i.id ASC ";
+            return $this->db->query($query)->result();
 
     }
 

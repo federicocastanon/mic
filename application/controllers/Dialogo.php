@@ -145,6 +145,130 @@ class Dialogo extends MY_Controller
         $this->dialogosPorPrisma($id);
     }
 
+    function recepcionPrisma($prismaId = null){
+
+        if(!$prismaId) {
+            $prismaId = $_POST['id'];
+            $alias= trim($_POST['alias']);
+            if(strlen($alias)>=1) {
+                $_SESSION["alias"] = $alias;
+            }else{
+                $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
+            }
+        }
+
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
+            $alias= $_POST['alias'];
+            if(strlen($alias)>=1) {
+                $_SESSION["alias"] = $alias;
+            }else{
+                $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
+            }
+        }else if(!isset($_SESSION["alias"]) || strlen($_SESSION["alias"]) < 1 ){
+            unset($_SESSION["alias"]);
+            //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
+            //esto quiere decir que entró por link_publico
+            $vars['urlDestino'] = base_url(). 'dialogo/recepcionPrisma/' . $prismaId;
+            $this->template('account/solicitarAlias', $vars);
+            return;
+        }
+
+        if ($this->user->get_id()){
+            $this->template_type = 'admin';
+            if(!isset($_SESSION)){
+                session_start();
+            }
+            $_SESSION["alias"] = trim($this->user->get_email());
+        }
+
+        $user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
+        $prisma = $this->dialogo_model->obtenerPrisma($prismaId);
+        if(!$prisma){
+            $this->session->set_flashdata('error_message', 'El diálogo seleccionado no existe');
+
+            $this->template('/account/home');
+            return;
+        }
+
+        $vars = array();
+        $dialogoPendiente =$this->dialogo_model->obtenerDialogoPendiente($prismaId, $_SESSION["alias"]);
+        if($dialogoPendiente){
+            $vars['pen'] = $dialogoPendiente->id;
+        }else{
+            $dialogoProfesional = $this->dialogo_model->obtenerPrimerDialogoSinRolPorPrisma($prismaId, true);
+            $dialogoSecundario = $this->dialogo_model->obtenerPrimerDialogoSinRolPorPrisma($prismaId, false);
+            if($dialogoProfesional){
+                $vars['pro'] = $dialogoProfesional->id;
+            }
+            if($dialogoSecundario){
+                $vars['sec'] = $dialogoSecundario->id;
+            }
+        }
+
+        $vars['prisma'] = $prisma;
+
+        $this->template('dialogos/recepcion_prisma', $vars);
+    }
+
+    function calificarLanding($prismaId){
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
+            $alias= $_POST['alias'];
+            if(strlen($alias)>=1) {
+                $_SESSION["alias"] = $alias;
+            }else{
+                $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
+            }
+        }else if(!isset($_SESSION["alias"]) || strlen($_SESSION["alias"]) < 1 ){
+            unset($_SESSION["alias"]);
+            //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
+            //esto quiere decir que entró por link_publico
+            $vars['urlDestino'] = base_url(). 'dialogo/calificarLanding/' . $prismaId;
+            $this->template('account/solicitarAlias', $vars);
+            return;
+        }
+        if ($this->user->get_id()){
+            $this->template_type = 'admin';
+            if(!isset($_SESSION)){
+                session_start();
+            }
+            $_SESSION["alias"] = trim($this->user->get_email());
+        }
+        $dialogos = $this->dialogo_model->obtenerDialogosPorPrismaCalificables($prismaId,$_SESSION["alias"]);
+        if ($this->user->get_id()){
+        //Es docente
+            for($j = 0; $j < sizeof($dialogos); $j++){
+                if($dialogos[$j]->evaluacion > 0){
+                    $dialogos[$j]->calificado = true;
+                }
+            }
+
+        }else{
+            $dialogosCalificados = $this->dialogo_model->obtenerDialogosPorPrismaCalificados($prismaId,$_SESSION["alias"]);
+            for($i = 0; $i < sizeof($dialogosCalificados); $i++){
+                for($j = 0; $j < sizeof($dialogos); $j++){
+                    if($dialogos[$j]->id == $dialogosCalificados[$i]->id){
+                        $dialogos[$j]->calificado = true;
+                    }
+                }
+            }
+        }
+
+
+
+
+        $prisma = $this->dialogo_model->obtenerPrisma($prismaId);
+        $vars = array('dialogos' => $dialogos);
+        $vars['prisma'] = $prisma->id;
+
+        $this->template('dialogos/calificar_landing', $vars);
+    }
+
     function dialogosPorPrisma($prismaId){
 
         if(!isset($_SESSION)){
@@ -215,7 +339,11 @@ class Dialogo extends MY_Controller
         $alias = $_POST['alias'];
 
         $_SESSION["alias"] =trim($alias) ;
-        $_SESSION["profesional"] =$profesional ==  'true';
+        if ($profesional ==  'true'){
+            $_SESSION["profesional"] =1;
+        }else{
+            $_SESSION["profesional"] = 0;
+        }
 
         $this->dialogo_model->tomarRol($dialogoId, $alias, $_SESSION["profesional"] );
         //$this->lobbyDialogos(7);
@@ -242,16 +370,52 @@ class Dialogo extends MY_Controller
         if($evaluacion){
             $vars['evaluacion'] = $evaluacion;
         }
+
+        $evaluaciones = $this->dialogo_model->obtenerEvaluacionesPorDialogo($dialogoId);
+        $cantidad = count($evaluaciones);
+        $dialogo->promedio = 0;
+        $dialogo->tuPuntaje = 0;
+        $dialogo->sugerencias = [];
+        $dialogo->positivos = [];
+        $dialogo->aclaraciones = [];
+        if($cantidad>0) {
+            $suma = 0;
+            foreach ($evaluaciones as $e) {
+                $suma += $e->puntaje;
+                if($e->alias == $alias){
+                    //esta es tu evaluación
+                    $dialogo->tuPuntaje = $e->puntaje;
+                }
+                if(strlen($e->sugerencia)>0){
+                    array_push($dialogo->sugerencias, $e->sugerencia );
+                }
+                if(strlen($e->positivo)>0){
+                    array_push($dialogo->positivos, $e->positivo);
+                }
+                if(strlen($e->aclaracion)>0){
+                    array_push($dialogo->aclaraciones, $e->aclaracion );
+                }
+            }
+            $dialogo->promedio = $suma / $cantidad;
+        }
+
         $this->template('dialogos/ver_dialogo', $vars);
     }
 
     function intervenir($dialogoId){
-        if(!isset($_SESSION)){             session_start();         }
+        if(!isset($_SESSION)){
+            session_start();
+        }
         $profesional = $_SESSION["profesional"];
+
         $alias = $_SESSION["alias"] ;
         $intervencion= $_POST['intervencion'];
+        $tipo = 2;
+        if($profesional){
+            $tipo =1 ;
+        }
 
-        $this->dialogo_model->insertarIntervencion($dialogoId, $alias, $intervencion, $profesional);
+        $this->dialogo_model->insertarIntervencion($dialogoId, $alias, $intervencion, $profesional,$tipo);
         $this->armarDialogo($dialogoId);
     }
 
@@ -267,7 +431,7 @@ class Dialogo extends MY_Controller
         }
 
 
-        $this->lobbyDialogos($dialogo->prisma);
+        $this->recepcionPrisma($dialogo->prisma);
 
     }
 
@@ -276,7 +440,7 @@ class Dialogo extends MY_Controller
         $this->dialogo_model->terminarConversacion($dialogoId);
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
 
-        $this->lobbyDialogos($dialogo->prisma);
+        $this->recepcionPrisma($dialogo->prisma);
     }
 
 
@@ -289,14 +453,14 @@ class Dialogo extends MY_Controller
             $calificacion = $_POST['calificacion'];
             $alias = $_SESSION["alias"] ;
             $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
+            $sugerencias= $_POST['sugerencia'];
+            $valoracionPositiva=$_POST['positiva'];
+            $aclaraciones=$_POST['aclaracion'];
             if ($this->user->get_id()){
                 //calificaDocente
-                $this->dialogo_model->crearEvaluacionDocente($dialogoId,$calificacion,$this->user->get_email());
+                $this->dialogo_model->crearEvaluacionDocente($dialogoId,$this->user->get_email(),$calificacion,$sugerencias, $valoracionPositiva, $aclaraciones);
             }else{
                 //calificaPar
-                $sugerencias= $_POST['sugerencia'];
-                    $valoracionPositiva=$_POST['positiva'];
-                        $aclaraciones=$_POST['aclaracion'];
                 $this->dialogo_model->insertarEvaluacionPar($dialogoId, $alias, $calificacion, $sugerencias, $valoracionPositiva, $aclaraciones) ;
            }
 
@@ -314,7 +478,7 @@ class Dialogo extends MY_Controller
             $this->template_type = 'admin';
 
         $alias = $_SESSION["alias"] ;
-        $dialogos = $this->dialogo_model->obtenerDialogosPorPrisma($prismaId);
+        $dialogos = $this->dialogo_model->obtenerDialogosPorPrismaTerminados($prismaId);
 
         foreach($dialogos as $d){
             $evaluaciones = $this->dialogo_model->obtenerEvaluacionesPorDialogo($d->id);
@@ -356,8 +520,42 @@ class Dialogo extends MY_Controller
             session_start();
         }
         unset($_SESSION["alias"]);
-        $vars['urlDestino'] = base_url(). 'dialogo/dialogosPorPrisma/' . $public_id;
+        $vars['urlDestino'] = base_url(). 'dialogo/recepcionPrisma/' . $public_id;
         $this->template('account/solicitarAlias', $vars);
         return;
     }
+    public function intervenirAjax(){
+        $dialogoId = $this->input->post('dialogoId');
+        $intervencion =$this->input->post('intervencion');
+        $ultimoId =$this->input->post('ultimoId');
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        $profesional = $_SESSION["profesional"];
+
+        $alias = $_SESSION["alias"] ;
+        $tipo = 2;
+        if($profesional){
+            $tipo =1 ;
+        }
+
+        $this->dialogo_model->insertarIntervencion($dialogoId, $alias, $intervencion, $profesional,$tipo);
+        $nuevas = $this->dialogo_model->obtenerNuevasIntervenciones($dialogoId,$ultimoId);
+        $output = array('intervenciones' => $nuevas);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
+
+    public function recargaAjax(){
+    $dialogo = $this->input->post('dialogoId');
+    $ultimoId =$this->input->post('ultimoId');
+    $nuevas = $this->dialogo_model->obtenerNuevasIntervenciones($dialogo,$ultimoId);
+    $output = array('intervenciones' => $nuevas);
+
+    $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($output));
+}
 }

@@ -16,7 +16,7 @@
         </form>
     </div>
     <div class="col-sm-4">
-        <form method='POST' action='<?php echo base_url('/dialogo/dialogosPorPrismaAlumno/')?>'>
+        <form method='POST' action='<?php echo base_url('/dialogo/recepcionPrisma/')?>'>
             <div id="logo" class="span4">
                 <span class="logoxsmall">Prismas</span><br />
                 <img src="<?= assets_url('/img/prismas.png')?>" width="116" height="120" border="0">

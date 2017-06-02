@@ -1,8 +1,99 @@
+<script type='text/javascript'>
 
+
+    $(window).load(function(){
+       $("html, body").animate({scrollTop: $(document).height()},1000);
+    });
+
+    function crearIntervencion(data){
+        var html ='<div class="row top30" >';
+        if(data.tipo == 1){
+            html += '<div class="col-sm-6 panelAzul" style="float: left;">';
+            html += data.texto +  '<br>'+ data.fecha;
+        }else if(data.tipo == 2){
+            html += '<div class="col-sm-6 panelMarron" style="float: right">';
+            html += data.texto +  '<br>'+ data.fecha;
+        }else if (data.tipo == 3){
+            html += '<div class="col-sm-12" ><div class="panelGris">';
+            html += data.texto + data.fecha + '</div>';
+        }
+        html += '</div></div>';
+        return html;
+    }
+
+    setInterval(recargaAjax, 5000);
+
+    function recargaAjax(){
+    var ultimoId = $('#ultimoId').val();
+    var url = $('#ultimoId').attr('url');
+    var dialogoId = $('#ultimoId').attr('dialogoId');
+    var test = '<?php echo  $_SESSION["alias"] ?>';
+        $.ajax({
+            url: url,
+            method: "POST",
+            dataType: 'json',
+            data: {"dialogoId" : dialogoId, "ultimoId" : ultimoId},
+            success: function(data){
+
+                if(data.intervenciones.length > 0){
+
+                    var htmlNuevo = '';
+                    var nuevoUltimoId;
+                    for (i = 0; i<data.intervenciones.length;i++) {
+                        htmlNuevo += crearIntervencion(data.intervenciones[i]);
+                        nuevoUltimoId = data.intervenciones[i].id;
+                    }
+                    $('#dialogo').append(htmlNuevo);
+                    $('#ultimoId').val(nuevoUltimoId);
+                }
+
+
+            },
+            error: function(){
+                alert('ERROR');
+            }
+        });
+
+    }
+
+    function intervenirAjax(){
+        var ultimoId = $('#ultimoId').val();
+        var nuevaIntervencion = $('#nuevaIntervencion').val();
+        var url = '<?php echo base_url('/dialogo/intervenirAjax/' . $dialogo->id)?>';
+        var dialogoId = $('#ultimoId').attr('dialogoId');
+        $('#nuevaIntervencion').val('');
+        $.ajax({
+            url: url,
+            method: "POST",
+            dataType: 'json',
+            data: {"dialogoId" : dialogoId, "ultimoId" : ultimoId, "intervencion" : nuevaIntervencion},
+            success: function(data){
+                if(data.intervenciones.length > 0){
+
+                    var htmlNuevo = '';
+                    var nuevoUltimoId;
+                    for (i = 0; i<data.intervenciones.length;i++) {
+                        htmlNuevo += crearIntervencion(data.intervenciones[i]);
+                        nuevoUltimoId = data.intervenciones[i].id;
+                    }
+                    $('#dialogo').append(htmlNuevo);
+                    $('#ultimoId').val(nuevoUltimoId);
+                }
+
+
+            },
+            error: function(){
+                alert('ERROR');
+            }
+        });
+
+    }
+
+</script>
 <div class="row-fluid">
     <?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario ): ?>
         <div class="span12">
-            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/lobbyDialogos/' . $dialogo->prisma)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/recepcionPrisma/' . $dialogo->prisma)?>"><i class="fa fa-arrow-left"></i> Volver</a>
        </div>
     <?php endif; ?>
     </div>
@@ -71,19 +162,32 @@
     <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
 </div>
     <?php if (isset($intervenciones) && $intervenciones): ?>
-        <?php foreach ($intervenciones as $e): ?>
-        <div class="row top30">
-            <?php if ($e->profesional): ?>
-                <div class="col-sm-6 panelAzul" style="float: left;">
-            <?php else: ?>
-                <div class="col-sm-6 panelMarron" style="float: right">
+<div id="dialogo">
+        <?php
+        $rc = -1;
+        foreach ($intervenciones as $e):
+        $rc++;?>
+        <div class="row top30" >
+            <?php if ($e->tipo == 1): ?>
+               <div class="col-sm-6 panelAzul" style="float: left;">
+                   <?php echo $e->texto ?><br>
+                   <i><?php echo $e->fecha ?></i>
+            <?php elseif ($e->tipo == 2): ?>
+               <div class="col-sm-6 panelMarron" style="float: right">
+                   <?php echo $e->texto ?><br>
+                   <i><?php echo $e->fecha ?></i>
+            <?php elseif ($e->tipo == 3): ?>
+               <div class="col-sm-12" >
+                   <div class="panelGris">
+                       <?php echo $e->texto ?>
+                       <i><?php echo $e->fecha ?></i>
+                   </div>
             <?php endif; ?>
-                <?php echo $e->texto ?><br>
-                <i><?php echo $e->fecha ?></i>
             </div>
         </div>
         <?php endforeach ?>
-
+   </div>
+          <input type="hidden" dialogoId="<?php echo $dialogo->id ?>" url="<?php echo base_url('/dialogo/recargaAjax/' . $dialogo->id)?>" id="ultimoId" value="<?php echo $intervenciones[$rc]->id ?>">
     <?php else: ?>
         <h1>Este dialogo no empezó</h1>
     <?php endif; ?>
@@ -98,9 +202,9 @@
                             <?php endif; ?>
                             <div class="spacer"></div>
                             <div class="spacer"></div>
-                            <textarea style="width: 100%" name="intervencion" placeholder="Escribí acá...." required="true"></textarea>
-                            <button type="submit" class="vinculo btn btn-lg btn-default"> INTERVENIR</button>
-                            <a class="btn btn-lg btn-success" href="<?php echo base_url('/dialogo/calificar/'. $dialogo->id)?>">RECARGAR</a>
+                            <textarea style="width: 100%" name="intervencion" id="nuevaIntervencion" placeholder="Escribí acá...." required="true"></textarea>
+
+                            <span class="vinculo btn btn-lg btn-default" onclick="intervenirAjax()">INTERVENIR</span>
                         </div>
                 </form>
             <?php endif; ?>
@@ -116,12 +220,12 @@
                     <div>
                         <h2>Ya calificaste este dialogo</h2>
                     </div>
-                <?php }else if ( !$dialogo->evaluado or !$dialogo->secundario){ ?>
+                <?php }else if ( (!$dialogo->evaluado or !$dialogo->secundario) and !$dialogo->terminado){ ?>
                     <div>
                         <h2>No se puede calificar este dialogo pues al menos uno de los participantes está ausente y el dialogo no está terminado</h2>
                     </div>
                 <?php }else{ ?>
-                    <?php if ($this->template_type != 'admin'  ): ?>
+
 
                         <div class="form-group">
                             <label for="sugerencia">Sugerencia</label>
@@ -136,7 +240,6 @@
                             <input id="aclaracion" name="aclaracion">
                         </div>
 
-                    <?php endif; ?>
                     <input id="input-id" name="calificacion"  >
                     <button type="submit" class="vinculo"> Calificar</button>
                 <?php } ?>
@@ -146,4 +249,89 @@
                     $("#input-id").rating({ language:'es'});
                 } );
             </script>
+
+<?php else: ?>
+<link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
+<link href="<?php echo assets_url('css/jquery-ui.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
+    <script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
+    <script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
+    <style>
+        .caption{
+            width: 100%;
+        }
+    </style>
+
+    <div class="col-sm-6 " style="float: right;">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <th>Promedio de pares</th>
+                <th>Calificación docente</th>
+                </thead>
+                <tbody>
+                    <tr class="filaCalificacion">
+                        <td>
+                            <input class="estrellas" name="calificacion" value="<?php echo $dialogo->promedio ?>" >
+                        </td>
+                        <td>
+                            <input class="estrellas" name="calificacion" value="<?php echo $dialogo->evaluacion ?>" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <div class="tabs">
+                                <ul>
+                                    <li class="sugerencia" style="color: white"><a href="#tabs-1<?php echo $dialogo->id ?>">SUGERENCIAS</a></li>
+                                    <li class="positiva" style="color: white"><a href="#tabs-2<?php echo $dialogo->id ?>">Valoraciones Positivas</a></li>
+                                    <li class="aclaracion" style="color: white"><a href="#tabs-3<?php echo $dialogo->id ?>">Aclaraciones</a></li>
+                                </ul>
+                                <div id="tabs-1<?php echo $dialogo->id ?>">
+                                    <?php $rc = 0;
+                                    foreach ($dialogo->sugerencias as $s):
+                                        $rc++;
+                                        ?>
+                                        <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
+                                    <?php endforeach ?>
+                                    <p style=" background-color: #D5D59D; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                                </div>
+                                <div id="tabs-2<?php echo $dialogo->id ?>">
+                                    <?php $rc = 0;
+                                    foreach ($dialogo->positivos as $s):
+                                        $rc++;
+                                        ?>
+                                        <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
+                                    <?php endforeach ?>
+                                    <p style=" background-color: #277415; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                                </div>
+                                <div id="tabs-3<?php echo $dialogo->id ?>">
+                                    <?php $rc = 0;
+                                    foreach ($dialogo->aclaraciones as $s):
+                                        $rc++;
+                                        ?>
+                                        <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
+                                    <?php endforeach ?>
+                                    <p style=" background-color: #66FF66; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            $(".estrellas").each(function(){
+                $(this).rating({ language:'es', readonly: true, size: 'xs', showClear : false});
+            });
+            $( ".tabs" ).each(function(){
+                $(this).tabs({
+                    collapsible: true,
+                    active: false
+                });
+            });
+        } );
+    </script>
+
 <?php endif; ?>

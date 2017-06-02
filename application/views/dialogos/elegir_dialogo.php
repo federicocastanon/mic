@@ -60,14 +60,11 @@ function sentarse(dialogoId, profesional){
             <div class="col-sm-4 logolightxsmall">
                 ROL Profesional
             </div>
-            <div class="col-sm-3 logolightxsmall">
+            <div class="col-sm-4 logolightxsmall">
                 ROL secundario
             </div>
             <div class="col-sm-2 logolightxsmall">
                 Estado
-            </div>
-            <div class="col-sm-2 logolightxsmall">
-                Calificar
             </div>
         </div>
         <?php foreach ($dialogos as $e): ?>
@@ -92,7 +89,7 @@ function sentarse(dialogoId, profesional){
                 </div>
 
                     <?php if ($e->terminado): ?>
-                <div class="col-sm-2" style="color: red">
+                    <div class="col-sm-2" style="color: red">
                         FINALIZADO
                     <?php elseif($e->evaluado && $e->secundario): ?>
                     <div class="col-sm-2" style="color: green">
@@ -102,21 +99,6 @@ function sentarse(dialogoId, profesional){
                         ABIERTO
                     <?php endif; ?>
                 </div>
-            <?php if ($this->template_type == 'admin'): ?>
-                <div class="col-sm-2">
-                    <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar</a>
-                </div>
-            <?php else: ?>
-                <?php if ($_SESSION["alias"] != $e->evaluado and $_SESSION["alias"] != $e->secundario ): ?>
-                    <div class="col-sm-2">
-                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Calificar</a>
-                    </div>
-                <?php else: ?>
-                    <div class="col-sm-2">
-                        <a href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">Continuar diálogo</a>
-                    </div>
-                <?php endif; ?>
-            <?php endif; ?>
 
             </div>
 

@@ -165,7 +165,7 @@
                                 <div class="control-group">
                                     <div class="controls">
                 <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2"
-                          class="input-large" id="textarea2"
+                          class="input-large" id="textarea2" style="width:100%;"
                           <?php if ($disabled):?>disabled<?php endif?>><?php echo @$respuestas[$img->id][$preg->id]?></textarea>
                                     </div>
                                 </div>

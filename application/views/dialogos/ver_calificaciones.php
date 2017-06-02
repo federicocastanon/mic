@@ -4,9 +4,15 @@
 <script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
 <script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
 
+<style>
+    .caption{
+        width: 100%;
+    }
+</style>
+
 <div class="row-fluid">
     <div class="span12">
-        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/lobbyDialogos/' . $prismaId)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/calificarLanding/' . $prismaId)?>"><i class="fa fa-arrow-left"></i> Volver</a>
     </div>
 
 </div>
@@ -18,7 +24,9 @@
                 <th>id</th>
                 <th>Profesional</th>
                 <th>Secundario</th>
+                <?php if($this->template_type != 'admin'): ?>
                 <th>Tu opinión</th>
+                <?php endif; ?>
                 <th>Promedio de pares</th>
                 <th>Calificación docente</th>
                 <th>Acciones</th>
@@ -35,12 +43,14 @@
                         <td>
                             <?php echo $e->secundario ?>
                         </td>
+                        <?php if($this->template_type != 'admin'): ?>
                         <td><?php if($e->tuPuntaje > 0){ ?>
                                 <input class="estrellas" name="calificacion" value="<?php echo $e->tuPuntaje ?>" >
-                            <?php }else{ ?>
+                            <?php }else { ?>
                                 <a class="btn btn-sm btn-warning pull-left" href="<?php echo base_url('/dialogo/calificar/'. $e->id)?>">CALIFICAR</a>
                             <?php } ?>
                         </td>
+                        <?php endif; ?>
                         <td>
                             <input class="estrellas" name="calificacion" value="<?php echo $e->promedio ?>" >
                         </td>
@@ -66,6 +76,7 @@
                                         ?>
                                         <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                                     <?php endforeach ?>
+                                    <p style=" background-color: #D5D59D; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $e->sugerencia?></p>
                                 </div>
                                 <div id="tabs-2<?php echo $e->id ?>">
                                     <?php $rc = 0;
@@ -74,6 +85,7 @@
                                         ?>
                                         <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                                     <?php endforeach ?>
+                                    <p style=" background-color: #277415; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $e->sugerencia?></p>
                                 </div>
                                 <div id="tabs-3<?php echo $e->id ?>">
                                     <?php $rc = 0;
@@ -82,6 +94,7 @@
                                         ?>
                                         <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                                     <?php endforeach ?>
+                                    <p style=" background-color: #66FF66; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $e->sugerencia?></p>
                                 </div>
                             </div>
                         </td>

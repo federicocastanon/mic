@@ -697,11 +697,25 @@ label.checkbox.inline{
 .panelAzul{
     background-color: blue;
     color: #FFF;
+    border-radius: 25px;
+    padding: 20px;
 }
 
 .panelMarron{
     background-color: brown;
     color: #FFF;
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.panelGris{
+    background-color: grey;
+    color: #f0ffff;
+    text-align: center;
+    font-size: xx-small;
+    font-style: italic;
+    margin: 0 30%;
+    border-radius: 25px;
 }
 
 .vinculo{
