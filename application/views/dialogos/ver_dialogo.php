@@ -25,8 +25,8 @@
 
     function recargaAjax(){
     var ultimoId = $('#ultimoId').val();
-    var url = $('#ultimoId').attr('url');
-    var dialogoId = $('#ultimoId').attr('dialogoId');
+    var url = "<?php echo base_url('/dialogo/recargaAjax/' . $dialogo->id)?>";
+    var dialogoId = <?php echo $dialogo->id ?>;
     var test = '<?php echo  $_SESSION["alias"] ?>';
         $.ajax({
             url: url,
@@ -50,7 +50,7 @@
 
             },
             error: function(){
-                alert('ERROR');
+                console.log('ERROR en recarga');
             }
         });
 
@@ -83,7 +83,7 @@
 
             },
             error: function(){
-                alert('ERROR');
+                console.log('ERROR en intervencion');
             }
         });
 
@@ -161,6 +161,8 @@
 <div id="ret">
     <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
 </div>
+<input type="hidden" id="parametros" dialogoId="" url="">
+
     <?php if (isset($intervenciones) && $intervenciones): ?>
 <div id="dialogo">
         <?php
@@ -187,7 +189,7 @@
         </div>
         <?php endforeach ?>
    </div>
-          <input type="hidden" dialogoId="<?php echo $dialogo->id ?>" url="<?php echo base_url('/dialogo/recargaAjax/' . $dialogo->id)?>" id="ultimoId" value="<?php echo $intervenciones[$rc]->id ?>">
+            <input type="hidden" id="ultimoId" value="<?php echo $intervenciones[$rc]->id ?>">
     <?php else: ?>
         <h1>Este dialogo no empezó</h1>
     <?php endif; ?>

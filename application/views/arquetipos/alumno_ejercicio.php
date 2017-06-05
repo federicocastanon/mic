@@ -130,7 +130,7 @@
 
 
 <form method='post' action='<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?>'>
-    <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
+    <div id="mensaje" class="alert alert-error pull-left hide" ">Area de Mensajes</div>
     <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
     <div class="row-fluid">
         <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
@@ -165,7 +165,7 @@
                                 <div class="control-group">
                                     <div class="controls">
                 <textarea name="respuesta[<?php echo $img->id?>][<?php echo $preg->id?>]" rows="2"
-                          class="input-large" id="textarea2" style="width:100%;"
+                          class="input-large" id="textarea<?php echo $img->id?>][<?php echo $preg->id?>]" style="width:100%;"
                           <?php if ($disabled):?>disabled<?php endif?>><?php echo @$respuestas[$img->id][$preg->id]?></textarea>
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-
+                    <div id="mensaje" class="alert alert-error pull-left hide" ">Area de Mensajes</div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         Cerrar
                     </button>
