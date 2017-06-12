@@ -216,5 +216,5 @@
   <?php endif ?>
 <?php endforeach ?>
 </div>
-    <a class="btn btn-large btn-default" target="_blank" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
+    <a class="btn btn-large btn-default" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
 </form>

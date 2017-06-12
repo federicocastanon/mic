@@ -44,9 +44,6 @@ function sentarse(dialogoId, profesional){
     <div class="row"> Con este alias entrás a los dialogos <b><?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?></b>
         <a class="btn btn-large" href="<?php echo base_url('/dialogo/cambiarAlias/' . $prisma->id)?>"> Cambiar Alias</a>
     </div>
-        <div class="row">
-            <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma->id)?>"><i class="fa fa-star"></i> Ver Calificaciones</a>
-        </div>
         <input type="hidden" id="alias" name="alias" placeholder="alias" required="true" value="<?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?>"
                "/>
         <input type="hidden" name="dialogoId" id="dialogoId">

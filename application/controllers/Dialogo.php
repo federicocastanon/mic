@@ -351,11 +351,15 @@ class Dialogo extends MY_Controller
     }
 
     function armarDialogo($dialogoId){
-
+        if(!isset($_SESSION)){             session_start();         }
         $alias = $_SESSION["alias"] ;
         $vars = array('intervenciones' =>  $this->dialogo_model->obtenerIntervencionesPorDialogo($dialogoId));
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
         $prisma = $this->dialogo_model->obtenerPrisma($dialogo->prisma);
+        $_SESSION["profesional"] = 1;
+        if($dialogo->evaluado != $alias){
+            $_SESSION["profesional"] = 0;
+        }
 
         $vars['dialogo'] = $dialogo;
         $vars['prisma'] = $prisma;
@@ -410,6 +414,7 @@ class Dialogo extends MY_Controller
 
         $alias = $_SESSION["alias"] ;
         $intervencion= $_POST['intervencion'];
+
         $tipo = 2;
         if($profesional){
             $tipo =1 ;
@@ -524,8 +529,8 @@ class Dialogo extends MY_Controller
         $this->template('account/solicitarAlias', $vars);
         return;
     }
-    public function intervenirAjax(){
-        $dialogoId = $this->input->post('dialogoId');
+    public function intervenirAjax($dialogoId){
+       // $dialogoId = $this->input->post('dialogoId');
         $intervencion =$this->input->post('intervencion');
         $ultimoId =$this->input->post('ultimoId');
         if(!isset($_SESSION)){
@@ -535,7 +540,7 @@ class Dialogo extends MY_Controller
 
         $alias = $_SESSION["alias"] ;
         $tipo = 2;
-        if($profesional){
+        if($profesional == '1'){
             $tipo =1 ;
         }
 

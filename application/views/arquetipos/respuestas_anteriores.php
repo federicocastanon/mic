@@ -10,6 +10,7 @@
             <a href="http://citep.rec.uba.ar" target="_blank">
                 <img src="<?= assets_url('/img/citep-mic-web.png')?>" width="110" height="54">
             </a>
+            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->public_id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
         </div>
     </div>
 </div>

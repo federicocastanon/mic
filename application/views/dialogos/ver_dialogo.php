@@ -206,7 +206,7 @@
                             <div class="spacer"></div>
                             <textarea style="width: 100%" name="intervencion" id="nuevaIntervencion" placeholder="Escribí acá...." required="true"></textarea>
 
-                            <span class="vinculo btn btn-lg btn-default" onclick="intervenirAjax()">INTERVENIR</span>
+                            <span class="vinculo btn btn-lg btn-default" onclick="intervenirAjax()">ENVIAR</span>
                         </div>
                 </form>
             <?php endif; ?>

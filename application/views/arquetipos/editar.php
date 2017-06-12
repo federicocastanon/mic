@@ -109,7 +109,7 @@
             </div>
             <div class="row-fluid">
                 <label>Nombre</label>
-                <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre del ejercicio - No se muestra al alumno" value="<?php echo set_value('nombre', @$arquetipo->nombre)?>">
+                <input name='nombre' id="nombre" class="input-xxlarge" type="text" placeholder="Nombre de la actividad - No se muestra al alumno" value="<?php echo set_value('nombre', @$arquetipo->nombre)?>">
             </div>
             <div class="spacer"></div>
             <div class="tabbable">
@@ -120,9 +120,9 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1"><!-- CONSIGNA -->
                         <div class="tab-content">
-                            <input name='consigna' id="consigna" class="input-xxlarge" type="text" placeholder="Consigna del ejercicio" value="<?php echo set_value('consigna', @$arquetipo->consigna)?>">
+                            <input name='consigna' id="consigna" class="input-xxlarge" type="text" placeholder="Título de la actividad" value="<?php echo set_value('consigna', @$arquetipo->consigna)?>">
                             <div class="spacer"></div>
-                            <h4>Desarrollar</h4>
+                            <h4>Descripción </h4>
                             <textarea name='desarrollo' style='height:500px;' id="desarrollo"> <?php echo set_value('desarrollo', @$arquetipo->desarrollo)?> </textarea>
                         </div>
                         <br /><br />

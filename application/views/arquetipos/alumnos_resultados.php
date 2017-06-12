@@ -137,32 +137,11 @@
 	   <div class="page-header tituloWrapper">
 	       <div class="row"><h1 class="pull-left titulo"><?= $ejercicio->consigna ?></h1></div>
             <div class="row"><h4 class="pull-left titulo"><?= $ejercicio->desarrollo ?></h4></div>
-           <?php if ($this->template_type == 'admin'): ?>
-               <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-           <?php else: ?>
-               <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-           <?php endif; ?>
+           <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->public_id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
 
         </div>
     </div>
-    <div class='row-fluid'>
-        <div class="span12 public">
-            <?php
-            foreach ($ejercicio->preguntas as $pregunta): ?>
-            <p><strong><?= $pregunta->pregunta ?></strong></p>
-            <?php endforeach;  ?>
-        </div>
-    </div>
-    <div class='row-fluid'>
-        <div class="span12 public">
-            <a class="btn btn-primary pull-left"
-               href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>'>
-                <i class="icon-list-alt"></i> Responder
-            </a>
-    		<a class="btn btn-default pull-right" href='#' onClick='window.print();'><i class="fa fa-print"></i> imprimir</a><br>
 
-    	</div>
-    </div>
     <?php foreach ($imagenes as $imagen_id => $imagen): ?>
         <div class="publicwell">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">

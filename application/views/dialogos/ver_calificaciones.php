@@ -27,7 +27,7 @@
                 <?php if($this->template_type != 'admin'): ?>
                 <th>Tu opinión</th>
                 <?php endif; ?>
-                <th>Promedio de pares</th>
+                <th>Calificación de pares</th>
                 <th>Calificación docente</th>
                 <th>Acciones</th>
                 </thead>
