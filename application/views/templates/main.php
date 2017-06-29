@@ -56,7 +56,7 @@
   <body>
     <?php if (!(isset($_hide_menu) && $_hide_menu)) echo $_template_menu_content ?>
 
-    <div class="container offset-header">
+    <div class="offset-header">
       <?php foreach ($error_msgs as $msg) { ?> 
       <div class="alert alert-error" style='position:relative;top:60px;'>
         <button type="button" class="close" data-dismiss="alert">&times;</button>

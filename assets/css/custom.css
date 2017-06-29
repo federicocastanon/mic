@@ -527,7 +527,7 @@ label.checkbox.inline{
 }
 .publicwell {
 	min-height: 20px;
-	padding: 19px;
+	//padding: 19px;
 	margin-bottom: 20px;
 	background-color: rgb(238, 238, 238);
 	border: 1px solid rgb(220, 220, 220);
@@ -720,4 +720,11 @@ label.checkbox.inline{
 
 .vinculo{
     cursor: pointer;
+}
+.wrapperBoton{
+    min-height: 42px;
+}
+.imagenArquetipo{
+    width: 100%;
+    max-width: 200px;
 }

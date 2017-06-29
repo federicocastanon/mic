@@ -35,12 +35,12 @@
     });
 </script>
 <section>
-<div class="row-fluid">
-	<div class="page-header"><h1>Actividades</h1></div>
+<div class="row">
+	<div class="page-header col-md-12"><h1>Actividades</h1></div>
 	
-    <div class="span12">
-        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nueva actividad</a><br>
+    <div class="col-md-12">
+        <a class="btn btn-lg btn-default " href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
+      <a class="btn btn-lg btn-default " href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nueva actividad</a><br>
       <br>
       <br>
 

@@ -58,7 +58,10 @@
              */
 
             function processData(strings) {
-                if(!strings) return;
+                if(!strings) {
+                    $('#nubecontainer').css('display', 'none');
+                    return;
+                }
 
                 // convert the array to a long string
                 // strings = strings.join(' ');
@@ -107,20 +110,21 @@
 
             function getData(){
                 var data = $('#dataCruda')[0].innerText;
+                data = data.trim();
                 calculateCloud(processData(data));
             }
 
             getData();
         });
     </script>
-	<div class="row-fluid publichead">
-        <div class="span10">
+    <div class="row ">
+        <div class="col-md-6">
             <div>
                 <img src="<?= assets_url('/img/foco_public.png') ?>" width="76" height="92">
                 <span class="logosmall">Focos</span> <span class="logolightsmall"> en juego</span>
             </div>
         </div>
-        <div class="span2">
+        <div class="col-md-6">
             <div class="pull-right">
                 <a href="http://citep.rec.uba.ar" target="_blank">
                     <img src="<?= assets_url('/img/citep-mic-web.png')?>" width="110" height="54">
@@ -129,27 +133,35 @@
         </div>
     </div>
     <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
+    <div class="row"  id="nubecontainer">
+        <div class="col-md-12">
+            <section style="float: left; width: 30%; height: 300px" id="cloud">
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="page-header col-md-12">
+            <h1><?= $ejercicio->consigna ?></h1>
+            <h4><?= $ejercicio->desarrollo ?></h4>
+            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->public_id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+        </div>
+    </div>
     <?php if($ejercicio->nube && strlen($crudoRespuestas) > 2): ?>
     <section style="float: left; width: 30%; height: 200px" id="cloud">
     </section>
     <?php endif;?>
-    <div class="row-fluid">
-	   <div class="page-header tituloWrapper">
-	       <div class="row"><h1 class="pull-left titulo"><?= $ejercicio->consigna ?></h1></div>
-            <div class="row"><h4 class="pull-left titulo"><?= $ejercicio->desarrollo ?></h4></div>
-           <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->public_id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
 
-        </div>
-    </div>
 
     <?php foreach ($imagenes as $imagen_id => $imagen): ?>
-        <div class="publicwell">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td><h4><?= $imagen['titulo'] ?></h4></td>
-                    <td width="40%"><img src="<?= $imagen['url']?>" alt='foto de <?= $imagen['titulo']?>' width='280'></td>
-                </tr>
-            </table>
+        <div class="row publicwell">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <h4><?= $imagen['titulo'] ?></h4>
+                </div>
+                <div class="col-md-5">
+                    <img src="<?= $imagen['url']?>" alt='foto de <?= $imagen['titulo']?>' class="imagenArquetipo">
+                </div>
+            </div>
         </div>
 
         <div class="row-fluid">

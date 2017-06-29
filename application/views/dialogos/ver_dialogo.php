@@ -90,6 +90,16 @@
     }
 
 </script>
+<link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
+<link href="<?php echo assets_url('css/jquery-ui.css')?>" media="all" rel="stylesheet" type="text/css" />
+<script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
+<script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
+<script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
+<style>
+    .caption{
+        width: 100%;
+    }
+</style>
 <div class="row-fluid">
     <?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario ): ?>
         <div class="span12">
@@ -212,7 +222,7 @@
             <?php endif; ?>
 
             <div class="spacer"></div> <div class="spacer"></div> <div class="spacer"></div>
-<?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario ): ?>
+<?php if ($_SESSION["alias"] != $dialogo->evaluado and $_SESSION["alias"] != $dialogo->secundario and $dialogo->terminado): ?>
 
             <link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
             <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
@@ -252,17 +262,7 @@
                 } );
             </script>
 
-<?php else: ?>
-<link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
-<link href="<?php echo assets_url('css/jquery-ui.css')?>" media="all" rel="stylesheet" type="text/css" />
-    <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
-    <script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
-    <script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
-    <style>
-        .caption{
-            width: 100%;
-        }
-    </style>
+<?php elseif ($dialogo->terminado): ?>
 
     <div class="col-sm-6 " style="float: right;">
         <div class="table-responsive">
