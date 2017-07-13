@@ -38,6 +38,7 @@ class Arquetipos extends MY_Controller {
 		if (!$arquetipo_id) die('Link no valido');
 		$this->template_type ='arquetipo'; 
 		$vars = array();
+        $vars['micSeleccionada'] = 'FOCOS';
 		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
 		$vars['hash'] = $hash;
 		$this->template('arquetipos/alumno_entrar', $vars);
@@ -72,6 +73,7 @@ class Arquetipos extends MY_Controller {
 		if (!$ejercicio) die('El código de ejercicio que ingresaste no existe,' . '---' . $public_id);
         $arquetipo_id = $ejercicio->id ;
         $vars = array();
+        $vars['micSeleccionada'] = 'FOCOS';
 		if (isset($_POST['obtenerRespuestas'])) {
             $obtResp = $this->input->post('obtenerRespuestas');
             if ($obtResp != 1) {
@@ -142,6 +144,7 @@ class Arquetipos extends MY_Controller {
 		$arquetipo_id = $this->Arquetipos_model->get_arquetipo_id_by_hash($hash);
 		if (!$arquetipo_id) die('Link no valido');
 		$vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+        $vars['micSeleccionada'] = 'FOCOS';
 		$vars['hash'] = $hash;
 		$this->template_type ='arquetipo'; 
 		$this->template('arquetipos/alumno_consigna', $vars);
@@ -202,12 +205,15 @@ class Arquetipos extends MY_Controller {
 	public function link_publico($public_id) {
 
 
-		$this->template_type ='arquetipo'; 
+        if (!$this->user->has_permission('arquetipos')) {
+            $this->template_type = 'admin';
+        }
 		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
         $preguntas = $this->Arquetipos_model->get_questions($public_id);
         $ejercicio->preguntas = $preguntas;
 		if (!$ejercicio or !$ejercicio->public_id_enabled) die('El código de ejercicio que ingresaste no existe');
 		$vars['respuestas'] = array();
+        $vars['micSeleccionada'] = 'FOCOS';
 		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id, true);
         $crudoRespuestas = "";
 
@@ -250,7 +256,8 @@ class Arquetipos extends MY_Controller {
 		if (!$this->user->has_permission('arquetipos')) redirect('/');		
 		$this->template_type = 'admin';
 		$user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
-		$vars = array('ejercicios' => $this->Arquetipos_model->get_all($user_id));
+		$vars = array('ejercicios' => $this->Arquetipos_model->get_all($user_id) );
+        $vars['micSeleccionada'] = 'FOCOS';
 		$this->template('arquetipos/listado', $vars);
 	}
 
@@ -275,6 +282,7 @@ class Arquetipos extends MY_Controller {
 		if (!$this->user->has_permission('arquetipos')) redirect('/');
 
         $vars = array();
+        $vars['micSeleccionada'] = 'FOCOS';
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($arquetipo_id);
         $preguntas = $this->Arquetipos_model->get_questions($arquetipo_id);
         $ejercicio->preguntas = $preguntas;
@@ -295,6 +303,7 @@ class Arquetipos extends MY_Controller {
         $crudoRespuestas = $crudoRespuestas . ' ';
         $vars['crudoRespuestas'] = $crudoRespuestas;
         $vars['imagenes'] = array();
+
         $tmp_imagenes = $this->Arquetipos_model->get_images($ejercicio->id);
         foreach ($tmp_imagenes as $imagen) {
             $vars['imagenes'][$imagen->id] = array('url' => $imagen->imagen_ubicacion,
@@ -322,6 +331,7 @@ class Arquetipos extends MY_Controller {
 		$vars = array();
 		$vars['respuestas'] = array();
 		$vars['alumnos'] = array();
+        $vars['micSeleccionada'] = 'FOCOS';
 		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($arquetipo_id, false);
 		foreach ($tmp_respuestas as $e) {
 			#if (!isset($vars['respuestas'][$e->alumno_id])) $vars['respuestas'][$e->alumno_id] = array();
@@ -412,6 +422,7 @@ class Arquetipos extends MY_Controller {
 		$this->load->library('form_validation');
 		#$list = scandir()
 		$vars = array('stock_imgs' => array());
+        $vars['micSeleccionada'] = 'FOCOS';
 		$tmp = scandir(BASEPATH . '../assets/img/stock_arquetipos/'); 
 		foreach ($tmp as $file) { 
 			if (strlen($file) > 2) $vars['stock_imgs'][] = assets_url('/img/stock_arquetipos/' . $file);
@@ -617,8 +628,11 @@ class Arquetipos extends MY_Controller {
         $respuestas = $this->Arquetipos_model->listado_respuestas_por_mail($arquetipo_id, $alias);
         $vars['respuestasAnteriores'] = $respuestas;
         $ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($arquetipo_id);
+        $preguntas = $this->Arquetipos_model->get_questions($arquetipo_id);
+        $ejercicio->preguntas = $preguntas;
         $vars['ejercicio'] = $ejercicio;
         $vars['imagenes'] = $this->Arquetipos_model->get_images($arquetipo_id);
+        $vars['micSeleccionada'] = 'FOCOS';
         $this->template_type ='arquetipo';
         //$this->alumno_ejercicio($arquetipo_id, $respuestas);
         $this->template('arquetipos/respuestas_anteriores', $vars);
@@ -631,6 +645,7 @@ class Arquetipos extends MY_Controller {
         }
         unset($_SESSION["alias"]);
         $vars['urlDestino'] = base_url(). 'arquetipos/alumno_ejercicio/' . $public_id;
+        $vars['micSeleccionada'] = 'FOCOS';
         $this->template('account/solicitarAlias', $vars);
         return;
     }

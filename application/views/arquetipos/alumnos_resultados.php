@@ -1,4 +1,5 @@
-<div class="container">
+<link href="<?php echo assets_url('css/jquery-ui.css')?>" media="all" rel="stylesheet" type="text/css" />
+<script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
     <script src="<?php echo assets_url('js/d3.min.js');?>"></script>
     <script type="text/javascript" src="<?php echo assets_url('js/d3.layout.cloud.js');?>"></script>
     <script>
@@ -7,6 +8,11 @@
         }
         $( document ).ready(function() {
 
+                $("#accordion").accordion({
+                    header: 'div.panelGrisClaro',
+                    active: false,
+                    collapsible: true,
+                });
             /* D3  */
 
             var width = Math.floor(document.body.clientWidth * 0.8);
@@ -96,11 +102,11 @@
                 return wordCountArr;
             }
 
-            var excluidas = ["", " "];
+            var excluidas = ["", " "," a ", " ante "," bajo "," cabe "," con "," contra "," de "," desde "," en "," entre "," hacia "," hasta "," para "," por "," según "," sin "," so"," sobre "," tras "," la "," las "," el "," los "," este "," esto "," estos "," esta "," estas "," esa "," esas "," ese "," eso "," esos "," ella "," ellas "," ellos "," tu "," vos "," yo "," vosotros "," vosotras "," nosotros "," nosotros "," mi "," mio "," mia "," mios "," mias "," tuyo "," tuya "," tuyas "," tuyos "," vuestro "," vuesta "," vuestras "," vuestros "," suyo "," suyos "," suyas "," nuestro "," nuestra "," nuestros "," nuestras "," su "," tu "," algún "," alguna "," algunos "," algunas "," ningún "," ninguna "," ninguno "," una "," unas"];
 
             function excluirComunes(palabra){
 
-                if(excluidas.indexOf(palabra) > -1){
+                if(excluidas.indexOf(" " + palabra + " " ) > -1){
                     return true;
                 }
 
@@ -117,21 +123,7 @@
             getData();
         });
     </script>
-    <div class="row ">
-        <div class="col-md-6">
-            <div>
-                <img src="<?= assets_url('/img/foco_public.png') ?>" width="76" height="92">
-                <span class="logosmall">Focos</span> <span class="logolightsmall"> en juego</span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="pull-right">
-                <a href="http://citep.rec.uba.ar" target="_blank">
-                    <img src="<?= assets_url('/img/citep-mic-web.png')?>" width="110" height="54">
-                </a>
-            </div>
-        </div>
-    </div>
+
     <span id="dataCruda" style="display: none;"><?= $crudoRespuestas ?></span>
     <div class="row"  id="nubecontainer">
         <div class="col-md-12">
@@ -139,55 +131,66 @@
             </section>
         </div>
     </div>
-    <div class="row">
-        <div class="page-header col-md-12">
-            <h1><?= $ejercicio->consigna ?></h1>
-            <h4><?= $ejercicio->desarrollo ?></h4>
-            <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->public_id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
-        </div>
+    <div class="col-md-12">
+        <h2><?php echo $ejercicio->consigna ?></h2>
+    </div>
+    <div class="col-md-12">
+        <h4><?php echo $ejercicio->desarrollo ?></h4>
+
+        <div class="spacer"></div>
     </div>
     <?php if($ejercicio->nube && strlen($crudoRespuestas) > 2): ?>
     <section style="float: left; width: 30%; height: 200px" id="cloud">
     </section>
     <?php endif;?>
-
-
+    <div id="accordion">
     <?php foreach ($imagenes as $imagen_id => $imagen): ?>
-        <div class="row publicwell">
-            <div class="col-md-12">
+            <div class="col-md-12 panelGrisClaro">
                 <div class="col-md-12">
-                    <h4><?= $imagen['titulo'] ?></h4>
+                    <h4 class="tituloFoco"><?= $imagen['titulo'] ?></h4>
                 </div>
-                <div class="col-md-5">
-                    <img src="<?= $imagen['url']?>" alt='foto de <?= $imagen['titulo']?>' class="imagenArquetipo">
+                <div class="col-md-12">
+
+                    <div class="col-md-3">
+                        <img id="img_small_<?php echo $imagen_id?>" class='imagenModal'
+                             src="<?= $imagen['url']?>"  alt="">
+                    </div>
+                    <div class="col-md-9">
+                        <?php
+                        foreach ($ejercicio->preguntas as $preg): ?>
+                            <h5 class="preguntaFoco"><?= $preg->pregunta?></h5>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="contenedorRespuestasPublicas">
+                <?php
+                foreach ($ejercicio->preguntas as $pregunta): ?>
+                    <div class="col-md-12">
+                        <h5 class="preguntaFoco"><?= $preg->pregunta?></h5>
+                    </div>
 
-        <div class="row-fluid">
-                <div class="span6">
-
-                    <?php
-                    foreach ($ejercicio->preguntas as $pregunta): ?>
-                        <div style="float: left; width: 100%"><strong><?= $pregunta->pregunta ?></strong></div>
-                        <?php
-                        if (isset($respuestas[$imagen_id][$pregunta->id])){
-                            foreach ($respuestas[$imagen_id][$pregunta->id] as $resp): ?>
-                                <div  style="float: left; width:100%; min-height: 40px; color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>">
-                                    <div style="width:100%;  float: left">  <?= $resp->respuesta ?> </div>
-                                </div>
-                        <?php endforeach; }else{ ?>
-                            <div  style="float: left; width:100%; min-height: 40px; color: lightslategrey">
-                                <div style="width:100%;  float: left"> Todavía no hay respuestas publicadas </div>
+                    <?php  $j = 0;
+                    if (isset($respuestas[$imagen_id][$pregunta->id])){
+                        foreach ($respuestas[$imagen_id][$pregunta->id] as $resp): ?>
+                            <div class="col-md-12 <?php echo ($j++%2==1) ? 'par' : 'impar' ?>">
+                                <?= $resp->respuesta ?>
                             </div>
-                        <?php }?>
-                    <?php endforeach;  ?>
+                        <?php endforeach; }else{ ?>
+                        <div class="col-md-12">
+                            Todavía no hay respuestas publicadas
+                        </div>
+                    <?php }?>
+
+                <?php endforeach;  ?>
+                <div class="col-md-12">
+                    <p class="pull-right"><a href="#top" class="subir">Arriba</a></p>
                 </div>
-
         </div>
-    <?php endforeach //imagenes ?>
+    <?php endforeach ?>
+    </div><!-- accordion-->
 
-	<footer id="footer">
-        <p class="pull-right"><a href="#top">Arriba</a></p>       
-	</footer>    
-</div>
+
+
+
+

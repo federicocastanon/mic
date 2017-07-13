@@ -1,11 +1,5 @@
 <style type="text/css">
-body {
-	padding-top: 50px;
-	padding-bottom: 40px;
-	background-image: url(../../../assets/img/bg.jpg);
-	background-repeat: no-repeat;
-	background-position: center top;
-}
+
 
 .form-signin {
         max-width: 300px;

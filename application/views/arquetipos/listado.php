@@ -34,17 +34,19 @@
         console.log(e);
     });
 </script>
-<section>
-<div class="row">
-	<div class="page-header col-md-12"><h1>Actividades</h1></div>
-	
-    <div class="col-md-12">
-        <a class="btn btn-lg btn-default " href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-      <a class="btn btn-lg btn-default " href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nueva actividad</a><br>
-      <br>
-      <br>
 
+
+    <div class="col-md-12 ">
+        <div class="col-md-12 botonera">
+            <a class="btn btn-lg btn-default pull-right " href="<?php echo base_url('/admin')?>"><i class="fa fa-arrow-left"></i> Volver</a>
+        </div>
+        <div class="col-md-12 botonera">
+      <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/arquetipos/editar/')?>"><i class="fa fa-plus"></i> Nueva actividad</a><br>
+            </div>
   </div>
+
+<div class="col-md-12">
+    <div class="blanco tablaGigante">
 <?php if (isset($ejercicios) && $ejercicios): ?>
 <table class="table table-striped table-bordered table-hover" id='list'>
     <thead>
@@ -91,45 +93,49 @@
                              <i class="fa fa-eye"></i> previsualizar
                         </a>
                      -->
-                    <a class="btn btn-info pull-left" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'>
-                        <i class="icon-copy"></i> Copiar y Editar
-                    </a>
-                    <a class="btn btn-success pull-left"
-                        href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'>
-                        <i class="icon-list-alt"></i> Respuestas
-                    </a>
-                    <a class="btn btn-primary pull-left"
-                        href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'>
-                        <i class="icon-list-alt"></i> Editar
-                    </a>
+                    <a class=" pull-left" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'><i class="linkListado fa fa-copy"></i></a>
+                    <a class="pull-left"
+                        href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'><i class="linkListado fa fa-reply" aria-hidden="true"></i></a>
+                    <a class=" pull-left"
+                        href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'><i class="linkListado fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
-                    <a class="btn btn-danger pull-left"
-                        href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>' 
-                        onClick='return confirm("Confirme que quiere borrar este ejercicio");'>
-                        <i class="fa fa-trash-o"></i> Eliminar
-                    </a>
+                    <a class=" pull-left"
+                        href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>'
+                        onClick='return confirm("Confirme que quiere borrar este ejercicio");'><i class="linkListado fa fa-trash-o"></i></a>
 
                     <?php if ($e->public_id_enabled): ?>
-                        <a class="btn btn-primary pull-left" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'>
-                           <i class="fa fa-external-link"></i> Link publico
-                        </a>
+                        <a class=" pull-left" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'><i class="linkListado fa fa-external-link"></i></a>
                         <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>" />
-                        <button class="btnC btn btn-success pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"> <i class="icon-copy"></i> Copiar Link</button>
-                        <a class="btn btn-danger pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'>
-                           <i class="fa fa-chain-broken"></i> Desactivar link publico
-                        </a>
+                        <a class="btnC pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"><i class="linkListado fa fa-clipboard"></i></a>
+                        <a class=" pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'><i class="linkListado fa fa-eye-slash"></i></a>
                     <?php else: ?>
-                        <a class="btn btn-warning pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'>
-                           <i class="fa fa-external-link"></i> Activar link publico
-                        </a>
+                        <a class=" pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'><i class="linkListado fa fa-eye" aria-hidden="true"></i></a>
                     <?php endif ?>
                 </td>
             </tr>
         <?php endforeach ?>
     </tbody>
-</table> 
-<section>
+</table>
 
 <?php else: ?> 
 <h3>No hay actividades cargadas.</h3>
 <?php endif; ?>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="">
+        <div class="col-md-12">
+            <h3 class="referencia">Referencias:</h3>
+        </div>
+        <div class="col-md-12 col-sm-6">
+    <span class="iconoReferencia"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</span>
+        <span class="iconoReferencia"><i class="fa fa-external-link"></i> Link Publico</span>
+        <span class="iconoReferencia"><i class="fa fa-eye" aria-hidden="true"></i> Publicar</span>
+        <span class="iconoReferencia"> <i class="fa fa-clipboard"></i> Copiar Link</span>
+        <span class="iconoReferencia"> <i class="fa fa-eye-slash"></i>Ocultar</span>
+        <span class="iconoReferencia"><i class="fa fa-reply" aria-hidden="true"></i>Ver Respuestas</span>
+        <span class="iconoReferencia"><i class="fa fa-copy"></i>Duplicar</span>
+        <span class="iconoReferencia"><i class="fa fa-trash-o"></i> Eliminar </span>
+    </div>
+    </div>
+</div>

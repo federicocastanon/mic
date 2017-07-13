@@ -17,13 +17,16 @@ body {
 }
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
+h3{
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   color: #17baef;
+}
+
+h4,
+h5,
+h6{
+    color: #494949;
 }
 a {
   color: #17baef;
@@ -549,19 +552,6 @@ pre code {
   padding: 0;
 }
 /* ======= Footer ======= */
-.footer {
-  padding: 15px 0;
-  background: #042a36;
-  color: #fff;
-}
-.footer .copyright {
-  -webkit-opacity: 0.8;
-  -moz-opacity: 0.8;
-  opacity: 0.8;
-}
-.footer .fa-heart {
-  color: #fb866a;
-}
 
 .filaCalificacion{
     background-color: #CFD8DC;

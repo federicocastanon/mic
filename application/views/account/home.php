@@ -1,4 +1,4 @@
-<div class="container">
+
 <div style="float: right;">
     <a href="<?php echo base_url('/account/index')?>">Ingreso Docente</a>
 </div>

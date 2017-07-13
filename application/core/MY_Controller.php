@@ -13,7 +13,8 @@ class MY_Controller extends CI_Controller {
                 $vars['_template_menu'] = "templates/menu_public";
                 break;
             case 'admin':
-                $vars['_template_menu'] = "templates/menu_admin";
+                //$vars['_template_menu'] = "templates/menu_admin";
+                $vars['_template_menu'] = "templates/menu_lateral";
                 $vars['_hide_footer'] = true;
                 break;
             case 'arquetipo': 

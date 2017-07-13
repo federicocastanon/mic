@@ -101,42 +101,32 @@
 
 </script>
 
-<div class="row-fluid publichead">
-    <div class="span10">
-        <div>
-            <img src="<?= assets_url('/img/foco_public.png') ?>" width="76" height="92">
-            <span class="logosmall">Focos</span> <span class="logolightsmall"> en juego</span>
-        </div>
-    </div>
-    <div class="span2">
-        <div class="pull-right">
-            <a href="http://citep.rec.uba.ar" target="_blank">
-                <img src="<?= assets_url('/img/citep-mic-web.png')?>" width="110" height="54">
-            </a>
-        </div>
-    </div>
-</div>
-<div class="row-fluid">
-    <div class="span12">
+
+<div class="col-md-12">
         <h2><?php echo $ejercicio->consigna ?></h2>
-        <h4><?php echo $ejercicio->desarrollo ?></h4>
+</div>
+<div class="col-md-12">
+    <h4><?php echo $ejercicio->desarrollo ?></h4>
 
+    <div class="spacer"></div>
+</div>
+
+<div class="col-md-12">
+    <div class="col-md-3">
+        <b>Alias: </b> <?= $alias?>
+    </div>
+    <div class="col-md-2">
+        <a class="cambiarAlias" href="<?php echo base_url('/arquetipos/cambiarAlias/' . $ejercicio->id)?>"><i class="fa fa-refresh" aria-hidden="true"></i> Cambiar Alias</a>
     </div>
 </div>
-<div class="row-fluid">
-    <div class="span12"><b>Alias: </b> <i><?= $alias?></i> <a class="btn btn-large" href="<?php echo base_url('/arquetipos/cambiarAlias/' . $ejercicio->id)?>"> Cambiar Alias</a> </div>
 
-</div>
+
 
 
 <form method='post' action='<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?>'>
     <div id="mensaje" class="alert alert-error pull-left hide" ">Area de Mensajes</div>
-    <a class="btn btn-lg btn-default pull-right"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
-    <div class="row-fluid">
-        <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
+    <input type="hidden" id="obtenerRespuestas" name="obtenerRespuestas" value="1"/>
 
-    </div>
-    <div class="spacer"></div>
 <?php foreach ($imagenes as $i=>$img): 
   $disabled = (isset($respuestas[$img->id]));
   ?>
@@ -155,8 +145,8 @@
                 <div class="modal-body">
                     <div class="row pad15">
                         <div class="col-md-4">
-                            <img id="img_small_<?php echo $img->id?>" <?php if ($disabled):?> class='grayscale' <?php endif;?>
-                                 src="<?php echo $img->imagen_ubicacion?>" width='150px' height='150px' alt="">
+                            <img id="img_small_<?php echo $img->id?>" class='imagenModal <?php if ($disabled):?> grayscale <?php endif;?>'
+                                 src="<?php echo $img->imagen_ubicacion?>"  >
                         </div>
                         <div class="col-md-8">
                             <?php foreach($preguntas as $preg): ?>
@@ -175,10 +165,10 @@
                 </div>
                 <div class="modal-footer">
                     <div id="mensaje" class="alert alert-error pull-left hide" ">Area de Mensajes</div>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
                         Cerrar
                     </button>
-                    <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-left enviar' data-rel='<?php echo $img->id ?>'>
+                    <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
                         Enviar respuestas
                     </a>
                 </div>
@@ -194,12 +184,14 @@
 <?php foreach ($imagenes as $i=>$img): ?>  
   <?php if ($i == 0 or $i == 3): ?>
     <div class="row">
+        <div class="col-md-2">
+        </div>
   <?php endif ?>
-        <div class="col-lg-4" style="width: 300px;">
-              <a id="modal-<?php echo $img->id?>" href="#modal-container-<?php echo $img->id?>" role="button" class="btn"
+        <div class="col-md-3" >
+              <a id="modal-<?php echo $img->id?>" href="#modal-container-<?php echo $img->id?>" role="button" class="btn imagenResponder"
                  data-toggle="modal">
-                  <img <?php if (isset($respuestas[$img->id])): ?> class='grayscale' <?php endif;?> id='img_<?php echo $img->id?>'
-                    src="<?php echo $img->imagen_ubicacion?>" width='280px' height='280px' alt="" />
+                  <img class='imagenResponder <?php if (isset($respuestas[$img->id])): ?> grayscale <?php endif;?>' id='img_<?php echo $img->id?>'
+                    src="<?php echo $img->imagen_ubicacion?>"  alt="" />
               </a>
           <p class="text-info"><?php echo $img->titulo ?></p>
             <?php
@@ -211,10 +203,16 @@
 
                 <?php endforeach; } ?>
         </div>
-  <?php if ($i == 2 or $i == 5): ?>
+  <?php if ($i == 2 or $i == 5 or $i == sizeof($imagenes) -1): ?>
     </div>
   <?php endif ?>
 <?php endforeach ?>
 </div>
-    <a class="btn btn-large btn-default" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
+
 </form>
+<div class="col-md-12">
+    <a class="btn btn-large btn-default" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
+</div>
+<div class="col-md-12">
+    <a class="btn btn-lg btn-default"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
+</div>
