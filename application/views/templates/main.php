@@ -32,6 +32,7 @@
       <link rel="stylesheet" href="<?php echo assets_url('css/styles.css')?>">
       <link rel="stylesheet" href="<?php echo assets_url('css/hamburgers.css')?>">
       <link rel="stylesheet" href="<?php echo assets_url('plugins/jquery.mmenu/jquery.mmenu.css')?>">
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <link href="<?php echo assets_url('css/custom.css')?>" rel="stylesheet">
     <?php if (isset($_css) && $_css) {
