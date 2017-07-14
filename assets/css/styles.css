@@ -570,6 +570,7 @@ pre code {
     background-color: #66ff66 !important;
     color: white !important;
 }
+
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {
   .header .main-nav button {

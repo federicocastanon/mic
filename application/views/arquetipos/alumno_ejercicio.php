@@ -168,9 +168,9 @@
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
                         Cerrar
                     </button>
-                    <a <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-lg btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
+                    <button <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
                         Enviar respuestas
-                    </a>
+                    </button>
                 </div>
             </div>
 

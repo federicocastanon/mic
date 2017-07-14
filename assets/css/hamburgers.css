@@ -49,6 +49,21 @@
 .hamburger-inner::after {
     bottom: -10px; }
 
+@media (max-width: 767px) {
+    .hamburger {
+        padding: 9px 9px 6px 9px;
+    }
+    .hamburger-box {
+        width: 20px;
+        height: 12px;
+    }
+    .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+        width: 20px;
+        height: 1px;
+    }
+}
+
+
 /*
    * 3DX
    */

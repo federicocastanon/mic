@@ -57,6 +57,8 @@
   </head>
 
   <body>
+
+
     <?php if (!(isset($_hide_menu) && $_hide_menu)){ echo $_template_menu_content ?>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -64,25 +66,36 @@
         var $menu = $("#menuL").mmenu({
             //   options
         });
+        $('body').prepend('<div id="encabezadoMobile" class="encabezadoAppMobile"><div class="logoCitepMic"><img src="' +
+        "<?= assets_url('img/citep_mic.gif')?>" +'" ></div></div>');
         var $icon = $("#my-icon");
         var API = $menu.data( "mmenu" );
 
         $icon.on( "click", function() {
+            $("#menuL").css('display', 'block');
             API.open();
         });
-/*
+        API.bind( "open:start", function() {
+            $("#encabezadoMobile").addClass('encabezadoOculto');
+        });
+        API.bind( "close:start", function() {
+           // $("#encabezadoMobile").removeClass('encabezadoOculto');
+        });
         API.bind( "open:finish", function() {
+            //$("#encabezadoMobile").addClass('encabezadoOculto');
                 $icon.addClass( "is-active" );
         });
         API.bind( "close:finish", function() {
+            $("#encabezadoMobile").removeClass('encabezadoOculto');
+            $("#menuL").css('display', 'none');
                 $icon.removeClass( "is-active" );
-        });*/
+        });
     })
 </script>
     <?php } ?>
 <div class="wrapperTotal container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 col-xs-12">
             <div class="clearfix encabezadoApp">
             <div class="logoCitepMic">
                 <img src="<?= assets_url('img/citep_mic.gif')?>" >
@@ -97,27 +110,27 @@
 
 
         <?php if (isset($micSeleccionada) or (isset($_template_menu)) and $_template_menu == 'templates/menu_lateral'){ ?>
-        <div class="col-md-4 ">
-            <div class="clearfix encabezadoMic">
+
             <?php if (isset($_template_menu) and $_template_menu == 'templates/menu_lateral'){ ?>
+                <div class="col-md-4 col-xs-3">
                 <button id="my-icon" class="hamburger hamburger--spin botonMenu" type="button">
                     <span class="hamburger-box">
                       <span class="hamburger-inner"></span>
                     </span>
                 </button>
+                </div>
+                    <?php if (isset($micSeleccionada)){ ?>
+                        <div class="col-md-4 col-xs-9">
+                            <img src="<?= assets_url('/img/focosLarge.png') ?>" class="logoMicHeader">
+                        </div>
+                    <?php }?>
+            <?php }else{?>
+                    <div class="col-md-4 col-xs-1">
+                    </div>
+                    <div class="col-md-4 col-xs-10">
+                        <img src="<?= assets_url('/img/focosLarge.png') ?>" class="logoMicHeader">
+                    </div>
             <?php }?>
-            </div>
-        </div>
-
-        <div class="col-md-8 ">
-            <!-- IMAGEN MIC-->
-            <div class="clearfix encabezadoMic">
-                <?php if (isset($micSeleccionada)){ ?>
-                <img src="<?= assets_url('/img/foco_public.png') ?>" width="76" height="92">
-                <span class="logosmall">Focos</span> <span class="logolightsmall"> en juego</span>
-                <?php }?>
-            </div>
-        </div>
         <?php }?>
     </div>
     <div class="row cuerpoContenido">
@@ -155,32 +168,32 @@
                 </div>
                 <?php if ($micSeleccionada != 'FOCOS'){ ?>
 
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-xs-6">
                         <span class="logoxxsmall">Focos</span>
                         <span class="logolightxxsmall"> en juego</span><br />
-                        <img src="<?= assets_url('/img/foco.png')?>" width="116" height="120" border="0">
+                        <img src="<?= assets_url('/img/foco.png')?>" class="iconoMicFooter" border="0">
                     </div>
                 <?php } ?>
                 <?php if ($micSeleccionada != 'PRISMAS'){ ?>
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-6">
                         <span class="logoxxsmall">Prismas</span>
                         <span class="logolightxxsmall"> entramados</span><br />
-                        <img src="<?= assets_url('/img/prismas.png')?>" width="116" height="120" border="0">
+                        <img src="<?= assets_url('/img/prismas.png')?>" class="iconoMicFooter" border="0">
                 </div>
                 <?php } ?>
                 <?php if ($micSeleccionada != 'CROQUIS'){ ?>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-xs-6">
                         <span class="logoxxsmall">Croquis</span>
                         <span class="logolightxxsmall"> en movimiento</span><br />
-                        <img src="<?= assets_url('/img/croquis.png')?>" width="116" height="120" border="0">
+                        <img src="<?= assets_url('/img/croquis.png')?>" class="iconoMicFooter" border="0">
                     </div>
                 <?php } ?>
                 <div class="col-md-4">
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 col-xs-12">
                 <div class="logoCitepUbaFooter">
                     <a href="http://citep.rec.uba.ar" target="_blank">
-                        <img  src="<?= assets_url('img/logo-citep-uba.png')?>" >
+                        <img  src="<?= assets_url('img/logo-citep-uba.png')?>" class="iconoMicFooter" >
                     </a>
                 </div>
                 </div>
