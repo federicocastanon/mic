@@ -14,7 +14,7 @@
     };
   }
   $(document).ready(function() {
-    $('a.enviar').click(function() {
+    $('.enviar').click(function() {
         var img = $(this);
         var div = img.parents('.modal');
 
@@ -168,7 +168,7 @@
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
                         Cerrar
                     </button>
-                    <button <?php if ($disabled):?>disabled<?php endif?> href='#' class='btn btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
+                    <button <?php if ($disabled):?>disabled<?php endif?> type="button" class='btn btn-success pull-right enviar' data-rel='<?php echo $img->id ?>'>
                         Enviar respuestas
                     </button>
                 </div>

@@ -60,7 +60,7 @@
   <body>
 
 
-    <?php if (!(isset($_hide_menu) && $_hide_menu)){ echo $_template_menu_content ?>
+    <?php if (isset($_template_menu) and $_template_menu == 'templates/menu_lateral'){ echo $_template_menu_content ?>
 <script type="text/javascript">
     $(document).ready(function(){
 
