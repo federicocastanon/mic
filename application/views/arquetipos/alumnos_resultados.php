@@ -139,10 +139,17 @@
 
         <div class="spacer"></div>
     </div>
-    <?php if($ejercicio->nube && strlen($crudoRespuestas) > 2): ?>
-    <section style="float: left; width: 30%; height: 200px" id="cloud">
-    </section>
-    <?php endif;?>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <b>Alias: </b> <?= $alias?>
+        </div>
+        <div class="col-md-2">
+            <a class="cambiarAlias" href="<?php echo base_url('/arquetipos/cambiarAlias/' . $ejercicio->id)?>"><i class="fa fa-refresh" aria-hidden="true"></i> Cambiar Alias</a>
+        </div>
+        <div class="col-md-7 botonera">
+            <a class="btn btn-default pull-right" href="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $ejercicio->id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+        </div>
+    </div>
     <div id="accordion">
     <?php foreach ($imagenes as $imagen_id => $imagen): ?>
             <div class="col-md-12 panelGrisClaro">

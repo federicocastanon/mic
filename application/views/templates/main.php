@@ -99,7 +99,9 @@
         <div class="col-md-12 col-xs-12">
             <div class="clearfix encabezadoApp">
             <div class="logoCitepMic">
-                <img src="<?= assets_url('img/citep_mic.gif')?>" >
+                <a href="<?php echo base_url('/')?>" >
+                    <img src="<?= assets_url('img/citep_mic.gif')?>" >
+                </a>
             </div>
             <div class="logoCitepUba">
                 <a href="http://citep.rec.uba.ar" target="_blank">
@@ -170,23 +172,29 @@
                 <?php if ($micSeleccionada != 'FOCOS'){ ?>
 
                     <div class="col-md-2 col-xs-6">
-                        <span class="logoxxsmall">Focos</span>
-                        <span class="logolightxxsmall"> en juego</span><br />
-                        <img src="<?= assets_url('/img/foco.png')?>" class="iconoMicFooter" border="0">
+                        <a href="<?php echo base_url('/')?>" >
+                            <span class="logoxxsmall">Focos</span>
+                            <span class="logolightxxsmall"> en juego</span><br />
+                            <img src="<?= assets_url('/img/foco.png')?>" class="iconoMicFooter" border="0">
+                        </a>
                     </div>
                 <?php } ?>
                 <?php if ($micSeleccionada != 'PRISMAS'){ ?>
                 <div class="col-md-2 col-xs-6">
+                    <a href="<?php echo base_url('/')?>" >
                         <span class="logoxxsmall">Prismas</span>
                         <span class="logolightxxsmall"> entramados</span><br />
                         <img src="<?= assets_url('/img/prismas.png')?>" class="iconoMicFooter" border="0">
+                    </a>
                 </div>
                 <?php } ?>
                 <?php if ($micSeleccionada != 'CROQUIS'){ ?>
                     <div class="col-md-2 col-xs-6">
-                        <span class="logoxxsmall">Croquis</span>
-                        <span class="logolightxxsmall"> en movimiento</span><br />
-                        <img src="<?= assets_url('/img/croquis.png')?>" class="iconoMicFooter" border="0">
+                        <a href="<?php echo base_url('/')?>" >
+                            <span class="logoxxsmall">Croquis</span>
+                            <span class="logolightxxsmall"> en movimiento</span><br />
+                            <img src="<?= assets_url('/img/croquis.png')?>" class="iconoMicFooter" border="0">
+                        </a>
                     </div>
                 <?php } ?>
                 <div class="col-md-4">

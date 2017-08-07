@@ -208,10 +208,15 @@ class Arquetipos extends MY_Controller {
         if (!$this->user->has_permission('arquetipos')) {
             $this->template_type = 'admin';
         }
+        if(!isset($_SESSION)){
+            session_start();
+        }
 		$ejercicio = $this->Arquetipos_model->get_ejercicio_by_public_id($public_id);
         $preguntas = $this->Arquetipos_model->get_questions($public_id);
         $ejercicio->preguntas = $preguntas;
 		if (!$ejercicio or !$ejercicio->public_id_enabled) die('El código de ejercicio que ingresaste no existe');
+        $alias= $_SESSION["alias"];
+        $vars['alias'] = $alias;
 		$vars['respuestas'] = array();
         $vars['micSeleccionada'] = 'FOCOS';
 		$tmp_respuestas = $this->Arquetipos_model->detalle_respuestas($ejercicio->id, true);
