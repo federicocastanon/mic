@@ -102,7 +102,7 @@
                 return wordCountArr;
             }
 
-            var excluidas = ["", " "," a ", " ante "," bajo "," cabe "," con "," contra "," de "," desde "," en "," entre "," hacia "," hasta "," para "," por "," según "," sin "," so"," sobre "," tras "," la "," las "," el "," los "," este "," esto "," estos "," esta "," estas "," esa "," esas "," ese "," eso "," esos "," ella "," ellas "," ellos "," tu "," vos "," yo "," vosotros "," vosotras "," nosotros "," nosotros "," mi "," mio "," mia "," mios "," mias "," tuyo "," tuya "," tuyas "," tuyos "," vuestro "," vuesta "," vuestras "," vuestros "," suyo "," suyos "," suyas "," nuestro "," nuestra "," nuestros "," nuestras "," su "," tu "," algún "," alguna "," algunos "," algunas "," ningún "," ninguna "," ninguno "," una "," unas"];
+            var excluidas = ["", " ", " y "," que ", " a ", " ante "," bajo "," cabe "," con "," contra "," de "," desde "," en "," entre "," hacia "," hasta "," para "," por "," según "," sin "," so"," sobre "," tras "," la "," las "," el "," los "," este "," esto "," estos "," esta "," estas "," esa "," esas "," ese "," eso "," esos "," ella "," ellas "," ellos "," tu "," vos "," yo "," vosotros "," vosotras "," nosotros "," nosotros "," mi "," mio "," mia "," mios "," mias "," tuyo "," tuya "," tuyas "," tuyos "," vuestro "," vuesta "," vuestras "," vuestros "," suyo "," suyos "," suyas "," nuestro "," nuestra "," nuestros "," nuestras "," su "," tu "," algún "," alguna "," algunos "," algunas "," ningún "," ninguna "," ninguno "," una "," unas"];
 
             function excluirComunes(palabra){
 
