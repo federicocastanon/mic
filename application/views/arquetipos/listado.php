@@ -1,25 +1,9 @@
 <script src="<?php echo assets_url('/js/jquery.dataTables.js')?>"></script>
 <script src="<?php echo assets_url('/js/bootstrap-datatables.js')?>"></script>
 <script src="<?php echo assets_url('js/clipboard.min.js');?>"></script>
-<script type='text/javascript'> 
+<script type='text/javascript'>
     $(document).ready(function() {
-      /*  var oTable = $('#list').dataTable( {
-            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ records per page"
-            },
-            "bLengthChange": false,
-            "aoColumns": [
-                null,
-                { "sType": "title-numeric" },
-                null,
-                null,
-                null,
-                { "asSorting": [] },
-            ]
-        } );
-        oTable.fnSort( [ [1,'desc'] ] );*/
+        $('[data-toggle="tooltip"]').tooltip()
     } );
 </script>
 <script>
@@ -93,23 +77,25 @@
                              <i class="fa fa-eye"></i> previsualizar
                         </a>
                      -->
-                    <a class=" pull-left" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'><i class="linkListado fa fa-copy"></i></a>
-                    <a class="pull-left"
-                        href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'><i class="linkListado fa fa-reply" aria-hidden="true"></i></a>
-                    <a class=" pull-left"
+                    <a class="pull-left" data-toggle="tooltip" title="Duplicar" href='<?php echo base_url('/arquetipos/duplicar/' . $e->id)?>'><i class="linkListado fa fa-copy"></i></a>
+
+                    <a class="pull-left" data-toggle="tooltip" title="Editar"
                         href='<?php echo base_url('/arquetipos/editar/' . $e->id)?>'><i class="linkListado fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
-                    <a class=" pull-left"
-                        href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>'
-                        onClick='return confirm("Confirme que quiere borrar este ejercicio");'><i class="linkListado fa fa-trash-o"></i></a>
+                    <a class="pull-left" data-toggle="tooltip" title="Eliminar"
+                        href='<?php echo base_url('/arquetipos/borrar/' . $e->id)?>'onClick='return confirm("Confirme que quiere borrar este ejercicio");'><i class="linkListado fa fa-trash-o"></i></a>
+
+                    <a class="pull-left" data-toggle="tooltip" title="Ver Respuestas"
+                       href='<?php echo base_url('/arquetipos/ver_respuestas/' . $e->id)?>'><i class="linkListado fa fa-reply" aria-hidden="true"></i></a>
 
                     <?php if ($e->public_id_enabled): ?>
-                        <a class=" pull-left" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'><i class="linkListado fa fa-external-link"></i></a>
+
+                        <a class="pull-left" data-toggle="tooltip" title="" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'><i class="linkListado fa fa-external-link"></i></a>
                         <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>" />
-                        <a class="btnC pull-left" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"><i class="linkListado fa fa-clipboard"></i></a>
-                        <a class=" pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'><i class="linkListado fa fa-eye-slash"></i></a>
+                        <a class="btnC pull-left" data-toggle="tooltip" title="Copiar Link" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"><i class="linkListado fa fa-clipboard"></i></a>
+                        <a class="pull-left" data-toggle="tooltip" title="Ocultar" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'><i class="linkListado fa fa-eye-slash"></i></a>
                     <?php else: ?>
-                        <a class=" pull-left" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'><i class="linkListado fa fa-eye" aria-hidden="true"></i></a>
+                        <a class="pull-left" data-toggle="tooltip" title="Publicar" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'><i class="linkListado fa fa-eye" aria-hidden="true"></i></a>
                     <?php endif ?>
                 </td>
             </tr>

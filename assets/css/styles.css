@@ -13,6 +13,7 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+    font-family: 'Roboto', sans-serif;
 }
 h1,
 h2,
@@ -20,6 +21,12 @@ h3{
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   color: #17baef;
+}
+h1,
+h2,
+h3,
+.celeste{
+    color: #17baef;
 }
 
 h4,
@@ -556,19 +563,6 @@ pre code {
     background-color: #CFD8DC;
 }
 
-.sugerencia a{
-    background-color: #d5d59d !important;
-    color: white !important;
-}
-
-.positiva a{
-    background-color: #277415 !important;
-    color: white !important;
-}
-.aclaracion a{
-    background-color: #66ff66 !important;
-    color: white !important;
-}
 
 /* Extra small devices (phones, less than 768px) */
 @media (max-width: 767px) {

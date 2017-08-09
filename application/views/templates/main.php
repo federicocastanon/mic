@@ -96,7 +96,7 @@
     <?php } ?>
 <div class="wrapperTotal container-fluid">
     <div class="row">
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-12 col-xs-12 sinMargenDerecho">
             <div class="clearfix encabezadoApp">
             <div class="logoCitepMic">
                 <a href="<?php echo base_url('/')?>" >
@@ -124,14 +124,14 @@
                 </div>
                     <?php if (isset($micSeleccionada)){ ?>
                         <div class="col-md-4 col-xs-9">
-                            <img src="<?= assets_url('/img/focosLarge.png') ?>" class="logoMicHeader">
+                            <img src="<?= assets_url('/img/'. $micSeleccionada .'Large.png') ?>" class="logoMicHeader">
                         </div>
                     <?php }?>
             <?php }else{?>
                     <div class="col-md-4 col-xs-1">
                     </div>
                     <div class="col-md-4 col-xs-10">
-                        <img src="<?= assets_url('/img/focosLarge.png') ?>" class="logoMicHeader">
+                        <img src="<?= assets_url('/img/'. $micSeleccionada .'Large.png') ?>" class="logoMicHeader">
                     </div>
             <?php }?>
         <?php }?>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="col-md-4">
                 </div>
-                <?php if ($micSeleccionada != 'FOCOS'){ ?>
+                <?php if ($micSeleccionada != 'focos'){ ?>
 
                     <div class="col-md-2 col-xs-6">
                         <a href="<?php echo base_url('/')?>" >
@@ -179,7 +179,7 @@
                         </a>
                     </div>
                 <?php } ?>
-                <?php if ($micSeleccionada != 'PRISMAS'){ ?>
+                <?php if ($micSeleccionada != 'prismas'){ ?>
                 <div class="col-md-2 col-xs-6">
                     <a href="<?php echo base_url('/')?>" >
                         <span class="logoxxsmall">Prismas</span>
@@ -188,7 +188,7 @@
                     </a>
                 </div>
                 <?php } ?>
-                <?php if ($micSeleccionada != 'CROQUIS'){ ?>
+                <?php if ($micSeleccionada != 'croquis'){ ?>
                     <div class="col-md-2 col-xs-6">
                         <a href="<?php echo base_url('/')?>" >
                             <span class="logoxxsmall">Croquis</span>

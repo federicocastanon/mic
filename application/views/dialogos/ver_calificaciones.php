@@ -10,14 +10,13 @@
     }
 </style>
 
-<div class="row-fluid">
-    <div class="span12">
+
+    <div class="col-md-12">
         <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/calificarLanding/' . $prismaId)?>"><i class="fa fa-arrow-left"></i> Volver</a>
     </div>
-
-</div>
+    <div class="col-md-12 top30">
 <?php if (isset($dialogos) && $dialogos): ?>
-    <div class="row top30">
+    <div class="col-md-12 top30">
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -103,13 +102,14 @@
                 </tbody>
             </table>
         </div>
-    </div>
-
+    <?php else: ?>
+    <h3>Ningún dialogo ha terminado todavía</h3>
     <?php endif ?>
+    </div>
 <script type='text/javascript'>
     $(document).ready(function() {
         $(".estrellas").each(function(){
-            $(this).rating({ language:'es', readonly: true, size: 'xs', showClear : false});
+            $(this).rating({ language:'es', readonly: true, size: 'xxs', showClear : false});
         });
         $( ".tabs" ).each(function(){
             $(this).tabs({

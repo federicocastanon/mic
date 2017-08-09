@@ -44,6 +44,11 @@ body{
 }
 
 /*menu end*/
+
+.sinMargenDerecho{
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
 .iconoGrande{
     font-size: 50px;
     background-color: #DADADA;
@@ -86,7 +91,12 @@ body{
     margin-top: 10px;
 }
 
-.iconoMicFooter, .logoMicHeader{
+.logoMicHeader{
+    width: 100%;
+    height: auto;
+}
+
+.iconoMicFooter {
     width: 50%;
     height: auto;
 }
@@ -933,7 +943,18 @@ label.checkbox.inline{
 .bordeInferiorGrueso {
     border-bottom: 3px solid;
 }
-
+.panelBlanco{
+    background-color: #FFFFFF;
+    color: #000;
+    border-radius: 25px;
+    padding: 20px;
+}
+.panelVerde{
+    background-color: #B4FF89;
+    color: #000;
+    border-radius: 25px;
+    padding: 20px;
+}
 .panelAzul{
     background-color: blue;
     color: #FFF;
@@ -949,13 +970,18 @@ label.checkbox.inline{
 }
 
 .panelGris{
-    background-color: grey;
+    background-color: #CAECEE;
     color: #f0ffff;
     text-align: center;
     font-size: xx-small;
     font-style: italic;
-    margin: 0 30%;
+    margin: auto;
+    width: 45%;
     border-radius: 25px;
+}
+.fechaIntervencion{
+    color: grey;
+    font-style: italic;
 }
 
 .vinculo{
@@ -971,4 +997,34 @@ label.checkbox.inline{
 .abrirMenu{
     background-color: white;
     color: #DCDCDC;
+}
+.pestania{
+    font-size: xx-small !important;
+}
+.ui-widget-header, .tabs, .sugerencia a, .positiva a, .aclaracion a{
+    background-color: #E4F3F6 !important;
+    color: #515659 !important;
+}
+.ui-widget-header{
+    border: 0px !important;
+}
+#dialogo{
+    overflow-y: scroll;
+    max-height: 150px;
+}
+.cuartoAltura{
+    height: 25%;
+    min-height: 100px;
+}
+.negro{
+    color: black;
+}
+.botonesDialogo{
+    font-size: smaller;
+}
+.levantarse{
+    color: #007A0A
+}
+.terminarDialogo{
+    color: #E70422
 }

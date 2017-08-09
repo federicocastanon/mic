@@ -8,6 +8,7 @@ class Dialogo extends MY_Controller
         // Load the Library
         $this->load->helper('url');
         $this->load->model('dialogo_model');
+
     }
 
     public function testing(){
@@ -30,7 +31,7 @@ class Dialogo extends MY_Controller
             $vars = array('prismas' => $this->dialogo_model->obtenerTodosLosPrismasPorUsuario($this->user->get_id()));
         };
 
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/listado', $vars);
     }
 
@@ -96,6 +97,7 @@ class Dialogo extends MY_Controller
         }
         $this->template_type = 'admin';
         #echo '<pre>';print_r($vars);echo '</pre>';
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/editar', $vars);
     }
 
@@ -172,6 +174,7 @@ class Dialogo extends MY_Controller
             //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
             //esto quiere decir que entró por link_publico
             $vars['urlDestino'] = base_url(). 'dialogo/recepcionPrisma/' . $prismaId;
+
             $this->template('account/solicitarAlias', $vars);
             return;
         }
@@ -209,7 +212,7 @@ class Dialogo extends MY_Controller
         }
 
         $vars['prisma'] = $prisma;
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/recepcion_prisma', $vars);
     }
 
@@ -265,7 +268,7 @@ class Dialogo extends MY_Controller
         $prisma = $this->dialogo_model->obtenerPrisma($prismaId);
         $vars = array('dialogos' => $dialogos);
         $vars['prisma'] = $prisma->id;
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/calificar_landing', $vars);
     }
 
@@ -308,7 +311,7 @@ class Dialogo extends MY_Controller
         $dialogos = $this->dialogo_model->obtenerDialogosPorPrisma($prismaId);
         $vars = array('dialogos' => $dialogos);
         $vars['prisma'] = $prisma;
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/elegir_dialogo', $vars);
     }
 
@@ -326,7 +329,7 @@ class Dialogo extends MY_Controller
             $vars['alias'] = $alias;
 
         }
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/elegir_dialogo', $vars);
     }
 
@@ -402,7 +405,7 @@ class Dialogo extends MY_Controller
             }
             $dialogo->promedio = $suma / $cantidad;
         }
-
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/ver_dialogo', $vars);
     }
 
@@ -518,6 +521,7 @@ class Dialogo extends MY_Controller
         $vars['prismaId'] = $prismaId;
         //print json_encode($dialogos);
         //exit;
+        $vars['micSeleccionada'] = 'prismas';
         $this->template('dialogos/ver_calificaciones', $vars);
     }
     public function cambiarAlias($public_id){

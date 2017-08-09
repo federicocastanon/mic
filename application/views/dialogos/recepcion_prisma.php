@@ -20,31 +20,39 @@
 
 </script>
 
-<div class="row-fluid">
-    <div class="page-header"><h1>Diálogos</h1></div>
+<div class="col-md-12">
+    <div class="col-md-12"><h1>Diálogos</h1></div>
 
-    <div class="span12">
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <b>Alias: </b> <?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?>
+        </div>
+        <div class="col-md-2">
+            <a class="cambiarAlias" href="<?php echo base_url('/dialogo/cambiarAlias/' . $prisma->id)?>"><i class="fa fa-refresh" aria-hidden="true"></i> Cambiar Alias</a>
+        </div>
         <?php if ($this->template_type == 'admin'): ?>
             <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/')?>"><i class="fa fa-arrow-left"></i> Volver</a>
         <?php else: ?>
             <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/')?>"><i class="fa fa-arrow-left"></i> Volver</a>
         <?php endif; ?>
-
-
     </div>
-
 </div>
 
 <div class="spacer"></div>
+<div class="col-md-12">
 <form id="myForm" method='post' action='<?php echo base_url('/dialogo/sentarse/')?>'>
     <div id="mensaje" class="alert alert-error pull-left" style="display: none">Area de Mensajes</div>
-    <div id="ret">
-        <p><b>Situación:</b>  <?php echo $prisma->descripcion ?></p>
+
+    <div class="col-md-12">
+        <div class="spacer"></div>
     </div>
-    <div class="row"> Con este alias entrás a los dialogos <b><?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?></b>
-        <a class="btn btn-large" href="<?php echo base_url('/dialogo/cambiarAlias/' . $prisma->id)?>"> Cambiar Alias</a>
+    <div class="col-md-12">
+        <b>Situación:</b>  <?php echo $prisma->descripcion ?>
     </div>
-    <div class="row">
+    <div class="col-md-12">
+        <div class="spacer"></div>
+    </div>
+
         <?php if (isset($pen) && $pen): ?>
             <div class="col-md-8">
                <h4>Usted es parte de un dialogo que aún no ha finalizado </h4>
@@ -77,9 +85,10 @@
             <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma->id)?>"><i class="fa fa-star"></i> Calificaciones</a>
         </div>
 
-    </div>
+
     <input type="hidden" id="alias" name="alias" placeholder="alias" required="true" value="<?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?>"
     "/>
     <input type="hidden" name="dialogoId" id="dialogoId">
     <input type="hidden" name="profesional" id="profesional">
 </form>
+</div>
