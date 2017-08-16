@@ -78,7 +78,7 @@
         <table class='table'> 
           <thead>
             <th>Fecha</th> 
-            <th>Calificación</th> 
+            <th>Valoracion</th>
             <th></th> 
           </thead>
           <tbody> 

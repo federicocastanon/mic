@@ -12,8 +12,8 @@
 							<th>Alumno</th>
 						<? endif ?>
 						<th>Planteo</th> 
-						<th>Calificación</th> 
-						<th>Calificación fecha</th> 
+						<th>Valoración</th>
+						<th>Fecha </th>
 						<th>Acciones</th> 
 					</thead>
 					<tbody>

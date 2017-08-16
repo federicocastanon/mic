@@ -950,7 +950,7 @@ label.checkbox.inline{
     padding: 20px;
 }
 .panelVerde{
-    background-color: #B4FF89;
+    background-color: #B5FF8C;
     color: #000;
     border-radius: 25px;
     padding: 20px;
@@ -1010,7 +1010,9 @@ label.checkbox.inline{
 }
 #dialogo{
     overflow-y: scroll;
-    max-height: 150px;
+    min-height: 150px;
+    max-height: 400px;
+    background-color: #F2F2F2;
 }
 .cuartoAltura{
     height: 25%;

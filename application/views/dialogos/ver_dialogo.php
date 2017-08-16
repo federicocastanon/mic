@@ -19,10 +19,10 @@
             html +=  data.fecha ;
             html += '</div>';
         }else if(data.tipo == 2){
-            html += '<div class="col-sm-6 panelVerde" style="text-align: right">';
+            html += '<div class="col-sm-6 panelVerde" style="float: right">';
             html += data.texto;
             html += '</div>';
-            html += '<div class="col-md-12 fechaIntervencion" style="float: right">';
+            html += '<div class="col-md-12 fechaIntervencion" style="text-align: right">';
             html +=  data.fecha ;
             html += '</div>';
         }else if (data.tipo == 3){
@@ -270,7 +270,7 @@
                     <div class="col-md-12 ">  <input class="estrellas" name="calificacion" value="<?php echo $dialogo->promedio ?>" ></div>
                 </div>
                 <div class="col-md-6">
-                    <div class="col-md-12 ">  <h4>Calificación docente</h4></div>
+                    <div class="col-md-12 ">  <h4>Valoracion docente</h4></div>
                     <div class="col-md-12 "> <input class="estrellas" name="calificacion" value="<?php echo $dialogo->evaluacion ?>" ></div>
                 </div>
                 <div class="spacer col-md-12">

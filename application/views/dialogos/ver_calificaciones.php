@@ -26,8 +26,8 @@
                 <?php if($this->template_type != 'admin'): ?>
                 <th>Tu opinión</th>
                 <?php endif; ?>
-                <th>Calificación de pares</th>
-                <th>Calificación docente</th>
+                <th>Valoraciones de pares</th>
+                <th>Valoración docente</th>
                 <th>Acciones</th>
                 </thead>
                 <tbody>

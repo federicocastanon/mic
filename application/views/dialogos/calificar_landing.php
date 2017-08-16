@@ -17,7 +17,7 @@
 </div>
 
 <div class="row col-md-12">
-    <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma)?>"><i class="fa fa-star"></i> Ver Calificaciones</a>
+    <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma)?>"><i class="fa fa-star"></i> Ver Valoraciones</a>
 </div>
 <?php if (isset($dialogos) && $dialogos): ?>
 <div class="row bordeInferiorGrueso">

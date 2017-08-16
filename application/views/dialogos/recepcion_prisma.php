@@ -82,7 +82,7 @@
             <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/dialogosPorPrisma/' . $prisma->id)?>"><i class="fa fa-star"></i> Listado</a>
         </div>
         <div class="col-md-2">
-            <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma->id)?>"><i class="fa fa-star"></i> Calificaciones</a>
+            <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma->id)?>"><i class="fa fa-star"></i> Valoraciones</a>
         </div>
 
 
