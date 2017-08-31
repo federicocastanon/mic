@@ -335,8 +335,8 @@ class Dialogo extends MY_Controller
 
     function sentarse(){
         if(!isset($_SESSION)){             session_start();         }
-        if ($this->user->get_id())
-            $this->template_type = 'admin';
+        //if ($this->user->get_id())
+           // $this->template_type = 'admin';
         $dialogoId = $_POST['dialogoId'];
         $profesional= $_POST['profesional'];
         $alias = $_POST['alias'];
@@ -367,7 +367,7 @@ class Dialogo extends MY_Controller
         $vars['dialogo'] = $dialogo;
         $vars['prisma'] = $prisma;
         if ($this->user->get_id()){
-            $this->template_type = 'admin';
+            //$this->template_type = 'admin';
             $evaluacion = $this->dialogo_model->obtenerEvaluacionDocente($dialogoId);
         }else{
             $evaluacion = $this->dialogo_model->obtenerMiEvaluacion($dialogoId,$alias);
@@ -454,8 +454,8 @@ class Dialogo extends MY_Controller
 
     function calificar($dialogoId){
         if(!isset($_SESSION)){             session_start();         }
-        if ($this->user->get_id())
-            $this->template_type = 'admin';
+       // if ($this->user->get_id())
+            //$this->template_type = 'admin';
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $calificacion = $_POST['calificacion'];

@@ -74,7 +74,7 @@
                     </a>
 
                     <?php if ($e->publico): ?>
-                        <a class="pull-left" data-toggle="tooltip" title="Ver Respuestas" taget="_new" href='<?php echo base_url('/dialogo/recepcionPrisma/' . $e->id)?>'>
+                        <a class="pull-left" data-toggle="tooltip" title="Ver Dialogos" taget="_new" href='<?php echo base_url('/dialogo/recepcionPrisma/' . $e->id)?>'>
                             <i class="linkListado fa fa-external-link"></i>
                         </a>
                         <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->id?>" value="<?php echo base_url('/dialogo/recepcionPrisma/' . $e->id)?>" />

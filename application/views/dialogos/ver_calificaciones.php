@@ -12,7 +12,7 @@
 
 
     <div class="col-md-12">
-        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/calificarLanding/' . $prismaId)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+        <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/recepcionPrisma/' . $prismaId)?>"><i class="fa fa-arrow-left"></i> Volver</a>
     </div>
     <div class="col-md-12 top30">
 <?php if (isset($dialogos) && $dialogos): ?>

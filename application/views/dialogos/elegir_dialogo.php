@@ -30,11 +30,9 @@ function sentarse(dialogoId, profesional){
             <div class="col-md-2">
                 <a class="cambiarAlias" href="<?php echo base_url('/dialogo/cambiarAlias/' . $prisma->id)?>"><i class="fa fa-refresh" aria-hidden="true"></i> Cambiar Alias</a>
             </div>
-            <?php if ($this->template_type == 'admin'): ?>
-                <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/')?>"><i class="fa fa-arrow-left"></i> Volver</a>
-            <?php else: ?>
-                <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/recepcionPrisma/' . $prisma->id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
-            <?php endif; ?>
+
+           <a class="btn btn-lg btn-default pull-right" href="<?php echo base_url('/dialogo/recepcionPrisma/' . $prisma->id)?>"><i class="fa fa-arrow-left"></i> Volver</a>
+
         </div>
 
     </div>
