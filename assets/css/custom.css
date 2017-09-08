@@ -30,6 +30,20 @@ body{
     margin-left: auto;
     margin-right: auto;LIMITAR ANCHO*/
 }
+.tituloPequeno{
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.filaGris{
+    background-color: #E0E0E0;
+}
+.filaGrisOscura{
+    background-color: #C8C8C8;
+}
+.filaBlanca{
+    background-color: #FFFFFF;
+}
 #menuL{
     display: none;
 }
@@ -55,7 +69,7 @@ body{
     color:   #FFFFFF;
 }
 
-.logoCitepUba, .logoCitepMic,{
+.logoCitepUba, .logoCitepMic{
     background-color: #F1EFF0;
     padding-top: 30px;
 }
@@ -82,6 +96,8 @@ body{
 .encabezadoApp{
     width: 100%;
     height: 100%;
+    padding-bottom: 10px;
+    padding-top: 30px;
 }
 .encabezado{
     background-color: #F7F7F7;
@@ -92,12 +108,12 @@ body{
 }
 
 .logoMicHeader{
-    width: 100%;
+    width: 80%;
     height: auto;
 }
 
 .iconoMicFooter {
-    width: 50%;
+    width: 40%;
     height: auto;
 }
 .footer{
@@ -943,22 +959,28 @@ label.checkbox.inline{
 .bordeInferiorGrueso {
     border-bottom: 3px solid;
 }
+.contenedorIntervencion{
+    overflow: auto;
+}
 .panelBlanco{
     background-color: #FFFFFF;
     color: #000;
     border-radius: 25px;
+    border: thin solid #C3BEBE;
     padding: 20px;
 }
 .panelVerde{
     background-color: #B5FF8C;
     color: #000;
     border-radius: 25px;
+    border: thin solid #C3BEBE;
     padding: 20px;
 }
 .panelAzul{
     background-color: blue;
     color: #FFF;
     border-radius: 25px;
+    border: thin solid #C3BEBE;
     padding: 20px;
 }
 
@@ -966,15 +988,16 @@ label.checkbox.inline{
     background-color: brown;
     color: #FFF;
     border-radius: 25px;
+    border: thin solid #C3BEBE;
     padding: 20px;
 }
 
 .panelGris{
     background-color: #CAECEE;
-    color: #f0ffff;
+    color: #666666;
     text-align: center;
-    font-size: xx-small;
-    font-style: italic;
+    font-size: 0.6em;
+    font-weight: bold;
     margin: auto;
     width: 45%;
     border-radius: 25px;
@@ -982,6 +1005,11 @@ label.checkbox.inline{
 .fechaIntervencion{
     color: grey;
     font-style: italic;
+    font-size: 0.8em;
+}
+
+.listaBotones li{
+    margin-bottom: 10px;
 }
 
 .vinculo{
@@ -998,12 +1026,30 @@ label.checkbox.inline{
     background-color: white;
     color: #DCDCDC;
 }
-.pestania{
-    font-size: xx-small !important;
+.sinBorde{
+    border: 0px !important;
 }
-.ui-widget-header, .tabs, .sugerencia a, .positiva a, .aclaracion a{
+
+.pestania{
+    font-size: small !important;
+    background-color: #b5b5b5;
+}
+.ui-widget-header .ui-state-default{
+    background-color: #b5b5b5 !important;
+    color: #FFFFFF !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active,
+.ui-state-active a,
+a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover{
     background-color: #E4F3F6 !important;
-    color: #515659 !important;
+    color: #909090 !important;
+    font-weight: bold;
+}
+
+
+.ui-widget-content{
+    background-color: #FFFFFF !important;
 }
 .ui-widget-header{
     border: 0px !important;
@@ -1022,11 +1068,17 @@ label.checkbox.inline{
     color: black;
 }
 .botonesDialogo{
-    font-size: smaller;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 .levantarse{
     color: #007A0A
 }
 .terminarDialogo{
     color: #E70422
+}
+.opinionDocente{
+    background-color: #D3DF9E;
+    color: #666666;
+    padding: 10px;
 }

@@ -67,11 +67,14 @@ function sentarse(dialogoId, profesional){
                 Estado
             </div>
         </div>
-        <?php foreach ($dialogos as $e): ?>
+        <?php
+        $rc = 0;
+        foreach ($dialogos as $e):
+        $rc++?>
 
-            <div class="col-md-12 top30">
+            <div class="col-md-12 top5 <?php if($rc %2 == 1){?> filaGris <?php }else{?> filaBlanca <?php }?>">
                 <div class="col-md-1 logolightxsmall">
-                  <span class="badge ">  <?php echo $e->id?></span>
+                  <span class="badge ">  <?php echo $e->etiqueta?></span>
                 </div>
                 <div class="col-md-4">
                     <?php if ($e->evaluado): ?>
@@ -89,13 +92,13 @@ function sentarse(dialogoId, profesional){
                 </div>
 
                     <?php if ($e->terminado): ?>
-                    <div class="col-md-2" style="color: red">
+                    <div class="col-md-2" style="color: red; font-weight: bold">
                         <i class="fa fa-window-close-o" aria-hidden="true"></i> FINALIZADO
                     <?php elseif($e->evaluado && $e->secundario): ?>
-                    <div class="col-md-2" style="color: green">
+                    <div class="col-md-2" style="color: orange; font-weight: bold">
                         <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> EN CURSO
                     <?php else: ?>
-                    <div class="col-md-2" style="color: orange">
+                    <div class="col-md-2" style="color: green; font-weight: bold">
                        <i class="fa fa-unlock-alt" aria-hidden="true"></i> ABIERTO
                     <?php endif; ?>
                 </div>

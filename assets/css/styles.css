@@ -15,6 +15,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
     font-family: 'Roboto', sans-serif;
 }
+h1{
+  font-size: 1.4em;
+}
+h4{
+  font-size: 1em;
+}
+
 h1,
 h2,
 h3{
@@ -560,7 +567,7 @@ pre code {
 /* ======= Footer ======= */
 
 .filaCalificacion{
-    background-color: #CFD8DC;
+    background-color: #c8c8c8;
 }
 
 

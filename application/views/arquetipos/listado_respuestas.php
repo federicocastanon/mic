@@ -204,8 +204,8 @@
                     if (isset($respuestas[$imagen_id][$pregunta->id])){
                         foreach ($respuestas[$imagen_id][$pregunta->id] as $resp):
                             $rc++;?>
-                            <div class="col-md-12" style="color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>;
-                                background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>">
+                            <div class="col-md-12 <?php if($rc %2 == 1){?> filaGris <?php }else{?> filaBlanca <?php }?>"
+                                 style="color: <?php if($resp->publico){?> blue <?php }else{?> green <?php }?>;">
                               <div class="col-md-6" >
                                   <?= $resp->respuesta ?> <br> <i>(<?= $resp->email ?> )</i>
                               </div>

@@ -171,10 +171,12 @@ class Dialogo_model extends My_Model
         }
     }
 
-    function crearDialogos($idPrisma, $n){
-        $query = "INSERT INTO dialogo (id, prisma, evaluado, secundario, evaluacion) VALUES (NULL, '$idPrisma', '', '', '0')";
+    function crearDialogos($idPrisma, $n, $primer){
+
        for($i=0;$i<$n; $i++){
+           $query = "INSERT INTO dialogo (id, prisma, evaluado, secundario, evaluacion,etiqueta) VALUES (NULL, '$idPrisma', '', '', '0',$primer)";
            $this->db->query($query);
+           $primer++;
        }
         $this->editarCantidadDialogos($idPrisma);
     }

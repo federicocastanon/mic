@@ -7,7 +7,7 @@ class Arquetipos_model extends My_Model {
     protected $soft_delete = TRUE;
 
     function get_ejercicio_by_public_id($id) { 
-      return $this->db->get_where('arquetipos', ['public_id' => $id])->row();
+      return $this->db->get_where('arquetipos', ['id' => $id])->row();
     }
 
     function get_ejercicio_by_alumno_id($id) { 

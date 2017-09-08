@@ -12,16 +12,16 @@
     function crearIntervencion(data){
         var html ='<div class="col-md-12 top30" >';
         if(data.tipo == 1){
-            html += '<div class="col-sm-6 panelBlanco" style="float: left;">';
+            html += '<div class="col-md-12 contenedorIntervencion" ><div class="col-sm-6 panelBlanco">';
             html += data.texto ;
-            html += '</div>';
+            html += '</div><div class="col-md-6 " ></div></div>';
             html += '<div class="col-md-12 fechaIntervencion" style="text-align: left">';
             html +=  data.fecha ;
             html += '</div>';
         }else if(data.tipo == 2){
-            html += '<div class="col-sm-6 panelVerde" style="float: right">';
+            html += '<div class="col-md-12 contenedorIntervencion" ><div class="col-md-6 " ></div><div class="col-sm-6 panelVerde">';
             html += data.texto;
-            html += '</div>';
+            html += '</div></div>';
             html += '<div class="col-md-12 fechaIntervencion" style="text-align: right">';
             html +=  data.fecha ;
             html += '</div>';
@@ -58,6 +58,7 @@
                     }
                     $('#dialogo').append(htmlNuevo);
                     $('#ultimoId').val(nuevoUltimoId);
+                    irUltimoMensaje();
                 }
 
 
@@ -71,7 +72,11 @@
 
     function intervenirAjax(){
         var ultimoId = $('#ultimoId').val();
-        var nuevaIntervencion = $('#nuevaIntervencion').val();
+        var nuevaIntervencion = $.trim($('#nuevaIntervencion').val());
+        $('#nuevaIntervencion').val('');
+        if(nuevaIntervencion ==""){
+            return;
+        }
         var url = '<?php echo base_url('/dialogo/intervenirAjax/' . $dialogo->id)?>';
         var dialogoId = $('#ultimoId').attr('dialogoId');
         $('#nuevaIntervencion').val('');
@@ -111,7 +116,7 @@
 <script src="<?php echo assets_url('js/jquery-ui.js')?>"></script>
 <style>
     .caption{
-        width: 100%;
+        width: auto;
     }
 </style>
 <div class="col-md-8">
@@ -186,16 +191,25 @@
         $rc++;?>
         <div class="col-md-12 top30" >
             <?php if ($e->tipo == 1): ?>
-               <div class="col-md-6 panelBlanco" style="float: left;">
+            <div class="col-md-12 contenedorIntervencion" >
+               <div class="col-md-6 panelBlanco" >
                    <?php echo $e->texto ?><br>
                </div>
+                <div class="col-md-6 " >
+                </div>
+            </div>
+
                 <div class="col-md-12 fechaIntervencion" style="text-align: left">
                     <?php echo $e->fecha ?>
                 </div>
             <?php elseif ($e->tipo == 2): ?>
-               <div class="col-md-6 panelVerde" style="float: right">
+            <div class="col-md-12 contenedorIntervencion" >
+                <div class="col-md-6 " >
+                </div>
+               <div class="col-md-6 panelVerde" >
                    <?php echo $e->texto ?><br>
                </div>
+            </div>
                 <div class="col-md-12 fechaIntervencion" style="text-align: right">
                     <?php echo $e->fecha ?>
                 </div>
@@ -210,8 +224,30 @@
 
         </div>
         <?php endforeach ?>
+
    </div>
             <input type="hidden" id="ultimoId" value="<?php echo $intervenciones[$rc]->id ?>">
+        <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
+            <div class="col-md-12 spacer"></div>
+            <div class="col-md-12">
+                <form id="myForm" method='post' action="<?php echo base_url('/dialogo/intervenir/' . $dialogo->id)?>">
+                    <input type="hidden" name="dialogoId" id="dialogoId">
+                    <input type="hidden" name="profesional" id="profesional">
+                    <div class="col-md-7">
+                        <textarea style="width: 100%" name="intervencion" id="nuevaIntervencion" placeholder="Escribí acá...." required="true"></textarea>
+                    </div>
+                    <div class="col-md-5">
+                    <ul class="listaBotones">
+                        <li><span class="vinculo btn btn-default" onclick="intervenirAjax()">ENVIAR</span></li>
+                        <li><a id="modal-838576" href="#modal-container-838576" role="button"  data-toggle="modal" class="botonesDialogo levantarse"><i class="fa fa-sign-out negro" aria-hidden="true"></i>Levantarse</a></li>
+                        <li><a id="modal-838577" href="#modal-container-838577" role="button"  data-toggle="modal" class="botonesDialogo terminarDialogo"><i class="fa fa-window-close-o negro" aria-hidden="true"></i> Terminar Dialogo</a></li>
+                    </ul>
+                    </div>
+                </form>
+
+
+            </div>
+        <?php endif; ?>
     <?php else: ?>
   <div class="col-md-12">
     <h1>Este dialogo no empezó</h1>
@@ -226,7 +262,7 @@
         <link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
             <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
             <script src="<?php echo assets_url('plugins/star-rating/js/locales/es.js')?>"></script>
-            <form id="myForm" method='post' action='<?php echo base_url('/dialogo/calificar/' . $dialogo->id)?>'>
+            <form id="myForm" method='post' action="<?php echo base_url('/dialogo/calificar/' . $dialogo->id)?>">
                 <?php if (isset($evaluacion) ){ ?>
                     <div>
                         <h2>Ya calificaste este dialogo</h2>
@@ -240,8 +276,14 @@
 
 
                     <div class="form-group">
-                        <label for="sugerencia">Sugerencia</label>
-                        <input id="sugerencia" name="sugerencia">
+                        <div class="tabs">
+                            <ul>
+                                <li class="sugerencia pestania"><a href="#tabs-1">SUGERENCIAS</a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <input id="sugerencia" name="sugerencia">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="positiva">Valoración positiva</label>
@@ -264,14 +306,14 @@
 
         <?php else: ?>
 
-            <div class="col-md-12 ">
+
                 <div class="col-md-6">
-                    <div class="col-md-12 ">   <h4>Promedio de pares</h4></div>
-                    <div class="col-md-12 ">  <input class="estrellas" name="calificacion" value="<?php echo $dialogo->promedio ?>" ></div>
+                     <h4 class="tituloPequeno">Promedio de pares</h4>
+                    <input class="estrellas" name="calificacion" value="<?php echo $dialogo->promedio ?>" >
                 </div>
                 <div class="col-md-6">
-                    <div class="col-md-12 ">  <h4>Valoracion docente</h4></div>
-                    <div class="col-md-12 "> <input class="estrellas" name="calificacion" value="<?php echo $dialogo->evaluacion ?>" ></div>
+                   <h4 class="tituloPequeno">Valoracion docente</h4>
+                    <input class="estrellas" name="calificacion" value="<?php echo $dialogo->evaluacion ?>" >
                 </div>
                 <div class="spacer col-md-12">
                 </div>
@@ -290,7 +332,7 @@
                                 ?>
                                 <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                             <?php endforeach ?>
-                            <p style=" background-color: #D5D59D; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                            <p class="opinionDocente" ><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
                         </div>
                         <div id="tabs-2<?php echo $dialogo->id ?>">
                             <?php $rc = 0;
@@ -299,7 +341,7 @@
                                 ?>
                                 <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                             <?php endforeach ?>
-                            <p style=" background-color: #277415; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                            <p class="opinionDocente"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
                         </div>
                         <div id="tabs-3<?php echo $dialogo->id ?>">
                             <?php $rc = 0;
@@ -308,48 +350,30 @@
                                 ?>
                                 <p style=" background-color: <?php if($rc %2 == 1){?> #EFF0F1 <?php }else{?> #FFFFFF <?php }?>"><?php echo $s?></p>
                             <?php endforeach ?>
-                            <p style=" background-color: #66FF66; color: #EFF0F1"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
+                            <p class="opinionDocente"><b>DOCENTE:</b> <?php echo $dialogo->sugerencia?></p>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <script type='text/javascript'>
                 $(document).ready(function() {
                     $(".estrellas").each(function(){
-                        $(this).rating({ language:'es', readonly: true, size: 'xxs', showClear : false});
+                        $(this).rating({ language:'es', readonly: true, size: 'xs', showClear : false});
                     });
                     $( ".tabs" ).each(function(){
                         $(this).tabs({
-                            collapsible: true,
+                            collapsible: false,
                             active: true
                         });
                     });
+                    $('#nuevaIntervencion').on("keyup", function(event){
+                        if (event.which == 13){
+                            intervenirAjax();
+                        }
+                    })
                 } );
             </script>
 
         <?php endif; ?>
 
-    </div>
-    <div class="col-md-12 spacer"></div>
-    <div class="col-md-12">
-        <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
-            <form id="myForm" method='post' action='<?php echo base_url('/dialogo/intervenir/' . $dialogo->id)?>'>
-                <input type="hidden" name="dialogoId" id="dialogoId">
-                <input type="hidden" name="profesional" id="profesional">
-                <div class="col-md-7">
-                    <textarea style="width: 100%" name="intervencion" id="nuevaIntervencion" placeholder="Escribí acá...." required="true"></textarea>
-                </div>
-                <div class="col-md-1">
-                    <span class="vinculo btn btn-default" onclick="intervenirAjax()">ENVIAR</span>
-                </div>
-
-            </form>
-        <?php endif; ?>
-        <div class="col-md-2">
-            <a id="modal-838576" href="#modal-container-838576" role="button"  data-toggle="modal" class="botonesDialogo levantarse"><i class="fa fa-sign-out negro" aria-hidden="true"></i>Levantarse</a>
-        </div>
-        <div class="col-md-2">
-            <a id="modal-838577" href="#modal-container-838577" role="button"  data-toggle="modal" class="botonesDialogo terminarDialogo"><i class="fa fa-window-close-o negro" aria-hidden="true"></i> Terminar Dialogo</a>
-        </div>
     </div>

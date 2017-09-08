@@ -13,17 +13,8 @@
     "use strict";
     $.fn.ratingLocales.es = {
         defaultCaption: '{rating} Estrellas',
-        starCaptions: {
-            0.5: 'Media Estrella',
-            1: 'Una Estrella',
-            1.5: 'Una Estrella y Media',
-            2: 'Dos Estrellas',
-            2.5: 'Dos Estrellas y Media',
-            3: 'Tres Estrellas',
-            3.5: 'Tres Estrellas y Media',
-            4: 'Cuatro Estrellas',
-            4.5: 'Cuatro Estrellas y Media',
-            5: 'Cinco Estrellas'
+        starCaptions: function(val){
+            return val + ' Estrellas';
         },
         clearButtonTitle: 'Limpiar',
         clearCaption: 'Sin Calificar'

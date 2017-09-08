@@ -79,7 +79,7 @@ class Dialogo extends MY_Controller
                 $dialogosACrear = intval($data['dialogos']);
 
                 if($dialogosACrear > $cantDialogos){
-                    $this->dialogo_model->crearDialogos($prismaId, $dialogosACrear - $cantDialogos);
+                    $this->dialogo_model->crearDialogos($prismaId, $dialogosACrear - $cantDialogos, $cantDialogos + 1);
                 }
                 $this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
                 redirect("/dialogo/");
@@ -88,7 +88,7 @@ class Dialogo extends MY_Controller
                 //dialogos
                 $prismaId = $this->dialogo_model->crearPrisma($data['nombre'],$data['descripcion'],
                     $this->user->get_id(),$data['profesional'],$data['secundario']);
-                $this->dialogo_model->crearDialogos($prismaId, $data['dialogos']);
+                $this->dialogo_model->crearDialogos($prismaId, $data['dialogos'],1);
 
                 $this->session->set_flashdata('success_message', 'El Ejercicio fue creado con éxito.');
                 redirect("/dialogo/");
