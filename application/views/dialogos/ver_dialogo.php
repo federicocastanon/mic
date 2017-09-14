@@ -109,6 +109,7 @@
     }
 
 </script>
+
 <link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
 <link href="<?php echo assets_url('css/jquery-ui.css')?>" media="all" rel="stylesheet" type="text/css" />
 <script src="<?php echo assets_url('plugins/star-rating/js/star-rating.js')?>" type="text/javascript"></script>
@@ -274,25 +275,43 @@
                     </div>
                 <?php }else{ ?>
 
-
-                    <div class="form-group">
-                        <div class="tabs">
-                            <ul>
-                                <li class="sugerencia pestania"><a href="#tabs-1">SUGERENCIAS</a></li>
+                    <div class="panel with-nav-tabs panel-default sinBorde  fondoTransparente">
+                        <div class="panel-heading sinBorde">
+                            <ul class="nav nav-tabs">
+                                <li class="active bordeSuperiorRedondo"><a class="sinBorde" href="#tab1default" data-toggle="tab">Sugerencias</a></li>
                             </ul>
-                            <div id="tabs-1">
-                                <input id="sugerencia" name="sugerencia">
+                        </div>
+                        <div class="panel-body F2F2F2 tresBordesRedondos">
+                            <div class="tab-content F2F2F2 ">
+                                <div class="tab-pane fade in active" id="tab1default"><textarea class="areaGrande"  id="sugerencia" name="sugerencia"></textarea></div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="positiva">Valoración positiva</label>
-                        <input id="positiva" name="positiva">
+                    <div class="panel with-nav-tabs panel-default sinBorde  fondoTransparente">
+                        <div class="panel-heading sinBorde">
+                            <ul class="nav nav-tabs">
+                                <li class="active bordeSuperiorRedondo"><a class="sinBorde" href="#tab2default" data-toggle="tab">Valoración positiva</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body F2F2F2 tresBordesRedondos">
+                            <div class="tab-content F2F2F2">
+                                <div class="tab-pane fade in active" id="tab2default"><textarea class="areaGrande" id="positiva" name="positiva"></textarea> </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="aclaracion">Pedido de aclaración</label>
-                        <input id="aclaracion" name="aclaracion">
+                    <div class="panel with-nav-tabs panel-default sinBorde  fondoTransparente">
+                        <div class="panel-heading sinBorde">
+                            <ul class="nav nav-tabs">
+                                <li class="active bordeSuperiorRedondo"><a class="sinBorde" href="#tab3default" data-toggle="tab">Pedido de aclaración</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body F2F2F2 tresBordesRedondos">
+                            <div class="tab-content F2F2F2">
+                                <div class="tab-pane fade in active" id="tab3default"><textarea class="areaGrande"  id="aclaracion" name="aclaracion"></textarea></div>
+                            </div>
+                        </div>
                     </div>
+
 
                     <input id="input-id" name="calificacion"  >
                     <button type="submit" class="vinculo btn btn-default"> Calificar</button>
