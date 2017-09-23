@@ -514,7 +514,25 @@ class Arquetipos extends MY_Controller {
 
 			unset($data['titulo_imagen']);
 			unset($data['file']);
+            $imagenes = array();
+            $imagenesAgregarEdicion = array();
+            foreach (json_decode($this->input->post('imgs'), true) as $i) {
+                if (!$i['selected']) continue;
+                if ($i['source'] == 'stock') $i['titulo'] = $this->Arquetipos_model->get_stock_image_name($i['url']);
+                $imagenes[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
+                $imagenesAgregarEdicion[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
+            }
+            print json_encode($imagenesAgregarEdicion);
 			if ($arquetipo_id) {
+			    print json_encode($tmp);
+                foreach($tmp as $e ) {
+                    foreach($imagenes as $indice => $j){
+                        if($j['url'] == $e->imagen_ubicacion){
+                            unset($imagenesAgregarEdicion[$indice]);
+                        }
+                    }
+                }
+                $this->Arquetipos_model->agregar_imagenes($arquetipo_id, $imagenesAgregarEdicion);
                 $this->Arquetipos_model->actualizarPreguntas($arquetipo_id, $vars['preguntas'],$this->input->post('pregunta'));
                 unset($data['pregunta']);
 				$this->Arquetipos_model->update($arquetipo_id, $data);
@@ -528,12 +546,7 @@ class Arquetipos extends MY_Controller {
 				$data['status'] = 'habilitado';
 				$arquetipo_id = $this->Arquetipos_model->insert($data);
 				$this->Arquetipos_model->agregar_preguntas($arquetipo_id, $this->input->post('pregunta'));
-				$imagenes = array();
-				foreach (json_decode($this->input->post('imgs'), true) as $i) { 
-					if (!$i['selected']) continue;
-					if ($i['source'] == 'stock') $i['titulo'] = $this->Arquetipos_model->get_stock_image_name($i['url']);
-					$imagenes[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
-				}
+
 				$this->Arquetipos_model->agregar_imagenes($arquetipo_id, $imagenes);				
 				$this->session->set_flashdata('success_message', 'El Ejercicio fue creado con éxito.');
 				//redirect("/alumnos/invitar/arquetipos/$arquetipo_id");
