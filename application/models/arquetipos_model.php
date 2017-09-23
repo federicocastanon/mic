@@ -95,8 +95,8 @@ class Arquetipos_model extends My_Model {
                   SELECT $nu_arq_id, pregunta from arquetipo_preguntas where arquetipo_id = $id_arquetipo ";
         #print $query;
         $this->db->query($query);
-        $query = "INSERT INTO arquetipo_imagenes (arquetipo_id, imagen_ubicacion) 
-                  SELECT $nu_arq_id, imagen_ubicacion from arquetipo_imagenes where arquetipo_id = $id_arquetipo ";
+        $query = "INSERT INTO arquetipo_imagenes (arquetipo_id, imagen_ubicacion, titulo) 
+                  SELECT $nu_arq_id, imagen_ubicacion, titulo from arquetipo_imagenes where arquetipo_id = $id_arquetipo ";
         #print $query;
         $this->db->query($query);
         return $nu_arq_id;

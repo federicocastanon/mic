@@ -422,6 +422,7 @@ class Arquetipos extends MY_Controller {
 
 	public function editar($arquetipo_id = null)
 	{
+
 		if (!$this->user->has_permission('arquetipos')) redirect('/');		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -441,7 +442,8 @@ class Arquetipos extends MY_Controller {
 		$vars['_css'] = array(assets_url("css/jquery.fileupload-ui.css"));
 		$vars['preguntas'] = array();
 		$vars['imagenes'] = array();
-		if ($arquetipo_id) { 
+		if ($arquetipo_id) {
+
 			$arquetipo = $this->Arquetipos_model->get($arquetipo_id);
 			if (!$arquetipo) die("Acceso no permitido");
 			//if ($arquetipo->id_user != $this->user->get_id()) die("Acceso no permitido");

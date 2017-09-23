@@ -90,9 +90,9 @@
 
                     <?php if ($e->public_id_enabled): ?>
 
-                        <a class="pull-left" data-toggle="tooltip" title="" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>'><i class="linkListado fa fa-external-link"></i></a>
-                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->public_id?>" value="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->public_id)?>" />
-                        <a class="btnC pull-left" data-toggle="tooltip" title="Copiar Link" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->public_id?>"><i class="linkListado fa fa-clipboard"></i></a>
+                        <a class="pull-left" data-toggle="tooltip" title="" taget="_new" href='<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->id)?>'><i class="linkListado fa fa-external-link"></i></a>
+                        <input style="left: -2000px; position: absolute"  type="text" id="copyme<?php echo $e->id?>" value="<?php echo base_url('/arquetipos/alumno_ejercicio/' . $e->id)?>" />
+                        <a class="btnC pull-left" data-toggle="tooltip" title="Copiar Link" data-clipboard-action="copy" data-clipboard-target="#copyme<?php echo $e->id?>"><i class="linkListado fa fa-clipboard"></i></a>
                         <a class="pull-left" data-toggle="tooltip" title="Ocultar" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/0')?>'><i class="linkListado fa fa-eye-slash"></i></a>
                     <?php else: ?>
                         <a class="pull-left" data-toggle="tooltip" title="Publicar" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'><i class="linkListado fa fa-eye" aria-hidden="true"></i></a>

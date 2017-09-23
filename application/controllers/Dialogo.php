@@ -90,7 +90,7 @@ class Dialogo extends MY_Controller
                     $this->user->get_id(),$data['profesional'],$data['secundario']);
                 $this->dialogo_model->crearDialogos($prismaId, $data['dialogos'],1);
 
-                $this->session->set_flashdata('success_message', 'El Ejercicio fue creado con éxito.');
+                $this->session->set_flashdata('success_message', 'La actividad fue creada con éxito.');
                 redirect("/dialogo/");
             }
 
