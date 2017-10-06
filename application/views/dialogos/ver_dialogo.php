@@ -35,24 +35,26 @@
     }
 
     setInterval(recargaAjax, 5000);
+    var actualizar = true;
 
     function recargaAjax(){
     var ultimoId = $('#ultimoId').val();
     var url = "<?php echo base_url('/dialogo/recargaAjax/' . $dialogo->id)?>";
     var dialogoId = <?php echo $dialogo->id ?>;
     var test = '<?php echo  $_SESSION["alias"] ?>';
+    if (actualizar) {
         $.ajax({
             url: url,
             method: "POST",
             dataType: 'json',
-            data: {"dialogoId" : dialogoId, "ultimoId" : ultimoId},
-            success: function(data){
+            data: {"dialogoId": dialogoId, "ultimoId": ultimoId},
+            success: function (data) {
 
-                if(data.intervenciones.length > 0){
+                if (data.intervenciones.length > 0) {
 
                     var htmlNuevo = '';
                     var nuevoUltimoId;
-                    for (i = 0; i<data.intervenciones.length;i++) {
+                    for (i = 0; i < data.intervenciones.length; i++) {
                         htmlNuevo += crearIntervencion(data.intervenciones[i]);
                         nuevoUltimoId = data.intervenciones[i].id;
                     }
@@ -63,10 +65,11 @@
 
 
             },
-            error: function(){
+            error: function () {
                 console.log('ERROR en recarga');
             }
         });
+    }
 
     }
 
@@ -80,6 +83,7 @@
         var url = '<?php echo base_url('/dialogo/intervenirAjax/' . $dialogo->id)?>';
         var dialogoId = $('#ultimoId').attr('dialogoId');
         $('#nuevaIntervencion').val('');
+        actualizar = false;
         $.ajax({
             url: url,
             method: "POST",
@@ -97,12 +101,14 @@
                     $('#dialogo').append(htmlNuevo);
                     irUltimoMensaje();
                     $('#ultimoId').val(nuevoUltimoId);
+                    actualizar = true;
                 }
 
 
             },
             error: function(){
                 console.log('ERROR en intervencion');
+                actualizar = true;
             }
         });
 

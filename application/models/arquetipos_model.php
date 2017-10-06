@@ -104,8 +104,10 @@ class Arquetipos_model extends My_Model {
 
     function agregar_preguntas($id_arquetipo, $preguntas) { 
         foreach ($preguntas as $p) {
-            $data = array('arquetipo_id' => $id_arquetipo, 'pregunta' => $p);
-            $this->db->insert('arquetipo_preguntas', $data);
+            if(sizeof(trim($p))>0) {
+                $data = array('arquetipo_id' => $id_arquetipo, 'pregunta' => $p);
+                $this->db->insert('arquetipo_preguntas', $data);
+            }
         }
     }
 
