@@ -162,12 +162,12 @@ class Dialogo_model extends My_Model
         $result = $this->db->query($query)->result();
 
         if($result[0]){
-            print "entro" . $result[0]->cant;
+            //print "entro" . $result[0]->cant;
             $cantidad = intval($result[0]->cant);
             $query = "UPDATE prisma SET dialogos = $cantidad where  prisma.id = $idPrisma  ";
 
             $this->db->query($query);
-            print "ejecuto";
+           // print "ejecuto";
         }
     }
 

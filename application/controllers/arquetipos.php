@@ -522,9 +522,9 @@ class Arquetipos extends MY_Controller {
                 $imagenes[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
                 $imagenesAgregarEdicion[] = array('url' => $i['url'], 'titulo' => $i['titulo']);
             }
-            print json_encode($imagenesAgregarEdicion);
+            //print json_encode($imagenesAgregarEdicion);
 			if ($arquetipo_id) {
-			    print json_encode($tmp);
+			    //print json_encode($tmp);
                 foreach($tmp as $e ) {
                     foreach($imagenes as $indice => $j){
                         if($j['url'] == $e->imagen_ubicacion){
