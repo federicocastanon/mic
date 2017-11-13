@@ -59,7 +59,7 @@
 					<label class="checkbox">
 						<input <?php if ($checked) echo 'CHECKED'?> name='permiso[<?php echo $p->id ?>]' type="checkbox" />
 						 <?php echo $p->description ?>
-						 <? if ($p->id == 1):?> <b>(Mantener destildado para usuarios profesores)</b><? endif ?>
+						 <?php if ($p->id == 1):?> <b>(Mantener destildado para usuarios profesores)</b><?php endif ?>
 				    </label>
 				<?php endforeach ?>
 			</div>

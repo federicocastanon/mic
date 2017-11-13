@@ -555,8 +555,6 @@ class Arquetipos extends MY_Controller {
 
 		}
 
-
-		if (!$this->is_mine($arquetipo_id)) die('Operacion no permitida');
 		$this->template_type = 'admin';
 		#echo '<pre>';print_r($vars);echo '</pre>';
 		$this->template('arquetipos/editar', $vars);
