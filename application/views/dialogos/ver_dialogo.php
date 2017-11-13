@@ -128,7 +128,23 @@
 </style>
 <div class="col-md-8">
     <div class="col-md-12">
-        Estás actuando como <h4 class="celeste"><?php echo  $_SESSION["alias"] ?></h4>
+        <div class="col-md-4">
+            Estás actuando como <h4 class="celeste"><?php echo  $_SESSION["alias"] ?></h4>
+        </div>
+        <?php if ($_SESSION["alias"] == $dialogo->evaluado) : ?>
+            <div class="col-md-4">
+                con el rol <h4 class="celeste"><?php echo $prisma->profesional?></h4>
+            </div>
+        <?php endif; ?>
+        <?php if ($_SESSION["alias"] == $dialogo->secundario) : ?>
+            <div class="col-md-4">
+                con el rol <h4 class="celeste"><?php echo $prisma->secundario?></h4>
+            </div>
+        <?php endif; ?>
+        <div class="col-md-4">
+            En la sala número <h4 class="celeste"><?php echo  $dialogo->etiqueta ?></h4>
+        </div>
+
     </div>
     <div class="spacer"></div>
 <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
