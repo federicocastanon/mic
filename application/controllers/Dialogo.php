@@ -148,8 +148,7 @@ class Dialogo extends MY_Controller
 
     function noTieneAlias($urlDestino){
         if(!isset($_SESSION["alias"]) || strlen($_SESSION["alias"]) < 1 ) {
-            print json_encode($_SESSION);
-            exit;
+
             unset($_SESSION["alias"]);
             //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
             //esto quiere decir que entró por link_publico
