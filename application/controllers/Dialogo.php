@@ -5,6 +5,7 @@ class Dialogo extends MY_Controller
     function __construct()
     {
         parent::__construct();
+        if(!isset($_SESSION)){             session_start();         }
         // Load the Library
         $this->load->helper('url');
         $this->load->model('dialogo_model');
@@ -135,8 +136,6 @@ class Dialogo extends MY_Controller
     }
 
     function dialogosPorPrismaAlumno(){
-        if(!isset($_SESSION)){             session_start();         }
-
         $id= $_POST['id'];
         $alias= trim($_POST['alias']);
         if(strlen($alias)>=1) {
@@ -149,6 +148,8 @@ class Dialogo extends MY_Controller
 
     function noTieneAlias($urlDestino){
         if(!isset($_SESSION["alias"]) || strlen($_SESSION["alias"]) < 1 ) {
+            print json_encode($_SESSION);
+            exit;
             unset($_SESSION["alias"]);
             //si la sesión no tiene alias asignado lo mandamos a la págian de elegir ALIAS
             //esto quiere decir que entró por link_publico
@@ -162,6 +163,8 @@ class Dialogo extends MY_Controller
 
     function recepcionPrisma($prismaId = null){
 
+        unset($_SESSION["profesional"]);
+
         if(!$prismaId) {
             $prismaId = $_POST['id'];
             $alias= trim($_POST['alias']);
@@ -170,10 +173,6 @@ class Dialogo extends MY_Controller
             }else{
                 $_SESSION["alias"] = 'Anonimo-' . rand(1,10000);
             }
-        }
-
-        if(!isset($_SESSION)){
-            session_start();
         }
         if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
             $alias= $_POST['alias'];
@@ -189,9 +188,7 @@ class Dialogo extends MY_Controller
 
         if ($this->user->get_id()){
             $this->template_type = 'admin';
-            if(!isset($_SESSION)){
-                session_start();
-            }
+
             $_SESSION["alias"] = trim($this->user->get_email());
         }
 
@@ -225,9 +222,7 @@ class Dialogo extends MY_Controller
     }
 
     function calificarLanding($prismaId){
-        if(!isset($_SESSION)){
-            session_start();
-        }
+
         if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
             $alias= $_POST['alias'];
             if(strlen($alias)>=1) {
@@ -241,9 +236,7 @@ class Dialogo extends MY_Controller
         }
         if ($this->user->get_id()){
             $this->template_type = 'admin';
-            if(!isset($_SESSION)){
-                session_start();
-            }
+
             $_SESSION["alias"] = trim($this->user->get_email());
         }
         $dialogos = $this->dialogo_model->obtenerDialogosPorPrismaCalificables($prismaId,$_SESSION["alias"]);
@@ -278,9 +271,6 @@ class Dialogo extends MY_Controller
 
     function dialogosPorPrisma($prismaId){
 
-        if(!isset($_SESSION)){
-            session_start();
-        }
         if(!isset($_SESSION["alias"])&& $_SERVER['REQUEST_METHOD'] === 'POST'){
             $alias= $_POST['alias'];
             if(strlen($alias)>=1) {
@@ -296,9 +286,7 @@ class Dialogo extends MY_Controller
 
         if ($this->user->get_id()){
             $this->template_type = 'admin';
-            if(!isset($_SESSION)){
-                session_start();
-            }
+
             $_SESSION["alias"] = trim($this->user->get_email());
         }
         $user_id = ($this->user->has_permission('admin'))?null:$this->user->get_id();
@@ -319,9 +307,6 @@ class Dialogo extends MY_Controller
     function lobbyDialogos($prismaId){
         if ($this->user->get_id())
             $this->template_type = 'admin';
-        if(!isset($_SESSION)){
-            session_start();
-        }
 
         $vars = array('dialogos' => $this->dialogo_model->obtenerDialogosPorPrisma($prismaId));
         $vars['prisma'] = $this->dialogo_model->obtenerPrisma($prismaId);
@@ -335,7 +320,6 @@ class Dialogo extends MY_Controller
     }
 
     function sentarse(){
-        if(!isset($_SESSION)){             session_start();         }
         //if ($this->user->get_id())
            // $this->template_type = 'admin';
         $dialogoId = $_POST['dialogoId'];
@@ -369,10 +353,6 @@ class Dialogo extends MY_Controller
     }
 
     function armarDialogo($dialogoId){
-        if(!isset($_SESSION)){             session_start();         }
-
-
-
         $alias = $_SESSION["alias"] ;
         $vars = array('intervenciones' =>  $this->dialogo_model->obtenerIntervencionesPorDialogo($dialogoId));
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
@@ -428,9 +408,6 @@ class Dialogo extends MY_Controller
     }
 
     function intervenir($dialogoId){
-        if(!isset($_SESSION)){
-            session_start();
-        }
         $profesional = $_SESSION["profesional"];
 
         $alias = $_SESSION["alias"] ;
@@ -446,7 +423,6 @@ class Dialogo extends MY_Controller
     }
 
     function levantarse($dialogoId){
-        if(!isset($_SESSION)){             session_start();         }
         $alias = $_SESSION["alias"] ;
 
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
@@ -462,7 +438,6 @@ class Dialogo extends MY_Controller
     }
 
     function terminar($dialogoId){
-        if(!isset($_SESSION)){             session_start();         }
         $this->dialogo_model->terminarConversacion($dialogoId);
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
 
@@ -471,7 +446,6 @@ class Dialogo extends MY_Controller
 
 
     function calificar($dialogoId){
-        if(!isset($_SESSION)){             session_start();         }
        // if ($this->user->get_id())
             //$this->template_type = 'admin';
         if($this->noTieneAlias(  base_url(). 'dialogo/calificar/' . $dialogoId)){
@@ -502,7 +476,6 @@ class Dialogo extends MY_Controller
     }
 
     function verCalificaciones($prismaId){
-        if(!isset($_SESSION)){             session_start();         }
         if ($this->user->get_id())
             $this->template_type = 'admin';
 
@@ -546,9 +519,7 @@ class Dialogo extends MY_Controller
         $this->template('dialogos/ver_calificaciones', $vars);
     }
     public function cambiarAlias($public_id){
-        if(!isset($_SESSION)){
-            session_start();
-        }
+
         unset($_SESSION["alias"]);
         $vars['urlDestino'] = base_url(). 'dialogo/recepcionPrisma/' . $public_id;
         $this->template('account/solicitarAlias', $vars);
@@ -558,9 +529,7 @@ class Dialogo extends MY_Controller
        // $dialogoId = $this->input->post('dialogoId');
         $intervencion =$this->input->post('intervencion');
         $ultimoId =$this->input->post('ultimoId');
-        if(!isset($_SESSION)){
-            session_start();
-        }
+
         $profesional = $_SESSION["profesional"];
 
         $alias = $_SESSION["alias"] ;

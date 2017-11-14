@@ -118,11 +118,7 @@ class Account extends MY_Controller {
 		// Remove user session.
 		$this->user->destroy_user();
 
-        if(!isset($_SESSION)){
-            session_start();
-        }
-        unset($_SESSION["alias"]);
-		
+
 		// Bye, thanks! :)
 		$this->session->set_flashdata('success_message', 'Te has desconectado.');
 		redirect('account/home');
