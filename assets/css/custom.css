@@ -1083,3 +1083,6 @@ a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover{
     color: #666666;
     padding: 10px;
 }
+.oculto{
+    display: none;
+}

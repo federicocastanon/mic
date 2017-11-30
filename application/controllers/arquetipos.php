@@ -677,4 +677,11 @@ class Arquetipos extends MY_Controller {
         $this->Arquetipos_model->nube($arquetipo_id, 0);
         redirect('/arquetipos/ver_respuestas/' . $arquetipo_id);
     }
+    public function ajax_borrar_pregunta($pregunta_id) {
+        $this->Arquetipos_model->borrarPregunta($pregunta_id);
+        $output = array('ok' => true);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
 }

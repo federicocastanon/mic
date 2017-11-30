@@ -9,8 +9,43 @@
         }
 
 
-        $( "#preguntas" ).append( "<input name='pregunta[]' class='input-xxlarge' type='text' placeholder='Pregunta "+cantidadPreguntas + "' value=''><br><br>" );
+        $( "#preguntas" ).append( '<div id="'+ cantidadPreguntas+ '"><input  name="pregunta[]" class="input-xxlarge" type="text" placeholder="Pregunta '+cantidadPreguntas + '" value=""><a  data-toggle="tooltip" title="Eliminar" onclick="borrarPregunta('+ cantidadPreguntas+')"><i class="linkListado fa fa-trash-o"></i></a><br><br></div>' );
 
+    }
+    var idPreguntaBorrar;
+    function borrarPregunta(id){
+        if(!(""+id).includes('pregunta')){
+            //pregunta no persistida
+            $('#'+id).remove();
+        }else{
+            idPreguntaBorrar = id.substring(8);
+            $('#confirmar' + idPreguntaBorrar).removeClass('oculto');
+            $('#borrar' + idPreguntaBorrar).addClass('oculto');
+            //Al hacer click, oculto el icono del tacho y muestro un texto con dos botones
+            //uno revierte al estado anterior, el otro ejecuta el borrarPreguntaGuardada
+        }
+    }
+
+    function cancelarBorrado(id){
+        $('#confirmar' + id).addClass('oculto');
+        $('#borrar' + id).removeClass('oculto');
+    }
+
+    function borrarPreguntaGuardada(id){
+        $.ajax('<?php echo base_url("/arquetipos/ajax_borrar_pregunta/")?>'+'/' +id,
+            {
+                data: '',
+                type:'POST',
+            })
+            .done(function(data) {
+                $('#pregunta'+id).remove();
+            })
+            .fail(function () {
+                alert('Ocurrió un error. Volvé a intentarlo más tarde.');
+            })
+            .always(function() {
+
+            });
     }
 
     function continuar(){
@@ -177,8 +212,17 @@
                         <br>
                         <h4>Ingresar preguntas</h4><br>
                         <div id="preguntas">
+
                         <?php foreach ($preguntas as $indice=>$pregunta): ?>
-                            <input name="pregunta[<?= $pregunta->id ?>]" class="input-xxlarge" type="text" placeholder="Pregunta <?= $indice ?>" value="<?php echo set_value('pregunta['+$pregunta->id+']', $pregunta->pregunta)?>"><br><br>
+                            <div id="pregunta<?= $pregunta->id ?>">
+                            <input name="pregunta[<?= $pregunta->id ?>]" class="input-xxlarge" type="text" placeholder="Pregunta <?= $indice ?>" value="<?php echo set_value('pregunta['+$pregunta->id+']', $pregunta->pregunta)?>">
+                            <a id="borrar<?= $pregunta->id ?>" data-toggle="tooltip" title="Eliminar" onclick="borrarPregunta('pregunta' + <?= $pregunta->id ?>)"><i class="linkListado fa fa-trash-o"></i></a>
+                                <div class="oculto" id="confirmar<?= $pregunta->id ?>"><i>Estás por borrar esta pregunta, todas las respuestas asociadas a esta pregunta también serán borradas.¿querés continuar?</i>
+                                    <a  onclick="borrarPreguntaGuardada(<?= $pregunta->id ?>)"><i class="linkListado fa fa-check"></i></a>
+                                    <a  onclick="cancelarBorrado(<?= $pregunta->id ?>)"><i class="linkListado fa fa-times"></i></a>
+                                </div>
+                            </div>
+                            <br><br>
                         <?php endforeach ?>
                             <?php if(!$preguntas){?>
                                 <input name="pregunta[]" class="input-xxlarge" type="text" placeholder="Pregunta 1" value="" ><br><br>

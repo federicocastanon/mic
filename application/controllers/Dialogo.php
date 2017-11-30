@@ -547,13 +547,20 @@ class Dialogo extends MY_Controller
     }
 
     public function recargaAjax(){
-    $dialogo = $this->input->post('dialogoId');
-    $ultimoId =$this->input->post('ultimoId');
-    $nuevas = $this->dialogo_model->obtenerNuevasIntervenciones($dialogo,$ultimoId);
-    $output = array('intervenciones' => $nuevas);
+        $dialogo = $this->input->post('dialogoId');
+        $ultimoId =$this->input->post('ultimoId');
+        $nuevas = $this->dialogo_model->obtenerNuevasIntervenciones($dialogo,$ultimoId);
+        $output = array('intervenciones' => $nuevas);
 
-    $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($output));
-}
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
+    public function elminiarPreguntaAjax(){
+        $preguntaId = $this->input->post('preguntaId');
+        $this->dialogo_model->eliminarPregunta($preguntaId);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output('OK');
+    }
 }
