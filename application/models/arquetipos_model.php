@@ -246,5 +246,9 @@ class Arquetipos_model extends My_Model {
         $query = " DELETE FROM enconstr_mic.arquetipo_preguntas WHERE arquetipo_preguntas.id = '$id'";
         $this->db->query($query);
     }
+    function borrarImagen($id){
+        $query = " DELETE FROM enconstr_mic.arquetipo_imagenes WHERE arquetipo_imagenes.id = '$id'";
+        $this->db->query($query);
+    }
 
 }

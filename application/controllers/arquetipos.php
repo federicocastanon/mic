@@ -462,7 +462,8 @@ class Arquetipos extends MY_Controller {
 						'url'=> $e->imagen_ubicacion,
                   		'source' => $source,
                   		'selected' => true,
-                  		'titulo' => $e->titulo
+                  		'titulo' => $e->titulo,
+                        'id' => $e->id
                 );
 			}			
 		}
@@ -679,6 +680,13 @@ class Arquetipos extends MY_Controller {
     }
     public function ajax_borrar_pregunta($pregunta_id) {
         $this->Arquetipos_model->borrarPregunta($pregunta_id);
+        $output = array('ok' => true);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($output));
+    }
+    public function ajax_borrar_imagen($imagen_id) {
+        $this->Arquetipos_model->borrarImagen($imagen_id);
         $output = array('ok' => true);
         $this->output
             ->set_content_type('application/json')

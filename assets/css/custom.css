@@ -1086,3 +1086,6 @@ a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover{
 .oculto{
     display: none;
 }
+.enLinea{
+    display: inline;
+}

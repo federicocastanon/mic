@@ -48,6 +48,38 @@
             });
     }
 
+    function borrarImagen(id){
+        alert('¡ATENCIÓN! Estás por borrar esta imagen, todas las respuestas asociadas también serán borradas')
+        $('#confirmarImagen' + id).addClass('enLinea');
+        $('#confirmarImagen' + id).removeClass('oculto');
+        $('#borrarImagen' + id).addClass('oculto');
+    }
+    function cancelarBorradoImagen(id){
+        $('#confirmarImagen' + id).addClass('oculto');
+        $('#confirmarImagen' + id).removeClass('enLinea');
+        $('#borrarImagen' + id).removeClass('oculto');
+    }
+
+    function borrarImagenGuardada(id){
+        $.ajax('<?php echo base_url("/arquetipos/ajax_borrar_imagen/")?>'+'/' +id,
+            {
+                data: '',
+                type:'POST',
+            })
+            .done(function(data) {
+                $('#borrarImagen'+id).siblings('.thumbnail_selected').removeClass('thumbnail_selected');
+                $('#borrarImagen'+id).remove();
+                $('#confirmarImagen' + id).remove();
+                refresh_selected_images();
+            })
+            .fail(function () {
+                alert('Ocurrió un error. Volvé a intentarlo más tarde.');
+            })
+            .always(function() {
+
+            });
+    }
+
     function continuar(){
         if(estaCompleto()){
             $('.nav-tabs').find('a[href=#tab2]').click();return false;
@@ -182,7 +214,14 @@
                                     <a class="thumbnail <?php echo $class?>" href="#">
                                         <img src="<?php echo $e['url']?>" data-source="stock"/>
                                     </a>
-                                    <?php echo $e['titulo'] ?> 
+                                    <?php echo $e['titulo'] ?>
+                                    <?php if ($e['selected']){ ?>
+                                    <a id="borrarImagen<?= $e['id'] ?>" data-toggle="tooltip" title="Eliminar" onclick="borrarImagen(<?=$e['id'] ?>)"><i class="linkListado fa fa-trash-o"></i></a>
+                                    <div class="oculto" id="confirmarImagen<?= $e['id'] ?>">
+                                        <a  onclick="borrarImagenGuardada(<?= $e['id'] ?>)"><i class="linkListado fa fa-check"></i></a>
+                                        <a  onclick="cancelarBorradoImagen(<?= $e['id'] ?>)"><i class="linkListado fa fa-times"></i></a>
+                                    </div>
+                                    <?php } ?>
                                 </li>
                             <?php endforeach ?>
                         </ul>
@@ -205,6 +244,11 @@
                                                 <img src="<?php echo $e['url']?>" data-source="custom" width='150px' height='150px'/>
                                             </a>
                                             <input type="text" name="titulo_imagen" style="width:150px;" placeholder="Titulo del arquetipo" value="<?php echo $e['titulo']?>" />
+                                            <a id="borrarImagen<?= $e['id'] ?>" data-toggle="tooltip" title="Eliminar" onclick="borrarImagen(<?=$e['id'] ?>)"><i class="linkListado fa fa-trash-o"></i></a>
+                                            <div class="oculto" id="confirmarImagen<?= $e['id'] ?>">
+                                                <a  onclick="borrarImagenGuardada(<?= $e['id'] ?>)"><i class="linkListado fa fa-check"></i></a>
+                                                <a  onclick="cancelarBorradoImagen(<?= $e['id'] ?>)"><i class="linkListado fa fa-times"></i></a>
+                                            </div>
                                         </li>
                                     <?php endforeach ?>
                                 </ul>
