@@ -207,6 +207,8 @@ class Dialogo extends MY_Controller
         }else{
             $dialogoProfesional = $this->dialogo_model->obtenerPrimerDialogoSinRolPorPrisma($prismaId, true);
             $dialogoSecundario = $this->dialogo_model->obtenerPrimerDialogoSinRolPorPrisma($prismaId, false);
+            $dialogos = $this->dialogo_model->obtenerDialogosPorPrisma($prismaId);
+            $vars['dialogos'] = $dialogos;
             if($dialogoProfesional){
                 $vars['pro'] = $dialogoProfesional->id;
             }

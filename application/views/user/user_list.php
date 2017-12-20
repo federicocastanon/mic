@@ -2,9 +2,14 @@
   $(document).ready(function() {
     $(".borrar").click(function() { 
       var id = $(this).data('id');
-      $("#passwordModal input[name=id_user]").val(id);
-      console.log('aca');
+      $('#' + id).removeClass('oculto');
+
     })
+      $(".cerrar").click(function() {
+          var id = $(this).data('id');
+          $('#' + id).addClass('oculto');
+
+      })
 
 
   });
@@ -35,16 +40,33 @@
 					}
 					?></td>
                     <td>
+                        <div class="col-md-4">
                       <a class='btn btn-small' href='<?php echo base_url("/usuarios/edit/" . $u->id)?>'>
                         <i class="icon-edit"></i> editar
                       </a>
-                      <a class='btn btn-small borrar' role='button' data-toggle="modal" data-id="<?php echo $u->id?>" href='#passwordModal'>
+                        </div>
+                        <div class="col-md-4">
+                      <a class='btn btn-small borrar' data-id="<?php echo $u->id?>" href='#passwordModal'>
                         <i class="icon-edit"></i> cambiar clave
                       </a>
+                        <form id="<?php echo $u->id?>" class="form-horizontal oculto" method='post' action="<?php echo base_url("/usuarios/cambiar_password/")?>">
+                                   <input type='hidden' name='id_user' value='<?php echo $u->id?>' />
+                            <div class="control-group">
+                                <label class="control-label" for="inputPassword">Nueva clave</label>
+                                <div class="controls">
+                                    <input type="password" name='password' id="inputPassword">
+                                </div>
+                            </div>
+                                <a href="#" class="btn btn-primary cerrar" data-id="<?php echo $u->id?>">Cerrar</a>
+                                <input type='submit' class="btn"  value="Guardar" />
+                        </form>
+                        </div>
+                        <div class="col-md-4">
                       <a onClick='return confirm("Confirme que desea eliminar el usuario");' class='btn btn-small btn-danger' 
                         href='<?php echo base_url("/usuarios/delete/" . $u->id)?>'>
                         <i class="icon-remove icon-white"></i> eliminar
                       </a>
+                        </div>
                     </td>
                   </tr>
                   <?php endforeach; ?>

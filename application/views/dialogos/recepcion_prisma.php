@@ -55,7 +55,7 @@
 
         <?php if (isset($pen) && $pen): ?>
             <div class="col-md-8">
-               <h4>Usted es parte de un dialogo que aún no ha finalizado </h4>
+               <h4>Usted es parte de un dialogo que aún no ha finalizado. Si no lo finaliza o se levanta de su puesto, no podrá ingresar a otro diálogo. </h4>
                 <a class="btn btn-sm btn-success pull-left" href="<?php echo base_url('/dialogo/calificar/'. $pen)?>">Continuar con el diálogo</a>
             </div>
         <?php else: ?>
@@ -78,13 +78,70 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
-        <div class="col-md-2">
-            <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/dialogosPorPrisma/' . $prisma->id)?>"><i class="fa fa-star"></i> Listado</a>
-        </div>
-        <div class="col-md-2">
+
+        <div class="col-md-4">
             <a class="btn btn-lg btn-warning pull-left" href="<?php echo base_url('/dialogo/verCalificaciones/' . $prisma->id)?>"><i class="fa fa-star"></i> Valoraciones</a>
         </div>
+    <div class="col-md-12 spacer"></div>
+    <?php if (isset($dialogos) && $dialogos): ?>
+    <div class="col-md-12 bordeInferiorGrueso">
+        <div class="col-md-1 logolightxsmall">
+            id
+        </div>
+        <div class="col-md-4 logolightxsmall">
+            ROL Profesional
+        </div>
+        <div class="col-md-4 logolightxsmall">
+            ROL secundario
+        </div>
+        <div class="col-md-2 logolightxsmall">
+            Estado
+        </div>
+    </div>
+    <?php
+    $rc = 0;
+    foreach ($dialogos as $e):
+    $rc++?>
 
+    <div class="col-md-12 top5 <?php if($rc %2 == 1){?> filaGris <?php }else{?> filaBlanca <?php }?>">
+        <div class="col-md-1 logolightxsmall">
+            <span class="badge ">  <?php echo $e->etiqueta?></span>
+        </div>
+        <div class="col-md-4">
+            <?php if ($e->evaluado): ?>
+                <?php echo $e->evaluado?>
+            <?php else: ?>
+                <a class="vinculo" onclick="sentarse(<?php echo $e->id?>, true)">  Ingresar como <?php echo $prisma->profesional?></a>
+            <?php endif; ?>
+        </div>
+        <div class="col-md-4">
+            <?php if ($e->secundario): ?>
+                <?php echo $e->secundario?>
+            <?php else: ?>
+                <a class="vinculo" onclick="sentarse(<?php echo $e->id?>, false)">  Ingresar como <?php echo $prisma->secundario?></a>
+            <?php endif; ?>
+        </div>
+
+        <?php if ($e->terminado): ?>
+        <div class="col-md-2" style="color: red; font-weight: bold">
+            <i class="fa fa-window-close-o" aria-hidden="true"></i> FINALIZADO
+            <?php elseif($e->evaluado && $e->secundario): ?>
+            <div class="col-md-2" style="color: orange; font-weight: bold">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> EN CURSO
+                <?php else: ?>
+                <div class="col-md-2" style="color: green; font-weight: bold">
+                    <i class="fa fa-unlock-alt" aria-hidden="true"></i> ABIERTO
+                    <?php endif; ?>
+                </div>
+
+            </div>
+
+    <?php endforeach ?>
+    <?php else: ?>
+        <div class="col-md-12" >
+            <h1>No hay mesas de dialogo disponibles para usted</h1>
+        </div>
+    <?php endif; ?>
 
     <input type="hidden" id="alias" name="alias" placeholder="alias" required="true" value="<?php  if (isset($_SESSION["alias"]))echo $_SESSION["alias"]?>"
     "/>
