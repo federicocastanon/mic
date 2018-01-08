@@ -430,12 +430,46 @@ class Dialogo extends MY_Controller
 
         if($dialogo->terminado == 0){
             //Si está terminado no te borro del dialogo
-            $this->dialogo_model->levantarse($dialogoId,$alias, $alias == $dialogo->evaluado );
+            $levantarEvaluado = $alias == $dialogo->evaluado;
+            $levantarSecundario = $alias == $dialogo->secundario;
+            if($levantarEvaluado){
+                $this->dialogo_model->levantarse($dialogoId,$alias, true);
+            }elseif ($levantarSecundario){
+                $this->dialogo_model->levantarse($dialogoId,$alias, false );
+            }
         }
 
 
         $this->recepcionPrisma($dialogo->prisma);
 
+    }
+
+    function levantarseAjax($dialogoId){
+        $alias = $_SESSION["alias"] ;
+
+        $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
+
+        if($dialogo->terminado == 0){
+            //Si está terminado no te borro del dialogo
+            $levantarEvaluado = $alias == $dialogo->evaluado;
+            $levantarSecundario = $alias == $dialogo->secundario;
+            if($levantarEvaluado){
+                $this->dialogo_model->levantarse($dialogoId,$alias, true);
+            }elseif ($levantarSecundario){
+                $this->dialogo_model->levantarse($dialogoId,$alias, false );
+            }
+
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output('OK');
+
+    }
+
+    function sentarseAjax($dialogoId){
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output('OK');
     }
 
     function terminar($dialogoId){

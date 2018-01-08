@@ -114,6 +114,8 @@
 
     }
 
+
+
 </script>
 
 <link href="<?php echo assets_url('plugins/star-rating/css/star-rating.css')?>" media="all" rel="stylesheet" type="text/css" />
@@ -149,7 +151,55 @@
     <div class="spacer"></div>
 <?php if ($_SESSION["alias"] == $dialogo->evaluado or $_SESSION["alias"] == $dialogo->secundario ): ?>
 
-    <div class="modal fade" id="modal-container-838576" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <script type='text/javascript'>
+
+        window.onunload = manejoSalida;
+       //  window.onpagehide = advertir;
+        //window.onpopstate = advertir;
+        /*window.onbeforeunload= advertir;
+        $("#modal-container-838576").on('shown.bs.modal', function () {
+            window.onbeforeunload= null;
+        });
+        $("#modal-container-838576").on('hidden.bs.modal', function () {
+            window.onbeforeunload= advertir;
+        });
+        $("#modal-container-838577").on('shown.bs.modal', function () {
+            window.onbeforeunload= null;
+        });
+        $("#modal-container-838577").on('hide.bs.modal', function () {
+            window.onbeforeunload= advertir;
+        });
+
+
+        function advertir() {
+            return "estas por sair";
+        };*/
+        var levantado = false;
+        function manejoSalida(){
+            var url = '<?php echo base_url('/dialogo/levantarseAjax/'. $dialogo->id)?>';
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                dataType: 'json',
+                data: {},
+                success: function(data){
+
+                    levantado = true;
+                },
+                error: function(){
+                    console.log('ERROR en intervencion');
+                    actualizar = true;
+                }
+            });
+
+            console.log("se arrepintio");
+            return false;
+        }
+
+    </script>
+
+    <div class="modal " id="modal-container-838576" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -162,7 +212,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default recuperarEvento" data-dismiss="modal">
                         Seguir la charla
                     </button>
                     <a class="btn btn-lg btn-info" href="<?php echo base_url('/dialogo/levantarse/'. $dialogo->id)?>">LEVANTARSE</a>
@@ -185,7 +235,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default recuperarEvento" data-dismiss="modal">
                         Seguir la charla
                     </button>
                     <a class="btn btn-lg btn-danger" href="<?php echo base_url('/dialogo/terminar/'. $dialogo->id)?>">TERMINAR DIÁLOGO</a>
