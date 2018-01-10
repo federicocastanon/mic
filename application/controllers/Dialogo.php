@@ -446,7 +446,7 @@ class Dialogo extends MY_Controller
 
     function levantarseAjax($dialogoId){
         $alias = $_SESSION["alias"] ;
-
+        //$this->dialogo_model->insertarIntervencion($dialogoId, $alias, $alias . ' ForzóLogOut' ,1,3);
         $dialogo = $this->dialogo_model->obtenerDialogosPorId($dialogoId) ;
 
         if($dialogo->terminado == 0){
