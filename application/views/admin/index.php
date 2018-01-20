@@ -28,6 +28,13 @@
 					</div>
 				</a>
 			<?php    endif ?>
+            <?php if ($this->user->has_permission('admin')) : ?>
+                <a href='<?php echo base_url('/reportes/')?>'>
+                    <div id="logo" class="span4">
+                        <span class="logoxsmall">Reportes</span><br />
+                    </div>
+                </a>
+            <?php endif ?>
 
 
 		</div>

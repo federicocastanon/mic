@@ -6,6 +6,7 @@ class Arquetipos extends MY_Controller {
 		// Load the Library
         $this->load->helper('url');
 		$this->load->model('Arquetipos_model');
+
 	}
     public function printClose($imprimible){
         print_r($imprimible);
