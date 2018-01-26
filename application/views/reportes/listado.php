@@ -1,23 +1,6 @@
 <script src="<?php echo assets_url('/js/jquery.dataTables.js')?>"></script>
 <script src="<?php echo assets_url('/js/bootstrap-datatables.js')?>"></script>
 <script src="<?php echo assets_url('js/clipboard.min.js');?>"></script>
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    } );
-</script>
-<script>
-    var clipboard = new Clipboard('.btnC');
-
-    clipboard.on('success', function(e) {
-        console.log(e);
-        alert("Link copiado con éxito");
-    });
-
-    clipboard.on('error', function(e) {
-        console.log(e);
-    });
-</script>
 
 
 
@@ -38,9 +21,13 @@
                         <td> <?php echo $r->descripcion ?></td>
 
                         <td>
-                            <a class="btn btn-large" href="<?php echo base_url('/reportes/ejecutarReporte/' . $r->store)?>">
-                                <?php echo $r->etiqueta ?>
-                            </a>
+                            <form method="post" action="<?php echo base_url('/reportes/ejecutarReporte/' . $r->id)?>">
+                            <input type="submit" class="btn btn-large" value="<?php echo $r->etiqueta ?>"></input>
+                           <input type="hidden" name="store" value="<?php echo $r->store ?>">
+                            <input type="hidden" name="nombre" value="<?php echo $r->nombre ?>">
+                            <input type="hidden" name="etiqueta" value="<?php echo $r->etiqueta ?>">
+
+                            </form>
                             <a class="btn btn-large" href="<?php echo base_url('/reportes/seleccionarParametros/' . $r->id)?>">
                                 Cambiar Parametros
                             </a>

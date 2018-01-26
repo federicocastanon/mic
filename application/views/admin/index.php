@@ -32,6 +32,7 @@
                 <a href='<?php echo base_url('/reportes/')?>'>
                     <div id="logo" class="span4">
                         <span class="logoxsmall">Reportes</span><br />
+                        <img src="<?= assets_url('/img/reporte.png')?>" width="116" height="120" border="0">
                     </div>
                 </a>
             <?php endif ?>
