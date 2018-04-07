@@ -214,5 +214,5 @@
     <a class="btn btn-large btn-default" href="<?php echo base_url('/arquetipos/respuestasAnteriores/' . $ejercicio->id)?> ">Mis respuestas</a>
 </div>
 <div class="col-md-12">
-    <a class="btn btn-lg btn-default"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->public_id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
+    <a class="btn btn-lg btn-default"  href='<?php echo base_url('/arquetipos/link_publico/' . $ejercicio->id)?>'><i class="fa fa-home"></i> Todas las respuestas</a>
 </div>
