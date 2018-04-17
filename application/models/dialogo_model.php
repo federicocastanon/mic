@@ -202,7 +202,7 @@ class Dialogo_model extends My_Model
     }
 
     function crearEvaluacionDocente($dialogo, $creador, $puntaje,$sugerencias, $valoracionPositiva, $aclaraciones){
-        $query = "UPDATE dialogo SET evaluacion = $puntaje, sugerencia = '$sugerencias', positivo = '$valoracionPositiva', `aclaracion` = '$aclaraciones' WHERE dialogo.id = $dialogo";
+        $query = "UPDATE dialogo SET evaluacion = $puntaje, sugerencia = '$sugerencias', positivo = '$valoracionPositiva', aclaracion = '$aclaraciones' WHERE dialogo.id = $dialogo";
         $this->db->query($query);
     }
 
