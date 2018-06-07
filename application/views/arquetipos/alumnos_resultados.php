@@ -174,7 +174,7 @@
                 <?php
                 foreach ($ejercicio->preguntas as $pregunta): ?>
                     <div class="col-md-12">
-                        <h5 class="preguntaFoco"><?= $preg->pregunta?></h5>
+                        <h5 class="preguntaFoco"><?= $pregunta->pregunta?></h5>
                     </div>
 
                     <?php  $j = 0;
