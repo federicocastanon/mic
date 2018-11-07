@@ -97,6 +97,8 @@
                     <?php else: ?>
                         <a class="pull-left" data-toggle="tooltip" title="Publicar" href='<?php echo base_url('/arquetipos/publicar/' . $e->id . '/1')?>'><i class="linkListado fa fa-eye" aria-hidden="true"></i></a>
                     <?php endif ?>
+                    <a class="pull-left" data-toggle="tooltip" title="Transferir" href='<?php echo base_url('/arquetipos/transferir/' . $e->id)?>'><i class="linkListado fa fa-key" aria-hidden="true"></i></a>
+
                 </td>
             </tr>
         <?php endforeach ?>
@@ -122,6 +124,7 @@
         <span class="iconoReferencia"><i class="fa fa-reply" aria-hidden="true"></i>Ver Respuestas</span>
         <span class="iconoReferencia"><i class="fa fa-copy"></i>Duplicar</span>
         <span class="iconoReferencia"><i class="fa fa-trash-o"></i> Eliminar </span>
+        <span class="iconoReferencia"><i class="fa fa-key"></i> Transferir ejercicio </span>
     </div>
     </div>
 </div>

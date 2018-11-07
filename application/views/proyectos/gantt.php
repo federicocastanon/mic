@@ -1,5 +1,5 @@
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
   <link rel=stylesheet href="<?php echo assets_url("gantt/css/platform.css"); ?>" type="text/css">
   <link rel=stylesheet href="<?php echo assets_url("gantt/libs/dateField/jquery.dateField.css")?>" type="text/css">
   <link rel=stylesheet href="<?php echo assets_url("gantt/css/gantt.css")?>" type="text/css">

@@ -251,4 +251,8 @@ class Arquetipos_model extends My_Model {
         $this->db->query($query);
     }
 
+    function actualizar_owner($ejercicioId, $nuevoOwner){
+        $query = "UPDATE arquetipos  SET id_user=$nuevoOwner    where id=$ejercicioId";
+        $this->db->query($query);
+    }
 }

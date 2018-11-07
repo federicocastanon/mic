@@ -5,6 +5,7 @@ class Arquetipos extends MY_Controller {
 		parent::__construct();
 		// Load the Library
         $this->load->helper('url');
+        $this->load->model('Usuarios_model');
 		$this->load->model('Arquetipos_model');
 
 	}
@@ -693,4 +694,21 @@ class Arquetipos extends MY_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($output));
     }
+    public function transferir($arquetipo_id){
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            //modifico
+            $this->Arquetipos_model->actualizar_owner($arquetipo_id, $this->input->post('user_id'));
+            $this->session->set_flashdata('success_message', 'El Ejercicio fue actualizado éxitosamente.');
+            redirect('/arquetipos/');
+            return;
+        }
+
+        $vars = array('users' => $this->Usuarios_model->get_all());
+        $vars['micSeleccionada'] = 'focos';
+        $vars['ejercicio'] = $this->Arquetipos_model->get($arquetipo_id);
+
+        $this->template('arquetipos/transferir', $vars);
+    }
+
 }
